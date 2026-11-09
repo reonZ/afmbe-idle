@@ -1,19 +1,10 @@
-import { CREATURE_ATTRIBUTES, CreatureAttribute } from "actor";
+import { ActorModule, CREATURE_ATTRIBUTES, CreatureAttribute } from "actor";
 import * as R from "remeda";
 import { CharacterAttributeSource, CharacterAttributesSource } from ".";
-import { Character } from "..";
+import { Character, CharacterDataSource } from "..";
 
-class CharacterAttributes {
-    #parent: Character;
-
-    constructor(parent: Character, source: CharacterAttributesSource) {
-        this.#parent = parent;
-        Object.assign(this, source);
-    }
-
-    get actor(): Character {
-        return this.#parent;
-    }
+class CharacterAttributes extends ActorModule<CharacterAttributesSource, Character> {
+    static key: keyof CharacterDataSource = "attributes";
 
     /** the limit of points based on the character category */
     get limit(): number {
@@ -81,7 +72,7 @@ class CharacterAttributes {
 
     /** convenient update method */
     async update(key: CreatureAttribute, value: CharacterAttributeSource): Promise<Character | undefined> {
-        return this.#parent.update({ [`system.attributes.${key}`]: value });
+        return this.actor.update({ [`system.attributes.${key}`]: value });
     }
 }
 

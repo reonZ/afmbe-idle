@@ -1,12 +1,8 @@
-import { Character, CharacterExperienceSource } from "..";
+import { ActorModule } from "actor";
+import { Character, CharacterDataSource, CharacterExperienceSource } from "..";
 
-class CharacterExperience {
-    #parent: Character;
-
-    constructor(parent: Character, source: CharacterExperienceSource) {
-        this.#parent = parent;
-        Object.assign(this, source);
-    }
+class CharacterExperience extends ActorModule<CharacterExperienceSource, Character> {
+    static key: keyof CharacterDataSource = "experience";
 
     /** how many points of experience have been spent */
     get spent(): number {
@@ -28,7 +24,7 @@ class CharacterExperience {
 
     /** convenient update method */
     async update(value: CharacterExperienceSource): Promise<Character | undefined> {
-        return this.#parent.update({ "system.experience": value });
+        return this.actor.update({ "system.experience": value });
     }
 }
 

@@ -51,8 +51,8 @@ class CharacterDataModel extends CreatureDataModel<Character, CharacterDataSchem
 
         const parent = this.parent;
 
-        parent.attributes = new CharacterAttributes(parent, this.attributes);
-        parent.experience = new CharacterExperience(parent, this.experience);
+        parent.attributes = new CharacterAttributes(this.attributes, parent);
+        parent.experience = new CharacterExperience(this.experience, parent);
     }
 
     protected _preCreate(
