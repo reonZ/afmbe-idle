@@ -1,7 +1,6 @@
-import { ActorAFMBE, CharacterDataModel, ZombieDataModel } from "actor";
+import { ActorAFMBE, AdversaryDataModel, CharacterDataModel, ZombieDataModel } from "actor";
 import { ItemAFMBE, QualityDataModel, SkillDataModel } from "item";
 import config from "./config";
-import { AdversaryDataModel } from "actor/adversary";
 
 Hooks.once("init", () => {
     CONFIG.AFMBE = config;

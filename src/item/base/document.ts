@@ -1,9 +1,10 @@
 import { ActorAFMBE } from "actor";
-import { ItemDataModel, ItemDataSchema, ItemInstances, ItemType } from ".";
+import * as R from "remeda";
+import { ITEM_PHYSICAL_TYPES, ItemDataModel, ItemDataSchema, ItemInstances, ItemType } from ".";
 
 class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends Item<TParent> {
-    isOfType<T extends ItemType>(type: T): this is ItemInstances[T] {
-        return this.type === type;
+    isOfType<T extends ItemType | "physical">(type: T): this is ItemInstances[T] {
+        return type === "physical" ? R.isIncludedIn(this.type, ITEM_PHYSICAL_TYPES) : this.type === type;
     }
 }
 
