@@ -1,4 +1,4 @@
-import { ActorSource } from "@7h3laughingman/foundry-types/common/documents/actor.mjs";
+import type { ActorSource } from "@7h3laughingman/foundry-types/common/documents/actor.mjs";
 import type { Creature, CreatureDataSchema } from "actor";
 import type {
     CHARACTER_TYPES,

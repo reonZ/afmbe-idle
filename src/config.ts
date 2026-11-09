@@ -12,6 +12,7 @@ const config = {
             low: 5,
             high: 10,
         },
+        MAX_HUMAN_LEVEL: 6,
     },
 };
 
