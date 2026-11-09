@@ -8,7 +8,7 @@ type WeaponDataSchema = PhysicalDataSchema & {};
 
 type WeaponDataSource = fields.ModelPropsFromSchema<WeaponDataSchema>;
 
-interface Weapon<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends Physical<TParent> {
+declare class Weapon<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends Physical<TParent> {
     system: WeaponDataModel;
 }
 

@@ -8,7 +8,7 @@ type QualityDataSchema = ItemDataSchema & {};
 
 type QualityDataSource = fields.ModelPropsFromSchema<QualityDataSchema>;
 
-interface Quality<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
+declare class Quality<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
     system: QualityDataModel;
 }
 

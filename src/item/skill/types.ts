@@ -8,7 +8,7 @@ type SkillDataSchema = ItemDataSchema & {};
 
 type SkillDataSource = fields.ModelPropsFromSchema<SkillDataSchema>;
 
-interface Skill<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
+declare class Skill<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
     system: SkillDataModel;
 }
 

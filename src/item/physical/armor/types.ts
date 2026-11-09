@@ -8,7 +8,7 @@ type ArmorDataSchema = PhysicalDataSchema & {};
 
 type ArmorDataSource = fields.ModelPropsFromSchema<ArmorDataSchema>;
 
-interface Armor<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends Physical<TParent> {
+declare class Armor<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends Physical<TParent> {
     system: ArmorDataModel;
 }
 

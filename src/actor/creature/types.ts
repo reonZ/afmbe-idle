@@ -8,7 +8,10 @@ type CreatureDataSchema = ActorDataSchema & {};
 
 type CreatureDataSource = fields.ModelPropsFromSchema<CreatureDataSchema>;
 
-interface Creature<TParent extends TokenDocument | null = TokenDocument | null> extends ActorAFMBE<TParent> {
+declare abstract class Creature<
+    TParent extends TokenDocument | null = TokenDocument | null,
+> extends ActorAFMBE<TParent> {
+    abstract attributes: { getValue(key: CreatureAttribute): number };
     system: CreatureDataModel;
 }
 

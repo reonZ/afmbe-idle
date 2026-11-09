@@ -29,7 +29,7 @@ type CharacterDataSource = fields.ModelPropsFromSchema<CharacterDataSchema>;
 
 type CharacterSystemDetails = fields.ModelPropsFromSchema<CharacterDetailsSchema>;
 
-interface Character<TParent extends TokenDocument | null = TokenDocument | null> extends Creature<TParent> {
+declare class Character<TParent extends TokenDocument | null = TokenDocument | null> extends Creature<TParent> {
     attributes: CharacterAttributes;
     details: CharacterSystemDetails;
     experience: CharacterExperience;
