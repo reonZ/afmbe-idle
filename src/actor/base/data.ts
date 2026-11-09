@@ -1,4 +1,4 @@
-import { ActorAFMBE, ActorDataSchema, ActorSystem } from ".";
+import { ActorAFMBE, ActorDataSchema, ActorDataSource } from ".";
 
 class ActorDataModel<TParent extends ActorAFMBE, TSchema extends ActorDataSchema> extends foundry.abstract
     .TypeDataModel<TParent, TSchema> {
@@ -11,6 +11,6 @@ class ActorDataModel<TParent extends ActorAFMBE, TSchema extends ActorDataSchema
     }
 }
 
-interface ActorDataModel<TParent extends ActorAFMBE, TSchema extends ActorDataSchema> extends ActorSystem {}
+interface ActorDataModel<TParent extends ActorAFMBE, TSchema extends ActorDataSchema> extends ActorDataSource {}
 
 export { ActorDataModel };

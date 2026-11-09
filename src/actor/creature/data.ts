@@ -1,5 +1,5 @@
 import { ActorDataModel } from "actor";
-import { Creature, CreatureDataSchema, CreatureSystem } from ".";
+import { Creature, CreatureDataSchema, CreatureDataSource } from ".";
 
 class CreatureDataModel<
     TParent extends Creature = Creature,
@@ -16,6 +16,6 @@ class CreatureDataModel<
     }
 }
 
-interface CreatureDataModel<TParent extends Creature, TSchema extends CreatureDataSchema> extends CreatureSystem {}
+interface CreatureDataModel<TParent extends Creature, TSchema extends CreatureDataSchema> extends CreatureDataSource {}
 
 export { CreatureDataModel };

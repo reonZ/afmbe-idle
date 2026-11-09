@@ -14,6 +14,4 @@ type ActorDataSchema = {};
 
 type ActorDataSource = fields.ModelPropsFromSchema<ActorDataSchema>;
 
-type ActorSystem = {};
-
-export type { ActorDataSchema, ActorDataSource, ActorInstances, ActorSystem, ActorType };
+export type { ActorDataSchema, ActorDataSource, ActorInstances, ActorType };

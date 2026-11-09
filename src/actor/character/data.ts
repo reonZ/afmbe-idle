@@ -10,7 +10,6 @@ import {
     CharacterExperience,
     CharacterExperienceField,
     CharacterSource,
-    CharacterSystem,
 } from ".";
 import * as R from "remeda";
 import fields = foundry.data.fields;
@@ -51,10 +50,9 @@ class CharacterDataModel extends CreatureDataModel<Character, CharacterDataSchem
         super.prepareBaseData();
 
         const parent = this.parent;
-        const source = this as CharacterDataSource;
 
-        this.attributes = new CharacterAttributes(parent, source.attributes);
-        this.experience = new CharacterExperience(parent, source.experience);
+        parent.attributes = new CharacterAttributes(parent, this.attributes);
+        parent.experience = new CharacterExperience(parent, this.experience);
     }
 
     protected _preCreate(
@@ -99,6 +97,6 @@ class CharacterDataModel extends CreatureDataModel<Character, CharacterDataSchem
     }
 }
 
-interface CharacterDataModel extends CharacterSystem {}
+interface CharacterDataModel extends CharacterDataSource {}
 
 export { CharacterDataModel };
