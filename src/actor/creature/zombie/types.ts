@@ -1,3 +1,4 @@
+import { ActorSource } from "@7h3laughingman/foundry-types/client/documents/_module.mjs";
 import type { Creature, CreatureDataSchema, ZombieDataModel } from "actor";
 
 type ZombieDataSchema = CreatureDataSchema & {};
@@ -8,4 +9,6 @@ interface Zombie<TParent extends TokenDocument | null = TokenDocument | null> ex
     system: ZombieDataModel;
 }
 
-export type { Zombie, ZombieDataSchema, ZombieDataSource };
+type ZombieSource = ActorSource<"zombie", ZombieDataSource>;
+
+export type { ZombieSource, Zombie, ZombieDataSchema, ZombieDataSource };

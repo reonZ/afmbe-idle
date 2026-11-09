@@ -1,3 +1,5 @@
+const CREATURE_TYPES = ["adversary", "character", "zombie"] as const;
+
 const CREATURE_ATTRIBUTES = [
     "strength",
     "dexterity",
@@ -7,4 +9,4 @@ const CREATURE_ATTRIBUTES = [
     "willpower",
 ] as const;
 
-export { CREATURE_ATTRIBUTES };
+export { CREATURE_ATTRIBUTES, CREATURE_TYPES };

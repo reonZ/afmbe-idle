@@ -1,5 +1,5 @@
 import type { ActorAFMBE, ActorDataSchema } from "actor";
-import type { CREATURE_ATTRIBUTES, CreatureDataModel } from ".";
+import type { AdversarySource, CharacterSource, CREATURE_ATTRIBUTES, CreatureDataModel, ZombieSource } from ".";
 import fields = foundry.data.fields;
 
 type CreatureAttribute = (typeof CREATURE_ATTRIBUTES)[number];
@@ -12,4 +12,6 @@ interface Creature<TParent extends TokenDocument | null = TokenDocument | null> 
     system: CreatureDataModel;
 }
 
-export type { Creature, CreatureAttribute, CreatureDataSchema, CreatureDataSource };
+type CreatureSource = AdversarySource | CharacterSource | ZombieSource;
+
+export type { Creature, CreatureAttribute, CreatureDataSchema, CreatureDataSource, CreatureSource };

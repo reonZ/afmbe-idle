@@ -1,3 +1,4 @@
+import type { ItemSource } from "@7h3laughingman/foundry-types/client/documents/_module.mjs";
 import type { ActorAFMBE } from "actor";
 import type { ItemAFMBE, ItemDataSchema } from "item";
 import type { SkillDataModel } from ".";
@@ -11,4 +12,6 @@ interface Skill<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
     system: SkillDataModel;
 }
 
-export type { Skill, SkillDataSchema, SkillDataSource };
+type SkillSource = ItemSource<"skill", SkillDataSource>;
+
+export type { Skill, SkillDataSchema, SkillDataSource, SkillSource };

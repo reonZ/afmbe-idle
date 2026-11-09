@@ -1,4 +1,4 @@
-import type { Adversary, Character, Creature, Zombie } from "actor";
+import type { Adversary, Character, Creature, CreatureSource, Zombie } from "actor";
 import type { ACTOR_TYPES } from ".";
 import fields = foundry.data.fields;
 
@@ -15,4 +15,6 @@ type ActorDataSchema = {};
 
 type ActorDataSource = fields.ModelPropsFromSchema<ActorDataSchema>;
 
-export type { ActorDataSchema, ActorDataSource, ActorInstances, ActorType };
+type ActorSourceAFMBE = CreatureSource;
+
+export type { ActorDataSchema, ActorDataSource, ActorInstances, ActorSourceAFMBE, ActorType };
