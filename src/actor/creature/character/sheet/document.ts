@@ -1,6 +1,11 @@
-import { CreatureSheet } from "actor";
+import { ActorSheetConfiguration, CreatureSheet } from "actor";
 import { Character } from "..";
 
-class CharacterSheet extends CreatureSheet<Character> {}
+class CharacterSheet extends CreatureSheet<Character> {
+    static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
+        classes: ["character"],
+        actions: {},
+    };
+}
 
 export { CharacterSheet };
