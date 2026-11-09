@@ -8,7 +8,7 @@ class CharacterAttributes extends ActorModule<CharacterAttributesSource, Charact
 
     /** the limit of points based on the character category */
     get limit(): number {
-        return CONFIG.AFMBE.ATTRIBUTES[this.actor.system.type];
+        return CONFIG.AFMBE.ATTRIBUTES.CATEGORY[this.actor.system.type];
     }
 
     /** the limit of points, extended by drawbacks & improvements */
@@ -52,7 +52,7 @@ class CharacterAttributes extends ActorModule<CharacterAttributesSource, Charact
     /** the cost of drawback points spent for this attribute */
     getDrawbackCost(key: CreatureAttribute): number {
         const { base, drawback } = this[key];
-        const drawbackCost = CONFIG.AFMBE.ATTRIBUTE_DRAWBACK_COST;
+        const drawbackCost = CONFIG.AFMBE.ATTRIBUTES.DRAWBACK_COST;
         return R.sum(R.times(drawback, (i) => drawbackCost * (base + i + 1)));
     }
 
@@ -61,8 +61,8 @@ class CharacterAttributes extends ActorModule<CharacterAttributesSource, Charact
         const { base, drawback, improved } = this[key];
         if (!improved) return 0;
         return base + drawback + 1 <= 5
-            ? CONFIG.AFMBE.ATTRIBUTE_IMPROVEMENTS.low
-            : CONFIG.AFMBE.ATTRIBUTE_IMPROVEMENTS.high;
+            ? CONFIG.AFMBE.ATTRIBUTES.IMPROVEMENT.low
+            : CONFIG.AFMBE.ATTRIBUTES.IMPROVEMENT.high;
     }
 
     /** the total cost of points spent for this attribute */
