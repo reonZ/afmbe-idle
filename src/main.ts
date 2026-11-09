@@ -1,5 +1,5 @@
-import { ActorAFMBE, AdversaryDataModel, CharacterDataModel, ZombieDataModel } from "actor";
-import { ItemAFMBE, QualityDataModel, SkillDataModel } from "item";
+import { ActorAFMBE, AdversaryDataModel, CharacterDataModel, CharacterSheet, ZombieDataModel } from "actor";
+import { ArmorDataModel, ItemAFMBE, QualityDataModel, SkillDataModel, WeaponDataModel } from "item";
 import config from "./config";
 
 Hooks.once("init", () => {
@@ -10,7 +10,14 @@ Hooks.once("init", () => {
     CONFIG.Actor.dataModels.character = CharacterDataModel;
     CONFIG.Actor.dataModels.zombie = ZombieDataModel;
 
+    foundry.documents.collections.Actors.registerSheet("afmbe", CharacterSheet, {
+        types: ["character"],
+        makeDefault: true,
+    });
+
     CONFIG.Item.documentClass = ItemAFMBE;
+    CONFIG.Item.dataModels.armor = ArmorDataModel;
     CONFIG.Item.dataModels.quality = QualityDataModel;
     CONFIG.Item.dataModels.skill = SkillDataModel;
+    CONFIG.Item.dataModels.weapon = WeaponDataModel;
 });
