@@ -40,10 +40,6 @@ function templateDot(...args: Parameters<HelperDelegate>) {
     const parent = args[0];
     if (!R.isObjectType(parent)) return;
 
-    if (parent instanceof Map) {
-        return parent.get(args[1]);
-    }
-
     const path = R.join(args.slice(1, -1), ".");
     return foundry.utils.getProperty(parent, path);
 }

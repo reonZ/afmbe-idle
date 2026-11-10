@@ -1,23 +1,31 @@
 <div class="attributes">
     <div class="primary">
-        {{#each document.system.attributes as |value|}}
-        <div class="attribute" data-attribute-key="{{@key}}">
-            {{localize 'afmbe.actor.attributes' @key}}
-            <input type="number" value="{{value}}" disabled />
+        {{#each attributes.primary as |attribute|}}
+        <div class="attribute" data-attribute-key="{{attribute.key}}">
+            {{attribute.label}}
+            <input type="number" value="{{attribute.value}}" disabled />
         </div>
         {{/each}}
     </div>
     <div class="secondary">
-        {{#array "life" "endurance" "essence" as |key|}}
-        <div class="attribute" data-attribute-key="{{key}}">
-            {{localize 'afmbe.actor' key 'label'}}
+        {{#each attributes.secondary as |attribute|}}
+        <div class="attribute" data-attribute-key="{{attribute.key}}">
+            {{attribute.label}}
             <input
                 type="number"
-                name="system.{{key}}.value"
-                value="{{dot ../document [key] 'current'}}"
-                max="{{dot ../document [key] 'max'}}"
+                name="system.{{attribute.key}}.value"
+                value="{{attribute.value}}"
+                min="0"
+                max="{{attribute.max}}"
             />
+            {{#unless (eq attribute.max Infinity)}}
+            / <input type="number" value="{{attribute.max}}" disabled />
+            {{/unless}}
         </div>
-        {{/array}}
+        {{/each}}
+        <div class="attribute" data-attribute-key="speed">
+            {{localize 'afmbe.actor.speed.label'}}
+            <input type="number" value="{{attributes.speed.value}}" disabled />
+        </div>
     </div>
 </div>

@@ -1,7 +1,9 @@
 import { HandlebarsTemplatePart } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 import { ActorSheetAFMBE, ActorSheetConfiguration } from "actor";
+import * as R from "remeda";
+import { localize } from "utils";
 import { CreatureSheetPart, CreatureSheetRenderContext, CreatureSheetRenderOptions } from ".";
-import { Creature } from "..";
+import { Creature, CREATURE_ATTRIBUTES, CREATURE_SECONDARY_ATTRIBUTES } from "..";
 
 abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE {
     static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
@@ -28,6 +30,34 @@ abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE {
         partId: CreatureSheetPart,
         context: CreatureSheetRenderContext,
     ): Promise<CreatureSheetRenderContext> {
+        switch (partId) {
+            case "attributes":
+                return this.#prepareAttributesContext(context);
+            default:
+                return context;
+        }
+    }
+
+    #prepareAttributesContext(context: CreatureSheetRenderContext): CreatureSheetRenderContext {
+        const actor = this.actor;
+        const speed = actor.system.speed.value;
+
+        context.attributes = {
+            primary: R.map(CREATURE_ATTRIBUTES, (key) => {
+                const label = localize("actor.attributes", key);
+                const value = actor.system.attributes[key];
+                return { key, label, value };
+            }),
+            secondary: R.map(CREATURE_SECONDARY_ATTRIBUTES, (key) => {
+                const { current, label, max } = actor[key];
+                return { key, label, max, value: current };
+            }),
+            speed: {
+                half: speed / 2,
+                value: speed,
+            },
+        };
+
         return context;
     }
 }

@@ -8,8 +8,9 @@ class ZombieDataModel extends CreatureDataModel<Zombie, ZombieDataSchema> {
         };
     }
 
-    prepareBaseData(): void {
-        super.prepareBaseData();
+    prepareDerivedData(): void {
+        super.prepareDerivedData();
+        this.life.total = Infinity;
     }
 }
 

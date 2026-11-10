@@ -1,19 +1,43 @@
-import type { ActorSheetConfiguration, ActorSheetRenderContext, ActorSheetRenderOptions } from "actor";
+import type {
+    ActorSheetConfiguration,
+    ActorSheetRenderContext,
+    ActorSheetRenderOptions,
+    CreatureAttribute,
+    CreatureSecondaryAttribute,
+} from "actor";
 
 type CreatureSheetPart = "attributes";
 
 type CreatureSheetRenderOptions = ActorSheetRenderOptions;
 
-type CreatureSheetRenderContext = ActorSheetRenderContext;
-
 type CreatureSheetConfiguration = ActorSheetConfiguration;
 
-type CreatureSheetPartsContext = CreatureSheetRenderContext;
+type CreatureSheetRenderContext = ActorSheetRenderContext & {
+    attributes?: CreatureAttributesContext;
+};
+
+type CreatureAttributesContext = {
+    primary: {
+        key: CreatureAttribute;
+        label: string;
+        value: number;
+    }[];
+    secondary: {
+        key: CreatureSecondaryAttribute;
+        label: string;
+        value: number;
+        max: number;
+    }[];
+    speed: {
+        value: number;
+        half: number;
+    };
+};
 
 export type {
+    CreatureAttributesContext,
     CreatureSheetConfiguration,
     CreatureSheetPart,
-    CreatureSheetPartsContext,
     CreatureSheetRenderContext,
     CreatureSheetRenderOptions,
 };
