@@ -1,26 +1,26 @@
+import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
 import type { ActorAFMBE, ActorDataSchema } from "actor";
+import type { PositiveIntergerValueField } from "fields";
 import type {
     AdversarySource,
     CharacterSource,
     CREATURE_ATTRIBUTES,
     CREATURE_SECONDARY_ATTRIBUTES,
     CreatureDataModel,
-    CreatureLife,
-    CreatureLifeField,
     ZombieSource,
 } from ".";
-import fields = foundry.data.fields;
 
 type CreatureAttribute = (typeof CREATURE_ATTRIBUTES)[number];
 type CreatureSecondaryAttribute = (typeof CREATURE_SECONDARY_ATTRIBUTES)[number];
 
 type CreatureDataSchema = ActorDataSchema & {
-    life: CreatureLifeField;
+    life: PositiveIntergerValueField;
 };
 
-type CreatureDataSource = fields.ModelPropsFromSchema<CreatureDataSchema>;
+type CreatureDataSource = ModelPropsFromSchema<CreatureDataSchema>;
 
 type CreatureSystem = {
+    attributes: CreatureAttributes;
     life: { value: number; total: number };
 };
 
@@ -30,8 +30,6 @@ type CreatureSecondaryAttributes = Record<CreatureSecondaryAttribute, { value: n
 declare abstract class Creature<
     TParent extends TokenDocument | null = TokenDocument | null,
 > extends ActorAFMBE<TParent> {
-    abstract attributes: Record<CreatureAttribute, number>;
-    life: CreatureLife<this>;
     system: CreatureDataModel;
 }
 

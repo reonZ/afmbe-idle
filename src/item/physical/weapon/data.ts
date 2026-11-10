@@ -1,4 +1,4 @@
-import { Weapon, WeaponDataSchema, WeaponDataSource } from ".";
+import { Weapon, WeaponDataSchema, WeaponSystem } from ".";
 import { PhysicalDataModel } from "..";
 
 class WeaponDataModel extends PhysicalDataModel<Weapon, WeaponDataSchema> {
@@ -13,6 +13,6 @@ class WeaponDataModel extends PhysicalDataModel<Weapon, WeaponDataSchema> {
     }
 }
 
-interface WeaponDataModel extends WeaponDataSource {}
+interface WeaponDataModel extends WeaponSystem {}
 
 export { WeaponDataModel };

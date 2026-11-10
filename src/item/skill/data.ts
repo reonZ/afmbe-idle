@@ -1,5 +1,5 @@
 import { ItemDataModel } from "item";
-import { Skill, SkillDataSchema, SkillDataSource } from ".";
+import { Skill, SkillDataSchema, SkillSystem } from ".";
 
 class SkillDataModel extends ItemDataModel<Skill, SkillDataSchema> {
     static defineSchema(): SkillDataSchema {
@@ -13,6 +13,6 @@ class SkillDataModel extends ItemDataModel<Skill, SkillDataSchema> {
     }
 }
 
-interface SkillDataModel extends SkillDataSource {}
+interface SkillDataModel extends SkillSystem {}
 
 export { SkillDataModel };

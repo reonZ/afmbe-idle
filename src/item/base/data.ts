@@ -1,4 +1,4 @@
-import { ItemAFMBE, ItemDataSchema, ItemDataSource } from ".";
+import { ItemAFMBE, ItemDataSchema, ItemSystem } from ".";
 
 class ItemDataModel<TParent extends ItemAFMBE, TSchema extends ItemDataSchema> extends foundry.abstract.TypeDataModel<
     TParent,
@@ -13,6 +13,6 @@ class ItemDataModel<TParent extends ItemAFMBE, TSchema extends ItemDataSchema> e
     }
 }
 
-interface ItemDataModel<TParent extends ItemAFMBE, TSchema extends ItemDataSchema> extends ItemDataSource {}
+interface ItemDataModel<TParent extends ItemAFMBE, TSchema extends ItemDataSchema> extends ItemSystem {}
 
 export { ItemDataModel };

@@ -1,12 +1,14 @@
 import type { ItemSource } from "@7h3laughingman/foundry-types/client/documents/_module.mjs";
+import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
 import type { ActorAFMBE } from "actor";
 import type { WeaponDataModel } from ".";
-import type { Physical, PhysicalDataSchema } from "..";
-import fields = foundry.data.fields;
+import type { Physical, PhysicalDataSchema, PhysicalSystem } from "..";
 
 type WeaponDataSchema = PhysicalDataSchema & {};
 
-type WeaponDataSource = fields.ModelPropsFromSchema<WeaponDataSchema>;
+type WeaponDataSource = ModelPropsFromSchema<WeaponDataSchema>;
+
+type WeaponSystem = PhysicalSystem;
 
 declare class Weapon<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends Physical<TParent> {
     system: WeaponDataModel;
@@ -14,4 +16,4 @@ declare class Weapon<TParent extends ActorAFMBE | null = ActorAFMBE | null> exte
 
 type WeaponSource = ItemSource<"weapon", WeaponDataSource>;
 
-export type { Weapon, WeaponDataSchema, WeaponDataSource, WeaponSource };
+export type { Weapon, WeaponDataSchema, WeaponDataSource, WeaponSource, WeaponSystem };

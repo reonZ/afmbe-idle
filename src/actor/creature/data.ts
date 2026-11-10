@@ -1,7 +1,6 @@
 import { ActorDataModel } from "actor";
-import { PositiveIntegerField } from "fields";
-import { Creature, CreatureDataSchema, CreatureLife, CreatureSystem } from ".";
-import fields = foundry.data.fields;
+import { PositiveIntergerValueField } from "fields";
+import { calculateTotalLife, Creature, CreatureDataSchema, CreatureSystem } from ".";
 
 class CreatureDataModel<
     TParent extends Creature = Creature,
@@ -10,24 +9,18 @@ class CreatureDataModel<
     static defineSchema(): CreatureDataSchema {
         return {
             ...super.defineSchema(),
-            life: new fields.SchemaField({
-                value: new PositiveIntegerField(),
-            }),
+            life: new PositiveIntergerValueField(),
         };
     }
 
     prepareBaseData(): void {
         super.prepareBaseData();
-
-        this.life.total = 0;
     }
 
     prepareDerivedData(): void {
         super.prepareDerivedData();
 
-        const parent = this.parent;
-
-        parent.life = new CreatureLife(parent);
+        this.life.total = calculateTotalLife(this.parent);
     }
 }
 

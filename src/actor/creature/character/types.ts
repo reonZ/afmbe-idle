@@ -1,37 +1,42 @@
-import type { ActorSource } from "@7h3laughingman/foundry-types/common/documents/actor.mjs";
-import type { Creature, CreatureDataSchema, CreatureSystem } from "actor";
 import type {
-    CHARACTER_TYPES,
-    CharacterAttributes,
-    CharacterAttributesField,
-    CharacterDataModel,
-    CharacterExperience,
-    CharacterExperienceField,
-} from ".";
-import fields = foundry.data.fields;
+    HTMLField,
+    ModelPropsFromSchema,
+    SchemaField,
+    StringField,
+} from "@7h3laughingman/foundry-types/client/data/fields.mjs";
+import type { ActorSource } from "@7h3laughingman/foundry-types/common/documents/actor.mjs";
+import type { Creature, CreatureAttribute, CreatureDataSchema, CreatureSystem } from "actor";
+import type { BooleanField, PositiveIntegerField, ValueAndTotalField } from "fields";
+import type { CHARACTER_TYPES, CharacterDataModel } from ".";
 
 type CharacterDetailsSchema = {
-    description: fields.HTMLField;
-    personality: fields.HTMLField;
-    quote: fields.HTMLField;
+    description: HTMLField;
+    personality: HTMLField;
+    quote: HTMLField;
 };
+
+type CharacterAttributeSchema = {
+    base: PositiveIntegerField;
+    drawback: PositiveIntegerField;
+    improved: BooleanField;
+};
+
+type CharacterAttributesSchema = Record<CreatureAttribute, SchemaField<CharacterAttributeSchema>>;
 
 type CharacterType = (typeof CHARACTER_TYPES)[number];
 
 type CharacterDataSchema = CreatureDataSchema & {
-    attributes: CharacterAttributesField;
-    details: fields.SchemaField<CharacterDetailsSchema>;
-    experience: CharacterExperienceField;
-    type: fields.StringField<CharacterType, CharacterType, true, false, true>;
+    attributes: SchemaField<CharacterAttributesSchema>;
+    details: SchemaField<CharacterDetailsSchema>;
+    experience: ValueAndTotalField;
+    type: StringField<CharacterType, CharacterType, true, false, true>;
 };
 
-type CharacterDataSource = fields.ModelPropsFromSchema<CharacterDataSchema>;
+type CharacterDataSource = ModelPropsFromSchema<CharacterDataSchema>;
 
-type CharacterSystem = CreatureSystem & Omit<CharacterDataSource, "life">;
+type CharacterSystem = Omit<CharacterDataSource, "attributes" | "life"> & CreatureSystem;
 
 declare class Character<TParent extends TokenDocument | null = TokenDocument | null> extends Creature<TParent> {
-    attributes: CharacterAttributes;
-    experience: CharacterExperience;
     system: CharacterDataModel;
 }
 

@@ -1,4 +1,4 @@
-import { Armor, ArmorDataSchema, ArmorDataSource } from ".";
+import { Armor, ArmorDataSchema, ArmorSystem } from ".";
 import { PhysicalDataModel } from "..";
 
 class ArmorDataModel extends PhysicalDataModel<Armor, ArmorDataSchema> {
@@ -13,6 +13,6 @@ class ArmorDataModel extends PhysicalDataModel<Armor, ArmorDataSchema> {
     }
 }
 
-interface ArmorDataModel extends ArmorDataSource {}
+interface ArmorDataModel extends ArmorSystem {}
 
 export { ArmorDataModel };

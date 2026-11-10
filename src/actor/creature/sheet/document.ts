@@ -1,7 +1,8 @@
 import { HandlebarsTemplatePart } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 import { ActorSheetAFMBE, ActorSheetConfiguration } from "actor";
+import * as R from "remeda";
 import { CreatureSheetPart, CreatureSheetRenderContext, CreatureSheetRenderOptions } from ".";
-import { Creature } from "..";
+import { Creature, CREATURE_ATTRIBUTES } from "..";
 
 abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE {
     static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
@@ -37,7 +38,15 @@ abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE {
     }
 
     prepareAttributesContext(context: CreatureSheetRenderContext): CreatureSheetRenderContext {
-        context.attributes = this.actor.attributes;
+        const attributes = this.actor.system.attributes;
+
+        context.attributes = {
+            primary: R.map(CREATURE_ATTRIBUTES, (key) => {
+                return { key, label: key, value: attributes[key] };
+            }),
+            secondary: [],
+        };
+
         return context;
     }
 }

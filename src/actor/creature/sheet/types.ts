@@ -16,8 +16,8 @@ type CreatureSheetRenderContext = ActorSheetRenderContext & {
 type CreatureSheetConfiguration = ActorSheetConfiguration;
 
 type CreatureSheetAttributesContext = {
-    primary: { key: CreatureAttribute; label: string; value: number };
-    secondary: { key: string; label: string; value: number };
+    primary: { key: CreatureAttribute; label: string; value: number }[];
+    secondary: { key: string; label: string; value: number }[];
 };
 
 type CreatureSheetPartsContext = CreatureSheetAttributesContext;

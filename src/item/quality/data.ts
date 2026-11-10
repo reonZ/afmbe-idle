@@ -1,5 +1,5 @@
 import { ItemDataModel } from "item";
-import { Quality, QualityDataSchema, QualityDataSource } from ".";
+import { Quality, QualityDataSchema, QualitySystem } from ".";
 
 class QualityDataModel extends ItemDataModel<Quality, QualityDataSchema> {
     static defineSchema(): QualityDataSchema {
@@ -13,6 +13,6 @@ class QualityDataModel extends ItemDataModel<Quality, QualityDataSchema> {
     }
 }
 
-interface QualityDataModel extends QualityDataSource {}
+interface QualityDataModel extends QualitySystem {}
 
 export { QualityDataModel };

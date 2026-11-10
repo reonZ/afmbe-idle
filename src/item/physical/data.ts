@@ -1,4 +1,4 @@
-import { ItemAFMBE, ItemDataModel, ItemDataSchema, PhysicalDataSource } from "item";
+import { ItemAFMBE, ItemDataModel, ItemDataSchema, PhysicalSystem } from "item";
 
 class PhysicalDataModel<
     TParent extends ItemAFMBE = ItemAFMBE,
@@ -15,6 +15,6 @@ class PhysicalDataModel<
     }
 }
 
-interface PhysicalDataModel<TParent extends ItemAFMBE, TSchema extends ItemDataSchema> extends PhysicalDataSource {}
+interface PhysicalDataModel<TParent extends ItemAFMBE, TSchema extends ItemDataSchema> extends PhysicalSystem {}
 
 export { PhysicalDataModel };
