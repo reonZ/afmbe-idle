@@ -35,4 +35,6 @@ declare global {
     const CONFIG: SystemConfig;
 
     type Prettify<T> = { [K in keyof T]: T[K] } & {};
+
+    type ValueAndTotal = { total: number; value: number };
 }

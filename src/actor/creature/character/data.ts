@@ -1,10 +1,24 @@
-import { CREATURE_ATTRIBUTES, CreatureDataModel } from "actor";
+import { ActorModules, CREATURE_ATTRIBUTES, CreatureDataModel } from "actor";
 import { BooleanField, PositiveIntegerField, ValueAndTotalField } from "fields";
 import * as R from "remeda";
-import { Character, CHARACTER_TYPES, CharacterDataSchema, CharacterDataSource, CharacterSystem } from ".";
+import {
+    Character,
+    CHARACTER_TYPES,
+    CharacterAttributesModule,
+    CharacterDataSchema,
+    CharacterDataSource,
+    CharacterSystem,
+    CharacterExperienceModule,
+} from ".";
 import fields = foundry.data.fields;
 
 class CharacterDataModel extends CreatureDataModel<Character, CharacterDataSchema> {
+    static modules = {
+        ...super.modules,
+        attributes: CharacterAttributesModule,
+        experience: CharacterExperienceModule,
+    } satisfies ActorModules<Character>;
+
     static defineSchema(): CharacterDataSchema {
         return {
             ...super.defineSchema(),

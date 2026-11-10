@@ -7,6 +7,7 @@ import type {
     CREATURE_ATTRIBUTES,
     CREATURE_SECONDARY_ATTRIBUTES,
     CreatureDataModel,
+    CreatureLife,
     ZombieSource,
 } from ".";
 
@@ -30,6 +31,7 @@ type CreatureSecondaryAttributes = Record<CreatureSecondaryAttribute, { value: n
 declare abstract class Creature<
     TParent extends TokenDocument | null = TokenDocument | null,
 > extends ActorAFMBE<TParent> {
+    life: CreatureLife;
     system: CreatureDataModel;
 }
 

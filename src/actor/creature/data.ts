@@ -1,11 +1,15 @@
-import { ActorDataModel } from "actor";
+import { ActorDataModel, ActorModules } from "actor";
 import { PositiveIntergerValueField } from "fields";
-import { calculateTotalLife, Creature, CreatureDataSchema, CreatureSystem } from ".";
+import { calculateTotalLife, Creature, CreatureDataSchema, CreatureLife, CreatureSystem } from ".";
 
 class CreatureDataModel<
     TParent extends Creature = Creature,
     TSchema extends CreatureDataSchema = CreatureDataSchema,
 > extends ActorDataModel<TParent, TSchema> {
+    static modules = {
+        life: CreatureLife,
+    } satisfies ActorModules<Creature>;
+
     static defineSchema(): CreatureDataSchema {
         return {
             ...super.defineSchema(),
@@ -19,7 +23,6 @@ class CreatureDataModel<
 
     prepareDerivedData(): void {
         super.prepareDerivedData();
-
         this.life.total = calculateTotalLife(this.parent);
     }
 }
