@@ -1,5 +1,5 @@
 import type { ActorSource } from "@7h3laughingman/foundry-types/common/documents/actor.mjs";
-import type { Creature, CreatureDataSchema } from "actor";
+import type { Creature, CreatureDataSchema, CreatureSystem } from "actor";
 import type {
     CHARACTER_TYPES,
     CharacterAttributes,
@@ -27,16 +27,14 @@ type CharacterDataSchema = CreatureDataSchema & {
 
 type CharacterDataSource = fields.ModelPropsFromSchema<CharacterDataSchema>;
 
-type CharacterSystemDetails = fields.ModelPropsFromSchema<CharacterDetailsSchema>;
+type CharacterSystem = CreatureSystem & Omit<CharacterDataSource, "life">;
 
 declare class Character<TParent extends TokenDocument | null = TokenDocument | null> extends Creature<TParent> {
     attributes: CharacterAttributes;
-    details: CharacterSystemDetails;
     experience: CharacterExperience;
     system: CharacterDataModel;
-    type: CharacterType;
 }
 
 type CharacterSource = ActorSource<"character", CharacterDataSource>;
 
-export type { Character, CharacterDataSchema, CharacterDataSource, CharacterSource, CharacterType };
+export type { Character, CharacterDataSchema, CharacterDataSource, CharacterSource, CharacterSystem, CharacterType };

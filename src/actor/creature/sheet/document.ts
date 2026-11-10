@@ -1,14 +1,9 @@
 import { HandlebarsTemplatePart } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 import { ActorSheetAFMBE, ActorSheetConfiguration } from "actor";
-import {
-    CreatureSheetPart,
-    CreatureSheetPartsContext,
-    CreatureSheetRenderContext,
-    CreatureSheetRenderOptions,
-} from ".";
+import { CreatureSheetPart, CreatureSheetRenderContext, CreatureSheetRenderOptions } from ".";
 import { Creature } from "..";
 
-abstract class CreatureSheet<TActor extends Creature> extends ActorSheetAFMBE {
+abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE {
     static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
         classes: ["creature"],
         position: {
@@ -32,13 +27,23 @@ abstract class CreatureSheet<TActor extends Creature> extends ActorSheetAFMBE {
     async _preparePartContext(
         partId: CreatureSheetPart,
         context: CreatureSheetRenderContext,
-    ): Promise<CreatureSheetPartsContext> {
-        return {};
+    ): Promise<CreatureSheetRenderContext> {
+        switch (partId) {
+            case "attributes":
+                return this.prepareAttributesContext(context);
+            default:
+                return context;
+        }
+    }
+
+    prepareAttributesContext(context: CreatureSheetRenderContext): CreatureSheetRenderContext {
+        context.attributes = this.actor.attributes;
+        return context;
     }
 }
 
-interface CreatureSheet<TActor extends Creature> {
-    get actor(): TActor;
+interface CreatureSheet<TParent extends Creature> {
+    get actor(): TParent;
 }
 
 export { CreatureSheet };

@@ -1,5 +1,5 @@
 import { CreatureDataModel } from "actor";
-import { Adversary, AdversaryDataSchema, AdversaryDataSource } from ".";
+import { Adversary, AdversaryDataSchema, AdversarySystem } from ".";
 
 class AdversaryDataModel extends CreatureDataModel<Adversary, AdversaryDataSchema> {
     static defineSchema(): AdversaryDataSchema {
@@ -13,6 +13,6 @@ class AdversaryDataModel extends CreatureDataModel<Adversary, AdversaryDataSchem
     }
 }
 
-interface AdversaryDataModel extends AdversaryDataSource {}
+interface AdversaryDataModel extends AdversarySystem {}
 
 export { AdversaryDataModel };

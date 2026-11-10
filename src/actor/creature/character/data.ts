@@ -1,17 +1,17 @@
 import { DatabaseUpdateCallbackOptions } from "@7h3laughingman/foundry-types/common/abstract/_types.mjs";
 import { CreatureDataModel } from "actor";
+import * as R from "remeda";
 import {
     Character,
     CHARACTER_TYPES,
     CharacterAttributes,
     CharacterAttributesField,
     CharacterDataSchema,
-    CharacterDataSource,
     CharacterExperience,
     CharacterExperienceField,
     CharacterSource,
+    CharacterSystem,
 } from ".";
-import * as R from "remeda";
 import fields = foundry.data.fields;
 
 class CharacterDataModel extends CreatureDataModel<Character, CharacterDataSchema> {
@@ -51,8 +51,8 @@ class CharacterDataModel extends CreatureDataModel<Character, CharacterDataSchem
 
         const parent = this.parent;
 
-        parent.attributes = new CharacterAttributes(this.attributes, parent);
-        parent.experience = new CharacterExperience(this.experience, parent);
+        parent.attributes = new CharacterAttributes(parent);
+        parent.experience = new CharacterExperience(parent);
     }
 
     protected _preCreate(
@@ -61,7 +61,6 @@ class CharacterDataModel extends CreatureDataModel<Character, CharacterDataSchem
         user: User,
     ): Promise<boolean | void> {
         if (this.#updateSourceObject(data)) {
-            console.log("updated");
             this.parent.updateSource(data);
         }
         return super._preCreate(data, options, user);
@@ -97,6 +96,6 @@ class CharacterDataModel extends CreatureDataModel<Character, CharacterDataSchem
     }
 }
 
-interface CharacterDataModel extends CharacterDataSource {}
+interface CharacterDataModel extends CharacterSystem {}
 
 export { CharacterDataModel };

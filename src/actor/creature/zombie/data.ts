@@ -1,5 +1,5 @@
 import { CreatureDataModel } from "actor";
-import { Zombie, ZombieDataSchema, ZombieDataSource } from ".";
+import { Zombie, ZombieDataSchema, ZombieSystem } from ".";
 
 class ZombieDataModel extends CreatureDataModel<Zombie, ZombieDataSchema> {
     static defineSchema(): ZombieDataSchema {
@@ -13,6 +13,6 @@ class ZombieDataModel extends CreatureDataModel<Zombie, ZombieDataSchema> {
     }
 }
 
-interface ZombieDataModel extends ZombieDataSource {}
+interface ZombieDataModel extends ZombieSystem {}
 
 export { ZombieDataModel };

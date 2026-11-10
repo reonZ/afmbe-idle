@@ -33,4 +33,6 @@ declare global {
     }
     // @ts-ignore
     const CONFIG: SystemConfig;
+
+    type Prettify<T> = { [K in keyof T]: T[K] } & {};
 }

@@ -1,8 +1,16 @@
-import { ActorModule } from "actor";
-import { Character, CharacterDataSource, CharacterExperienceSource } from "..";
+import { Character } from "actor";
+import { CharacterExperienceSource } from "..";
 
-class CharacterExperience extends ActorModule<CharacterExperienceSource, Character> {
-    static key: keyof CharacterDataSource = "experience";
+class CharacterExperience {
+    #parent: Character;
+
+    constructor(parent: Character) {
+        this.#parent = parent;
+    }
+
+    get actor(): Character {
+        return this.#parent;
+    }
 
     /** how many points of experience have been spent */
     get spent(): number {
