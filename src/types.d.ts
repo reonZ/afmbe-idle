@@ -27,14 +27,36 @@ type ConfiguredConfig = Config<
     foundry.canvas.groups.EffectsCanvasGroup
 >;
 
+type ExtandedGame = foundry.Game<
+    ActorAFMBE<null>,
+    foundry.documents.collections.Actors<ActorAFMBE<null>>,
+    foundry.documents.ChatMessage,
+    foundry.documents.Combat,
+    ItemAFMBE<null>,
+    foundry.documents.Macro,
+    foundry.documents.Scene,
+    foundry.documents.User
+> & {
+    afmbe: {
+        settings: {
+            metric: boolean;
+        };
+    };
+};
+
 declare global {
     interface SystemConfig extends ConfiguredConfig {
         AFMBE: typeof config;
     }
-    // @ts-ignore
-    const CONFIG: SystemConfig;
 
     type Prettify<T> = { [K in keyof T]: T[K] } & {};
 
     type ValueAndTotal = { total: number; value: number };
+
+    namespace globalThis {
+        // @ts-ignore
+        const CONFIG: SystemConfig;
+        // @ts-ignore
+        const game: ExtandedGame;
+    }
 }

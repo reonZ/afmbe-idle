@@ -1,31 +1,41 @@
+{{#with attributes}}
 <div class="attributes">
+    <div class="header">
+        {{localize 'afmbe.actor.attributes.primary'}}
+    </div>
     <div class="primary">
-        {{#each attributes.primary as |attribute|}}
-        <div class="attribute" data-attribute-key="{{attribute.key}}">
+        {{#each primary as |attribute|}}
+        <div class="name">
             {{attribute.label}}
-            <input type="number" value="{{attribute.value}}" disabled />
         </div>
+        <input type="number" class="value" value="{{attribute.value}}" disabled />
         {{/each}}
     </div>
+    <div class="header">
+        {{localize 'afmbe.actor.attributes.secondary'}}
+    </div>
     <div class="secondary">
-        {{#each attributes.secondary as |attribute|}}
-        <div class="attribute" data-attribute-key="{{attribute.key}}">
+        {{#each secondary as |attribute|}}
+        <div class="name">
             {{attribute.label}}
-            <input
-                type="number"
-                name="system.{{attribute.key}}.value"
-                value="{{attribute.value}}"
-                min="0"
-                max="{{attribute.max}}"
-            />
-            {{#unless (eq attribute.max Infinity)}}
-            / <input type="number" value="{{attribute.max}}" disabled />
-            {{/unless}}
         </div>
+        <input
+            type="number"
+            name="system.{{attribute.key}}.value"
+            class="value"
+            value="{{attribute.value}}"
+            min="0"
+            max="{{attribute.max}}"
+        />
+        {{#unless (eq attribute.max null)}}
+        <div class="separator"></div>
+        <input type="number" class="max" value="{{attribute.max}}" disabled />
+        {{/unless}}
         {{/each}}
-        <div class="attribute" data-attribute-key="speed">
-            {{localize 'afmbe.actor.speed.label'}}
-            <input type="number" value="{{attributes.speed.value}}" disabled />
+        <div class="speed">
+            <div>{{speed.label}}:</div>
+            <div>{{speed.stringified}}</div>
         </div>
     </div>
 </div>
+{{/with}}

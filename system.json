@@ -37,10 +37,27 @@
     },
     "documentTypes": {
         "Actor": {
+            "adversary": {
+                "htmlFields": []
+            },
             "character": {
                 "htmlFields": ["details.description", "details.personality", "details.quote"]
             },
             "zombie": {
+                "htmlFields": []
+            }
+        },
+        "Item": {
+            "armor": {
+                "htmlFields": []
+            },
+            "quality": {
+                "htmlFields": []
+            },
+            "skill": {
+                "htmlFields": []
+            },
+            "weapon": {
                 "htmlFields": []
             }
         }

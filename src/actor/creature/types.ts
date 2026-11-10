@@ -10,6 +10,7 @@ import type {
     CreatureEndurance,
     CreatureEssence,
     CreatureLife,
+    CreatureSpeed,
     ZombieSource,
 } from ".";
 
@@ -41,6 +42,7 @@ declare abstract class Creature<
     endurance: CreatureEndurance;
     essence: CreatureEssence;
     life: CreatureLife;
+    speed: CreatureSpeed;
     system: CreatureDataModel;
 }
 

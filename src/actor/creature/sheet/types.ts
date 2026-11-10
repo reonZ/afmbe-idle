@@ -4,6 +4,7 @@ import type {
     ActorSheetRenderOptions,
     CreatureAttribute,
     CreatureSecondaryAttribute,
+    CreatureSpeed,
 } from "actor";
 
 type CreatureSheetPart = "attributes";
@@ -26,12 +27,9 @@ type CreatureAttributesContext = {
         key: CreatureSecondaryAttribute;
         label: string;
         value: number;
-        max: number;
+        max: number | null;
     }[];
-    speed: {
-        value: number;
-        half: number;
-    };
+    speed: CreatureSpeed;
 };
 
 export type {

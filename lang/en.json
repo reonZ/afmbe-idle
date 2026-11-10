@@ -1,25 +1,56 @@
 {
+    "TYPES": {
+        "Actor": {
+            "adversary": "Adversary",
+            "character": "Cast Member",
+            "zombie": "Zombie"
+        },
+        "Item": {
+            "armor": "Armor",
+            "quality": "Quality/Drawback",
+            "skill": "Skill",
+            "weapon": "Weapon"
+        }
+    },
     "afmbe": {
         "actor": {
             "attributes": {
-                "constitution": "Constitution",
-                "dexterity": "Dexterity",
-                "intelligence": "Intelligence",
-                "perception": "Perception",
-                "strength": "Strength",
-                "willpower": "Willpower"
+                "constitution": {
+                    "label": "Constitution"
+                },
+                "dexterity": {
+                    "label": "Dexterity"
+                },
+                "intelligence": {
+                    "label": "Intelligence"
+                },
+                "perception": {
+                    "label": "Perception"
+                },
+                "strength": {
+                    "label": "Strength"
+                },
+                "willpower": {
+                    "label": "Willpower"
+                },
+                "primary": "Primary Attributes",
+                "secondary": "Secondary Attributes"
             },
             "endurance": {
-                "label": "Endurance Points"
+                "label": "Endurance"
             },
             "essence": {
-                "label": "Essence Pools"
+                "label": "Essence"
             },
             "life": {
-                "label": "Life Points"
+                "label": "Life"
             },
             "speed": {
-                "label": "Speed"
+                "label": "Speed",
+                "kph": "km/h",
+                "mps": "m/s",
+                "mph": "mph",
+                "yps": "yd/s"
             },
             "zombie": {
                 "life": {

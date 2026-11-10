@@ -1,7 +1,8 @@
 import { ActorAFMBE, AdversaryDataModel, CharacterDataModel, CharacterSheet, ZombieDataModel } from "actor";
+import handlebarsHelpers from "handlebars-helpers";
 import { ArmorDataModel, ItemAFMBE, QualityDataModel, SkillDataModel, WeaponDataModel } from "item";
-import handlebarsHelpers from "./handlebars-helpers";
-import config from "./system-config";
+import { registerSettings } from "settings";
+import config from "system-config";
 
 Hooks.once("init", () => {
     CONFIG.AFMBE = config;
@@ -22,5 +23,10 @@ Hooks.once("init", () => {
     CONFIG.Item.dataModels.skill = SkillDataModel;
     CONFIG.Item.dataModels.weapon = WeaponDataModel;
 
+    game.afmbe = {
+        settings: {} as typeof game.afmbe.settings,
+    };
+
     Handlebars.registerHelper(handlebarsHelpers);
+    registerSettings();
 });

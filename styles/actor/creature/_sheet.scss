@@ -1,0 +1,11 @@
+@use "attributes";
+
+.application.sheet.afmbe.actor.creature .window-content {
+    padding: 0.5rem;
+
+    .attributes {
+        width: fit-content;
+
+        @include attributes.style;
+    }
+}

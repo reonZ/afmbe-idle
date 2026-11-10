@@ -40,22 +40,18 @@ abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE {
 
     #prepareAttributesContext(context: CreatureSheetRenderContext): CreatureSheetRenderContext {
         const actor = this.actor;
-        const speed = actor.system.speed.value;
 
         context.attributes = {
             primary: R.map(CREATURE_ATTRIBUTES, (key) => {
-                const label = localize("actor.attributes", key);
+                const label = localize("actor.attributes", key, "label");
                 const value = actor.system.attributes[key];
                 return { key, label, value };
             }),
             secondary: R.map(CREATURE_SECONDARY_ATTRIBUTES, (key) => {
                 const { current, label, max } = actor[key];
-                return { key, label, max, value: current };
+                return { key, label, max: max === Infinity ? null : max, value: current };
             }),
-            speed: {
-                half: speed / 2,
-                value: speed,
-            },
+            speed: actor.speed,
         };
 
         return context;

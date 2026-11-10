@@ -1,8 +1,15 @@
 import { ActorDataModel, ActorModules } from "actor";
 import { PositiveIntergerValueField } from "fields";
-import { Creature, CreatureDataSchema, CreatureEndurance, CreatureLife, CreatureSystem } from ".";
 import * as R from "remeda";
-import { CreatureEssence } from ".";
+import {
+    Creature,
+    CreatureDataSchema,
+    CreatureEndurance,
+    CreatureEssence,
+    CreatureLife,
+    CreatureSpeed,
+    CreatureSystem,
+} from ".";
 
 class CreatureDataModel<
     TParent extends Creature = Creature,
@@ -12,6 +19,7 @@ class CreatureDataModel<
         endurance: CreatureEndurance,
         essence: CreatureEssence,
         life: CreatureLife,
+        speed: CreatureSpeed,
     } satisfies ActorModules<Creature>;
 
     static defineSchema(): CreatureDataSchema {
