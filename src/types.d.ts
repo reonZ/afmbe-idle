@@ -1,7 +1,7 @@
 import Config from "@7h3laughingman/foundry-types/client/config.mjs";
 import type { ActorAFMBE } from "actor";
 import type { ItemAFMBE } from "item";
-import config from "./config";
+import config from "./system-config";
 
 type ConfiguredConfig = Config<
     foundry.documents.AmbientLightDocument<foundry.documents.Scene | null>,

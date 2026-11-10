@@ -1,29 +1,16 @@
-import type {
-    ActorSheetConfiguration,
-    ActorSheetRenderContext,
-    ActorSheetRenderOptions,
-    CreatureAttribute,
-} from "actor";
+import type { ActorSheetConfiguration, ActorSheetRenderContext, ActorSheetRenderOptions } from "actor";
 
 type CreatureSheetPart = "attributes";
 
 type CreatureSheetRenderOptions = ActorSheetRenderOptions;
 
-type CreatureSheetRenderContext = ActorSheetRenderContext & {
-    attributes?: CreatureSheetAttributesContext;
-};
+type CreatureSheetRenderContext = ActorSheetRenderContext;
 
 type CreatureSheetConfiguration = ActorSheetConfiguration;
 
-type CreatureSheetAttributesContext = {
-    primary: { key: CreatureAttribute; label: string; value: number }[];
-    secondary: { key: string; label: string; value: number }[];
-};
-
-type CreatureSheetPartsContext = CreatureSheetAttributesContext;
+type CreatureSheetPartsContext = CreatureSheetRenderContext;
 
 export type {
-    CreatureSheetAttributesContext,
     CreatureSheetConfiguration,
     CreatureSheetPart,
     CreatureSheetPartsContext,

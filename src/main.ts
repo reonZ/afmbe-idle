@@ -1,6 +1,7 @@
 import { ActorAFMBE, AdversaryDataModel, CharacterDataModel, CharacterSheet, ZombieDataModel } from "actor";
 import { ArmorDataModel, ItemAFMBE, QualityDataModel, SkillDataModel, WeaponDataModel } from "item";
-import config from "./config";
+import handlebarsHelpers from "./handlebars-helpers";
+import config from "./system-config";
 
 Hooks.once("init", () => {
     CONFIG.AFMBE = config;
@@ -20,4 +21,6 @@ Hooks.once("init", () => {
     CONFIG.Item.dataModels.quality = QualityDataModel;
     CONFIG.Item.dataModels.skill = SkillDataModel;
     CONFIG.Item.dataModels.weapon = WeaponDataModel;
+
+    Handlebars.registerHelper(handlebarsHelpers);
 });

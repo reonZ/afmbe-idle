@@ -1,3 +1,31 @@
 {
-    "afmbe-idle": {}
+    "afmbe": {
+        "actor": {
+            "attributes": {
+                "constitution": "Constitution",
+                "dexterity": "Dexterity",
+                "intelligence": "Intelligence",
+                "perception": "Perception",
+                "strength": "Strength",
+                "willpower": "Willpower"
+            },
+            "endurance": {
+                "label": "Endurance Points"
+            },
+            "essence": {
+                "label": "Essence Pools"
+            },
+            "life": {
+                "label": "Life Points"
+            },
+            "speed": {
+                "label": "Speed"
+            },
+            "zombie": {
+                "life": {
+                    "label": "Dead Points"
+                }
+            }
+        }
+    }
 }

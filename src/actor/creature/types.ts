@@ -7,6 +7,8 @@ import type {
     CREATURE_ATTRIBUTES,
     CREATURE_SECONDARY_ATTRIBUTES,
     CreatureDataModel,
+    CreatureEndurance,
+    CreatureEssence,
     CreatureLife,
     ZombieSource,
 } from ".";
@@ -15,6 +17,8 @@ type CreatureAttribute = (typeof CREATURE_ATTRIBUTES)[number];
 type CreatureSecondaryAttribute = (typeof CREATURE_SECONDARY_ATTRIBUTES)[number];
 
 type CreatureDataSchema = ActorDataSchema & {
+    endurance: PositiveIntergerValueField;
+    essence: PositiveIntergerValueField;
     life: PositiveIntergerValueField;
 };
 
@@ -22,7 +26,10 @@ type CreatureDataSource = ModelPropsFromSchema<CreatureDataSchema>;
 
 type CreatureSystem = {
     attributes: CreatureAttributes;
-    life: { value: number; total: number };
+    endurance: ValueAndTotal;
+    essence: ValueAndTotal;
+    life: ValueAndTotal;
+    speed: { value: number };
 };
 
 type CreatureAttributes = Record<CreatureAttribute, number>;
@@ -31,6 +38,8 @@ type CreatureSecondaryAttributes = Record<CreatureSecondaryAttribute, { value: n
 declare abstract class Creature<
     TParent extends TokenDocument | null = TokenDocument | null,
 > extends ActorAFMBE<TParent> {
+    endurance: CreatureEndurance;
+    essence: CreatureEssence;
     life: CreatureLife;
     system: CreatureDataModel;
 }
