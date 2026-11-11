@@ -8,20 +8,20 @@ import * as R from "remeda";
 import { localize } from "utils";
 import {
     RollTaskApplicationConfiguration,
-    RollTaskCategories,
-    RollTaskCategoryKey,
+    RollTaskSelects,
+    RollTaskSelectKey,
     RollTaskData,
     RollTaskRenderContext,
     RollTaskSelected,
-    RollTaskTruncatedCategories,
+    RollTaskTruncatedSelects,
 } from ".";
 import { Creature, CREATURE_ATTRIBUTES, CreatureAttributesModule } from "..";
 
 class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     #actor: Creature;
-    #disable: RollTaskCategoryKey[];
+    #disable: RollTaskSelectKey[];
     #event: PointerEvent | undefined;
-    #hide: RollTaskCategoryKey[];
+    #hide: RollTaskSelectKey[];
     #selected: RollTaskSelected;
 
     constructor(
@@ -61,7 +61,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     }
 
     async _prepareContext(): Promise<RollTaskRenderContext> {
-        const categories: RollTaskTruncatedCategories = [
+        const selects: RollTaskTruncatedSelects = [
             {
                 key: "difficulty",
                 label: localize("actor.creature.task.difficulty.title"),
@@ -93,7 +93,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         ];
 
         return {
-            categories: R.map(categories, ({ blank, key, label, options }) => {
+            selects: R.map(selects, ({ blank, key, label, options }) => {
                 return {
                     blank: blank ? "" : undefined,
                     disable: options.length === 0 || this.#disable.includes(key),
@@ -103,7 +103,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                     options,
                     selected: this.#selected[key],
                 };
-            }) as RollTaskCategories,
+            }) as RollTaskSelects,
             private: !!this.#event?.ctrlKey,
         };
     }
@@ -133,7 +133,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     #activateListeners(html: HTMLElement) {
         for (const el of html.querySelectorAll("select")) {
             el.addEventListener("change", () => {
-                const category = el.name as RollTaskCategoryKey;
+                const category = el.name as RollTaskSelectKey;
                 this.#selected[category] = el.value as any;
             });
         }

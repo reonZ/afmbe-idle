@@ -5,27 +5,25 @@ import type {
 import type { Creature, CreatureAttribute } from "..";
 
 type RollTaskRenderContext = ApplicationRenderContext & {
-    categories: RollTaskCategories;
+    selects: RollTaskSelects;
     private: boolean;
 };
 
-type RollTaskCategories = [
+type RollTaskSelects = [
     RollTaskSelect<"difficulty", "simple" | "difficult">,
     RollTaskSelect<"attribute", CreatureAttribute>,
     RollTaskSelect<"skill", string>,
 ];
 
-type TruncatedCategories<T extends unknown[]> = T extends []
+type TruncatedSelects<T extends unknown[]> = T extends []
     ? []
     : T extends [infer H, ...infer R]
-      ? H extends RollTaskCategory
-          ? [Pick<H, "key" | "label" | "options"> & { blank?: boolean }, ...TruncatedCategories<R>]
-          : [H, ...TruncatedCategories<R>]
+      ? H extends RollTaskSelects[number]
+          ? [Pick<H, "key" | "label" | "options"> & { blank?: boolean }, ...TruncatedSelects<R>]
+          : [H, ...TruncatedSelects<R>]
       : T;
 
-type RollTaskTruncatedCategories = Prettify<TruncatedCategories<RollTaskCategories>>;
-
-type RollTaskCategory = RollTaskCategories[number];
+type RollTaskTruncatedSelects = Prettify<TruncatedSelects<RollTaskSelects>>;
 
 type RollTaskSelect<K extends string, V extends string> = {
     blank: string;
@@ -38,8 +36,8 @@ type RollTaskSelect<K extends string, V extends string> = {
 };
 
 type RollTaskData = {
-    disable?: RollTaskCategoryKey[];
-    hide?: RollTaskCategoryKey[];
+    disable?: RollTaskSelectKey[];
+    hide?: RollTaskSelectKey[];
     select?: RollTaskSelected;
     title?: string;
 };
@@ -50,20 +48,19 @@ type RollTaskApplicationConfiguration = ApplicationConfiguration & {
     event?: PointerEvent;
 };
 
-type RollTaskCategoryKey = RollTaskCategory["key"];
+type RollTaskSelectKey = RollTaskSelects[number]["key"];
 
 type RollTaskSelected = {
-    [k in RollTaskCategoryKey]?: Extract<RollTaskCategory, { key: k }>["options"][number]["value"];
+    [k in RollTaskSelectKey]?: Extract<RollTaskSelects[number], { key: k }>["options"][number]["value"];
 };
 
 export type {
     RollTaskApplicationConfiguration,
-    RollTaskCategories,
-    RollTaskCategory,
-    RollTaskCategoryKey,
+    RollTaskSelects,
+    RollTaskSelectKey,
     RollTaskData,
     RollTaskRenderContext,
     RollTaskSelect,
     RollTaskSelected,
-    RollTaskTruncatedCategories,
+    RollTaskTruncatedSelects,
 };
