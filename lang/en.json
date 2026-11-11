@@ -55,6 +55,11 @@
                 },
                 "task": {
                     "attribute": "Attribute",
+                    "difficulty": {
+                        "difficult": "Difficult",
+                        "simple": "Simple",
+                        "title": "Difficulty"
+                    },
                     "roll": "Roll {type} Task",
                     "title": "Roll Task - {name}"
                 },

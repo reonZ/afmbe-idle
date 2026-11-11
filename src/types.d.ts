@@ -53,6 +53,8 @@ declare global {
 
     type ValueAndTotal = { total: number; value: number };
 
+    type TupleOf<T> = [T, ...T[]];
+
     namespace globalThis {
         // @ts-ignore
         const CONFIG: SystemConfig;

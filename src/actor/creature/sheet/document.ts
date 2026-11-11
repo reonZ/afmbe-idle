@@ -8,7 +8,9 @@ import {
     CREATURE_SECONDARY_ATTRIBUTES,
     CreatureAttributesModule,
     RollTaskApplication,
+    RollTaskData,
 } from "..";
+import { splitString } from "utils";
 
 abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
@@ -66,7 +68,12 @@ abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE<T
 
     static #rollTask(this: CreatureSheet<Creature>, event: PointerEvent, target: HTMLElement) {
         const data = target.dataset as RollTaskTargetData;
-        RollTaskApplication.roll(this.actor, data, event);
+        const taskData: RollTaskData = {
+            disable: splitString(data.disable ?? ""),
+            hide: splitString(data.hide ?? ""),
+            select: R.omit(data, ["disable", "hide"]),
+        };
+        RollTaskApplication.roll(this.actor, taskData, event);
     }
 }
 

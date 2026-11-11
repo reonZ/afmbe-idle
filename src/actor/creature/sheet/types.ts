@@ -5,6 +5,7 @@ import type {
     CreatureAttribute,
     CreatureSecondaryAttribute,
     CreatureSpeed,
+    RollTaskSelected,
 } from "actor";
 
 type CreatureSheetPart = "attributes";
@@ -32,9 +33,9 @@ type CreatureAttributesContext = {
     speed: CreatureSpeed;
 };
 
-type RollTaskTargetData = {
-    attribute?: CreatureAttribute;
-    hideAttributes?: `${boolean}`;
+type RollTaskTargetData = RollTaskSelected & {
+    disable?: string;
+    hide?: string;
 };
 
 export type {

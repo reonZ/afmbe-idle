@@ -1,7 +1,7 @@
 {{#each categories as |category|}}
 <div class="category{{ifThen category.hide " hidden" ""}}">
     <div class="name">{{category.label}}</div>
-    <select name="{{category.key}}">
+    <select name="{{category.key}}" {{disabled category.disable}}>
         {{selectOptions category.options selected=category.selected}}
     </select>
 </div>
