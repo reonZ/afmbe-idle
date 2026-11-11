@@ -61,7 +61,8 @@
                         "title": "Difficulty"
                     },
                     "roll": "Roll {type} Task",
-                    "title": "Roll Task - {name}"
+                    "skill": "Skill",
+                    "title": "Roll Task"
                 },
                 "zombie": {
                     "life": {

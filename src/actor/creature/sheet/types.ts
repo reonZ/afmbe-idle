@@ -36,6 +36,7 @@ type CreatureAttributesContext = {
 type RollTaskTargetData = RollTaskSelected & {
     disable?: string;
     hide?: string;
+    tooltip: string;
 };
 
 export type {

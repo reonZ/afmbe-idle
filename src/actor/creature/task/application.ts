@@ -5,8 +5,9 @@ import {
     ApplicationRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
 import * as R from "remeda";
-import { localize, LocalizeArgs } from "utils";
+import { localize } from "utils";
 import {
+    RollTaskApplicationConfiguration,
     RollTaskCategories,
     RollTaskCategoryKey,
     RollTaskData,
@@ -24,12 +25,13 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     #selected: RollTaskSelected;
 
     constructor(
-        actor: Creature,
-        data: RollTaskData,
-        event?: PointerEvent,
-        options?: DeepPartial<ApplicationConfiguration>,
+        options: DeepPartial<ApplicationConfiguration> &
+            Omit<RollTaskApplicationConfiguration, keyof ApplicationConfiguration>,
     ) {
+        const { actor, data, event } = options;
+
         super(options);
+
         this.#actor = actor;
         this.#disable = R.isArray(data.disable) ? data.disable.slice() : [];
         this.#event = event;
@@ -38,7 +40,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     }
 
     static roll(actor: Creature, data: RollTaskData, event?: PointerEvent): RollTaskApplication {
-        const app = new this(actor, data, event);
+        const app = new this({ actor, data, event });
         app.render(true);
         return app;
     }
@@ -47,43 +49,58 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         return this.#actor;
     }
 
-    get title(): string {
-        return this.localize("title", this.actor);
-    }
-
-    localize(...args: LocalizeArgs) {
-        return localize("actor.creature.task", ...args);
+    protected _initializeApplicationOptions(
+        options: RollTaskApplicationConfiguration,
+    ): RollTaskApplicationConfiguration {
+        const { actor, data } = options;
+        options = super._initializeApplicationOptions(options) as RollTaskApplicationConfiguration;
+        options.id = "{id}";
+        options.uniqueId = `RollTask-${actor.uuid.replaceAll(".", "-")}`;
+        options.window.title = `${data.title ?? localize("actor.creature.task.title")} - ${actor.name}`;
+        return options;
     }
 
     async _prepareContext(): Promise<RollTaskRenderContext> {
         const categories: RollTaskTruncatedCategories = [
             {
                 key: "difficulty",
-                label: this.localize("difficulty.title"),
-                options: ["difficult", "simple"],
-                optionsLocalizer: "difficulty",
+                label: localize("actor.creature.task.difficulty.title"),
+                options: R.map(["difficult", "simple"] as const, (value) => {
+                    return { value, label: localize("actor.creature.task.difficulty", value) };
+                }),
             },
             {
                 key: "attribute",
-                label: this.localize("attribute"),
-                options: CREATURE_ATTRIBUTES,
-                optionsLocalizer: CreatureAttributesModule.getLabel,
+                label: localize("actor.creature.task.attribute"),
+                options: R.map(CREATURE_ATTRIBUTES, (value) => {
+                    return { value, label: CreatureAttributesModule.getLabel(value) };
+                }),
+            },
+            {
+                blank: true,
+                key: "skill",
+                label: localize("actor.creature.task.skill"),
+                options: R.flatMap(this.actor.itemTypes.skill, (item) => {
+                    return [
+                        { value: item.id, label: `${item.name} (${item.bonus})` },
+                        ...item.specialties.map((specialty) => {
+                            const label = `${specialty.label} (${specialty.bonus})`;
+                            return { value: specialty.uuid, label };
+                        }),
+                    ];
+                }),
             },
         ];
 
         return {
-            categories: R.map(categories, ({ key, label, options, optionsLocalizer }) => {
+            categories: R.map(categories, ({ blank, key, label, options }) => {
                 return {
-                    disable: this.#disable.includes(key),
+                    blank: blank ? "" : undefined,
+                    disable: options.length === 0 || this.#disable.includes(key),
                     hide: this.#hide.includes(key),
                     key,
                     label,
-                    options: R.map(options, (value) => {
-                        const label = R.isString(optionsLocalizer)
-                            ? this.localize(optionsLocalizer, value)
-                            : optionsLocalizer(value as never);
-                        return { value, label };
-                    }),
+                    options,
                     selected: this.#selected[key],
                 };
             }) as RollTaskCategories,

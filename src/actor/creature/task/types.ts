@@ -1,5 +1,8 @@
-import type { ApplicationRenderContext } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
-import type { CreatureAttribute } from "..";
+import type {
+    ApplicationConfiguration,
+    ApplicationRenderContext,
+} from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
+import type { Creature, CreatureAttribute } from "..";
 
 type RollTaskRenderContext = ApplicationRenderContext & {
     categories: RollTaskCategories;
@@ -9,19 +12,14 @@ type RollTaskRenderContext = ApplicationRenderContext & {
 type RollTaskCategories = [
     RollTaskSelect<"difficulty", "simple" | "difficult">,
     RollTaskSelect<"attribute", CreatureAttribute>,
+    RollTaskSelect<"skill", string>,
 ];
 
 type TruncatedCategories<T extends unknown[]> = T extends []
     ? []
     : T extends [infer H, ...infer R]
       ? H extends RollTaskCategory
-          ? [
-                Pick<H, "key" | "label"> & {
-                    options: ReadonlyArray<H["options"][number]["value"]>;
-                    optionsLocalizer: string | ((value: H["options"][number]["value"]) => string);
-                },
-                ...TruncatedCategories<R>,
-            ]
+          ? [Pick<H, "key" | "label" | "options"> & { blank?: boolean }, ...TruncatedCategories<R>]
           : [H, ...TruncatedCategories<R>]
       : T;
 
@@ -30,11 +28,12 @@ type RollTaskTruncatedCategories = Prettify<TruncatedCategories<RollTaskCategori
 type RollTaskCategory = RollTaskCategories[number];
 
 type RollTaskSelect<K extends string, V extends string> = {
+    blank: string;
     disable: boolean;
     hide: boolean;
     key: K;
     label: string;
-    options: TupleOf<{ value: V; label: string }>;
+    options: { value: V; label: string }[];
     selected: V | undefined;
 };
 
@@ -42,6 +41,13 @@ type RollTaskData = {
     disable?: RollTaskCategoryKey[];
     hide?: RollTaskCategoryKey[];
     select?: RollTaskSelected;
+    title?: string;
+};
+
+type RollTaskApplicationConfiguration = ApplicationConfiguration & {
+    actor: Creature;
+    data: RollTaskData;
+    event?: PointerEvent;
 };
 
 type RollTaskCategoryKey = RollTaskCategory["key"];
@@ -51,12 +57,13 @@ type RollTaskSelected = {
 };
 
 export type {
-    RollTaskTruncatedCategories,
+    RollTaskApplicationConfiguration,
     RollTaskCategories,
     RollTaskCategory,
+    RollTaskCategoryKey,
     RollTaskData,
     RollTaskRenderContext,
     RollTaskSelect,
     RollTaskSelected,
-    RollTaskCategoryKey,
+    RollTaskTruncatedCategories,
 };

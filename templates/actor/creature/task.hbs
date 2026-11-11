@@ -2,7 +2,7 @@
 <div class="category{{ifThen category.hide " hidden" ""}}">
     <div class="name">{{category.label}}</div>
     <select name="{{category.key}}" {{disabled category.disable}}>
-        {{selectOptions category.options selected=category.selected}}
+        {{selectOptions category.options blank=category.blank selected=category.selected}}
     </select>
 </div>
 {{/each}}

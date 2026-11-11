@@ -9,4 +9,8 @@ function splitString<T>(str: string): T[] {
     ) as T[];
 }
 
-export { splitString };
+function signedNumber(num: number): string {
+    return num >= 0 ? `+${num}` : String(num);
+}
+
+export { signedNumber, splitString };

@@ -1,6 +1,6 @@
 import { ACTOR_CREATURE_TYPES } from "actor";
 import * as R from "remeda";
-import { ActorDataModel, ActorDataSchema, ActorInstances, ActorType } from ".";
+import { ActorDataModel, ActorDataSchema, ActorInstances, ActorItemTypes, ActorType } from ".";
 
 class ActorAFMBE<TParent extends TokenDocument | null = TokenDocument | null> extends Actor<TParent> {
     isOfType<T extends ActorType | "creature">(type: T): this is ActorInstances[T] {
@@ -9,6 +9,7 @@ class ActorAFMBE<TParent extends TokenDocument | null = TokenDocument | null> ex
 }
 
 interface ActorAFMBE {
+    get itemTypes(): ActorItemTypes;
     system: ActorDataModel<ActorAFMBE, ActorDataSchema>;
 }
 
