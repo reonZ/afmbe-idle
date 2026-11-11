@@ -1,17 +1,24 @@
 import { HandlebarsTemplatePart } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 import { ActorSheetAFMBE, ActorSheetConfiguration } from "actor";
 import * as R from "remeda";
-import { localize } from "utils";
-import { CreatureSheetPart, CreatureSheetRenderContext, CreatureSheetRenderOptions } from ".";
-import { Creature, CREATURE_ATTRIBUTES, CREATURE_SECONDARY_ATTRIBUTES } from "..";
+import { CreatureSheetPart, CreatureSheetRenderContext, CreatureSheetRenderOptions, RollTaskTargetData } from ".";
+import {
+    Creature,
+    CREATURE_ATTRIBUTES,
+    CREATURE_SECONDARY_ATTRIBUTES,
+    CreatureAttributesModule,
+    RollTaskApplication,
+} from "..";
 
-abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE {
+abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
         classes: ["creature"],
         position: {
             width: 480,
         },
-        actions: {},
+        actions: {
+            "roll-task": this.#rollTask,
+        },
     };
 
     static PARTS: Record<string, HandlebarsTemplatePart> = {
@@ -43,8 +50,8 @@ abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE {
 
         context.attributes = {
             primary: R.map(CREATURE_ATTRIBUTES, (key) => {
-                const label = localize("actor.attributes", key, "label");
-                const value = actor.system.attributes[key];
+                const label = CreatureAttributesModule.getLabel(key);
+                const value = actor.attributes[key];
                 return { key, label, value };
             }),
             secondary: R.map(CREATURE_SECONDARY_ATTRIBUTES, (key) => {
@@ -56,10 +63,11 @@ abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE {
 
         return context;
     }
-}
 
-interface CreatureSheet<TParent extends Creature> {
-    get actor(): TParent;
+    static #rollTask(this: CreatureSheet<Creature>, event: PointerEvent, target: HTMLElement) {
+        const data = target.dataset as RollTaskTargetData;
+        RollTaskApplication.roll(this.actor, data, event);
+    }
 }
 
 export { CreatureSheet };

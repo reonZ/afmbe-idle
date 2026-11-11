@@ -1,30 +1,12 @@
-import { ActorModule, Character, CharacterAttributeSource, CharacterAttributesSource, CreatureAttribute } from "actor";
+import {
+    Character,
+    CharacterAttributeSource,
+    CharacterAttributesSource,
+    CreatureAttribute,
+    CreatureAttributesModule,
+} from "actor";
 
-class CharacterAttributesModule extends ActorModule<Character> {
-    get strength(): number {
-        return this.actor.system.attributes.strength;
-    }
-
-    get dexterity(): number {
-        return this.actor.system.attributes.dexterity;
-    }
-
-    get constitution(): number {
-        return this.actor.system.attributes.constitution;
-    }
-
-    get intelligence(): number {
-        return this.actor.system.attributes.intelligence;
-    }
-
-    get perception(): number {
-        return this.actor.system.attributes.perception;
-    }
-
-    get willpower(): number {
-        return this.actor.system.attributes.willpower;
-    }
-
+class CharacterAttributesModule extends CreatureAttributesModule<Character> {
     updateAttribute(key: CreatureAttribute, changes: DeepPartial<CharacterAttributeSource>) {
         return this.update({ [key]: changes });
     }

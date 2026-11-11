@@ -1,7 +1,7 @@
 {{#with attributes}}
-<div class="attributes">
+<div class="attributes" data-tooltip-direction="UP">
     <div class="header">
-        {{localize 'afmbe.actor.attributes.primary'}}
+        {{localize 'afmbe.actor.creature.attributes.primary'}}
     </div>
     <div class="primary">
         {{#each primary as |attribute|}}
@@ -9,10 +9,18 @@
             {{attribute.label}}
         </div>
         <input type="number" class="value" value="{{attribute.value}}" disabled />
+        <a
+            data-action="roll-task"
+            data-attribute="{{attribute.key}}"
+            data-hide-attributes="true"
+            data-tooltip="{{localize 'afmbe.actor.creature.task.roll' type=attribute.label}}"
+        >
+            <i class="fa-solid fa-dice-d10"></i>
+        </a>
         {{/each}}
     </div>
     <div class="header">
-        {{localize 'afmbe.actor.attributes.secondary'}}
+        {{localize 'afmbe.actor.creature.attributes.secondary'}}
     </div>
     <div class="secondary">
         {{#each secondary as |attribute|}}

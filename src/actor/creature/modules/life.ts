@@ -1,5 +1,6 @@
 import { ActorModule } from "actor";
 import { Creature } from "..";
+import { localize } from "utils";
 
 class CreatureLife<TParent extends Creature = Creature> extends ActorModule<TParent> {
     get current(): number {
@@ -11,7 +12,7 @@ class CreatureLife<TParent extends Creature = Creature> extends ActorModule<TPar
     }
 
     get label(): string {
-        return _loc("afmbe.actor.life.label");
+        return localize("actor.creature.life.label");
     }
 
     update(value: number): Promise<TParent | undefined> {

@@ -3,6 +3,7 @@ import { PositiveIntergerValueField } from "fields";
 import * as R from "remeda";
 import {
     Creature,
+    CreatureAttributesModule,
     CreatureDataSchema,
     CreatureEndurance,
     CreatureEssence,
@@ -16,6 +17,7 @@ class CreatureDataModel<
     TSchema extends CreatureDataSchema = CreatureDataSchema,
 > extends ActorDataModel<TParent, TSchema> {
     static modules = {
+        attributes: CreatureAttributesModule,
         endurance: CreatureEndurance,
         essence: CreatureEssence,
         life: CreatureLife,

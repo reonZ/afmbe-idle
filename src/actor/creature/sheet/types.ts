@@ -32,10 +32,16 @@ type CreatureAttributesContext = {
     speed: CreatureSpeed;
 };
 
+type RollTaskTargetData = {
+    attribute?: CreatureAttribute;
+    hideAttributes?: `${boolean}`;
+};
+
 export type {
     CreatureAttributesContext,
     CreatureSheetConfiguration,
     CreatureSheetPart,
     CreatureSheetRenderContext,
     CreatureSheetRenderOptions,
+    RollTaskTargetData,
 };

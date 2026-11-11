@@ -14,47 +14,54 @@
     },
     "afmbe": {
         "actor": {
-            "attributes": {
-                "constitution": {
-                    "label": "Constitution"
+            "creature": {
+                "attributes": {
+                    "constitution": {
+                        "label": "Constitution"
+                    },
+                    "dexterity": {
+                        "label": "Dexterity"
+                    },
+                    "intelligence": {
+                        "label": "Intelligence"
+                    },
+                    "perception": {
+                        "label": "Perception"
+                    },
+                    "strength": {
+                        "label": "Strength"
+                    },
+                    "willpower": {
+                        "label": "Willpower"
+                    },
+                    "primary": "Primary Attributes",
+                    "secondary": "Secondary Attributes"
                 },
-                "dexterity": {
-                    "label": "Dexterity"
+                "endurance": {
+                    "label": "Endurance"
                 },
-                "intelligence": {
-                    "label": "Intelligence"
+                "essence": {
+                    "label": "Essence"
                 },
-                "perception": {
-                    "label": "Perception"
-                },
-                "strength": {
-                    "label": "Strength"
-                },
-                "willpower": {
-                    "label": "Willpower"
-                },
-                "primary": "Primary Attributes",
-                "secondary": "Secondary Attributes"
-            },
-            "endurance": {
-                "label": "Endurance"
-            },
-            "essence": {
-                "label": "Essence"
-            },
-            "life": {
-                "label": "Life"
-            },
-            "speed": {
-                "label": "Speed",
-                "kph": "km/h",
-                "mps": "m/s",
-                "mph": "mph",
-                "yps": "yd/s"
-            },
-            "zombie": {
                 "life": {
-                    "label": "Dead Points"
+                    "label": "Life"
+                },
+                "speed": {
+                    "label": "Speed",
+                    "kph": "km/h",
+                    "mps": "m/s",
+                    "mph": "mph",
+                    "yps": "yd/s"
+                },
+                "task": {
+                    "attribute": "Attribute",
+                    "roll": "Roll {type} Task",
+                    "title": "Roll Task - {name}"
+                },
+                "zombie": {
+                    "life": {
+                        "label": "Dead Points"
+                    }
                 }
             }
         }
