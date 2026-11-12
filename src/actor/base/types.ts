@@ -1,7 +1,7 @@
 import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
 import type { Adversary, Character, Creature, CreatureSource, Zombie } from "actor";
 import type { ItemInstances, ItemType } from "item";
-import type { ACTOR_TYPES, ActorAFMBE } from ".";
+import type { ACTOR_TYPES } from ".";
 
 type ActorType = (typeof ACTOR_TYPES)[number];
 
@@ -20,16 +20,6 @@ type ActorDataSchema = {};
 
 type ActorDataSource = ModelPropsFromSchema<ActorDataSchema>;
 
-type ActorSystem<TParent extends ActorAFMBE = ActorAFMBE> = {};
-
 type ActorSourceAFMBE = CreatureSource;
 
-export type {
-    ActorDataSchema,
-    ActorDataSource,
-    ActorInstances,
-    ActorItemTypes,
-    ActorSourceAFMBE,
-    ActorSystem,
-    ActorType,
-};
+export type { ActorDataSchema, ActorDataSource, ActorInstances, ActorItemTypes, ActorSourceAFMBE, ActorType };

@@ -1,8 +1,15 @@
-import { CREATURE_ATTRIBUTES, CreatureDataModel } from "actor";
+import { CREATURE_ATTRIBUTES, CreatureDataModel, CreatureDataSource } from "actor";
 import { BooleanField, PositiveIntegerField, ValueAndTotalField } from "fields";
 import { ItemType } from "item";
 import * as R from "remeda";
-import { Character, CHARACTER_TYPES, CharacterDataSchema, CharacterDataSource, CharacterSystem } from ".";
+import {
+    Character,
+    CHARACTER_TYPES,
+    CharacterAttributes,
+    CharacterDataSchema,
+    CharacterDataSource,
+    CharacterExperience,
+} from ".";
 import fields = foundry.data.fields;
 
 class CharacterDataModel<TParent extends Character = Character> extends CreatureDataModel<
@@ -42,16 +49,17 @@ class CharacterDataModel<TParent extends Character = Character> extends Creature
 
     prepareBaseData(): void {
         super.prepareBaseData();
-
-        const source = this as CharacterDataSource;
-
-        this.attributes = R.mapValues(
-            source.attributes,
-            ({ base, drawback, improved }) => base + drawback + Number(improved),
-        );
+        this.attributes = new CharacterAttributes(this.parent);
+        this.experience = new CharacterExperience(this.parent);
     }
 }
 
-interface CharacterDataModel<TParent extends Character = Character> extends CharacterSystem<TParent> {}
+interface CharacterDataModel<TParent extends Character = Character> extends Omit<
+    CharacterDataSource,
+    keyof CreatureDataSource | "attributes" | "experience"
+> {
+    attributes: CharacterAttributes;
+    experience: CharacterExperience;
+}
 
 export { CharacterDataModel };

@@ -1,9 +1,9 @@
 import { PositiveIntergerValueField } from "fields";
-import { ItemDataModel } from "item";
-import { signedNumber } from "utils";
-import { Skill, SkillDataSchema, SkillSystem, Specialty } from ".";
-import fields = foundry.data.fields;
+import { ItemDataModel, ItemDataSource } from "item";
 import * as R from "remeda";
+import { signedNumber } from "utils";
+import { Skill, SkillDataSchema, SkillDataSource, Specialty } from ".";
+import fields = foundry.data.fields;
 
 class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParent, SkillDataSchema> {
     static defineSchema(): SkillDataSchema {
@@ -37,6 +37,9 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
     }
 }
 
-interface SkillDataModel<TParent extends Skill = Skill> extends SkillSystem<TParent> {}
+interface SkillDataModel<TParent extends Skill = Skill> extends Omit<SkillDataSource, keyof ItemDataSource> {
+    level: { value: number };
+    specialties: Record<string, Specialty<TParent>>;
+}
 
 export { SkillDataModel };

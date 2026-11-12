@@ -1,7 +1,15 @@
-import { ActorDataModel } from "actor";
+import { ActorDataModel, ActorDataSource } from "actor";
 import { PositiveIntergerValueField } from "fields";
-import * as R from "remeda";
-import { Creature, CreatureDataSchema, CreatureSystem } from ".";
+import {
+    Creature,
+    CreatureAttributes,
+    CreatureDataSchema,
+    CreatureDataSource,
+    CreatureEndurance,
+    CreatureEssence,
+    CreatureLife,
+    CreatureSpeed,
+} from ".";
 
 class CreatureDataModel<
     TParent extends Creature = Creature,
@@ -16,29 +24,26 @@ class CreatureDataModel<
         };
     }
 
-    prepareBaseData(): void {
-        super.prepareBaseData();
-    }
-
+    // we prepare secondary attributes after primary attributes have been prepared AND modified by active effects
     prepareDerivedData(): void {
         super.prepareDerivedData();
 
-        const attributes = this.parent.system.attributes;
-        const { constitution, dexterity, strength, willpower } = attributes;
-
-        this.endurance.max = (constitution + strength + willpower) * 3 + 5;
-        this.essence.max = R.sum(R.values(attributes));
-        this.life.max = (constitution + strength) * 4 + 10;
-
-        this.speed = {
-            value: (constitution + dexterity) * 2,
-        };
+        this.endurance = new CreatureEndurance(this.parent);
+        this.essence = new CreatureEssence(this.parent);
+        this.life = new CreatureLife(this.parent);
+        this.speed = new CreatureSpeed(this.parent);
     }
 }
 
 interface CreatureDataModel<
     TParent extends Creature = Creature,
     TSchema extends CreatureDataSchema = CreatureDataSchema,
-> extends CreatureSystem<TParent> {}
+> extends Omit<CreatureDataSource, keyof ActorDataSource> {
+    attributes: CreatureAttributes;
+    endurance: CreatureEndurance;
+    essence: CreatureEssence;
+    life: CreatureLife;
+    speed: CreatureSpeed;
+}
 
 export { CreatureDataModel };

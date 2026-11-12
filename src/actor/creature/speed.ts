@@ -12,7 +12,7 @@ class CreatureSpeed<TParent extends Creature = Creature> extends ActorModule<TPa
     }
 
     get shortValue(): number {
-        return this.actor.system.speed.value / 2;
+        return this.base / 2;
     }
 
     get stringified(): string {
@@ -28,9 +28,18 @@ class CreatureSpeed<TParent extends Creature = Creature> extends ActorModule<TPa
     }
 
     get value(): number {
-        const value = this.actor.system.speed.value;
+        const value = this.base;
         return this.useMetric ? value * 1.5 : value;
     }
+
+    _initialize() {
+        const { constitution, dexterity } = this.actor.system.attributes;
+        this.base = (constitution + dexterity) * 2;
+    }
 }
+
+interface CreatureSpeed extends CreatureSpeedSource {}
+
+type CreatureSpeedSource = { base: number };
 
 export { CreatureSpeed };

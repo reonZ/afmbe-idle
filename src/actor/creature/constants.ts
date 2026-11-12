@@ -7,6 +7,6 @@ const CREATURE_ATTRIBUTES = [
     "willpower",
 ] as const;
 
-const CREATURE_SECONDARY_ATTRIBUTES = ["life", "endurance", "essence"] as const;
+const CREATURE_SECONDARIES = ["life", "endurance", "essence"] as const;
 
-export { CREATURE_ATTRIBUTES, CREATURE_SECONDARY_ATTRIBUTES };
+export { CREATURE_ATTRIBUTES, CREATURE_SECONDARIES };

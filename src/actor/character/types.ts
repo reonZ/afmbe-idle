@@ -6,7 +6,7 @@ import type {
     StringField,
 } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
 import type { ActorSource } from "@7h3laughingman/foundry-types/common/documents/actor.mjs";
-import type { Creature, CreatureAttribute, CreatureDataSchema, CreatureSystem } from "actor";
+import type { Creature, CreatureAttributeType, CreatureDataSchema } from "actor";
 import type { BooleanField, PositiveIntegerField, ValueAndTotalField } from "fields";
 import type { CHARACTER_TYPES, CharacterDataModel } from ".";
 
@@ -22,7 +22,7 @@ type CharacterAttributeSchema = {
     improved: BooleanField;
 };
 
-type CharacterAttributesSchema = Record<CreatureAttribute, SchemaField<CharacterAttributeSchema>>;
+type CharacterAttributesSchema = Record<CreatureAttributeType, SchemaField<CharacterAttributeSchema>>;
 
 type CharacterType = (typeof CHARACTER_TYPES)[number];
 
@@ -38,12 +38,7 @@ type CharacterAttributesSource = SourceFromSchema<CharacterAttributesSchema>;
 
 type CharacterDataSource = ModelPropsFromSchema<CharacterDataSchema>;
 
-type CharacterSystem<TParent extends Character = Character> = CreatureSystem<TParent> &
-    Omit<CharacterDataSource, keyof CreatureSystem>;
-
 declare class Character<TParent extends TokenDocument | null = TokenDocument | null> extends Creature<TParent> {
-    // attributes: CharacterAttributesModule;
-    // experience: CharacterExperienceModule;
     system: CharacterDataModel;
 }
 
@@ -56,6 +51,5 @@ export type {
     CharacterDataSchema,
     CharacterDataSource,
     CharacterSource,
-    CharacterSystem,
     CharacterType,
 };

@@ -1,4 +1,4 @@
-import { ItemDataModel, Physical, PhysicalDataSchema, PhysicalSystem } from "item";
+import { ItemDataModel, ItemDataSource, Physical, PhysicalDataSchema, PhysicalDataSource } from "item";
 
 class PhysicalDataModel<
     TParent extends Physical = Physical,
@@ -18,6 +18,6 @@ class PhysicalDataModel<
 interface PhysicalDataModel<
     TParent extends Physical = Physical,
     TSchema extends PhysicalDataSchema = PhysicalDataSchema,
-> extends PhysicalSystem<TParent> {}
+> extends Omit<PhysicalDataSource, keyof ItemDataSource> {}
 
 export { PhysicalDataModel };

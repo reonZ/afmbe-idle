@@ -2,13 +2,11 @@ import type { ItemSource } from "@7h3laughingman/foundry-types/client/documents/
 import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
 import type { ActorAFMBE } from "actor";
 import type { ArmorDataModel } from ".";
-import type { Physical, PhysicalDataSchema, PhysicalSystem } from "..";
+import type { Physical, PhysicalDataSchema } from "..";
 
 type ArmorDataSchema = PhysicalDataSchema & {};
 
 type ArmorDataSource = ModelPropsFromSchema<ArmorDataSchema>;
-
-type ArmorSystem<TParent extends Armor = Armor> = PhysicalSystem<TParent>;
 
 declare class Armor<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends Physical<TParent> {
     system: ArmorDataModel;
@@ -16,4 +14,4 @@ declare class Armor<TParent extends ActorAFMBE | null = ActorAFMBE | null> exten
 
 type ArmorSource = ItemSource<"armor", ArmorDataSource>;
 
-export type { Armor, ArmorDataSchema, ArmorDataSource, ArmorSource, ArmorSystem };
+export type { Armor, ArmorDataSchema, ArmorDataSource, ArmorSource };

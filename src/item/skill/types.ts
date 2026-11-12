@@ -7,8 +7,8 @@ import type {
 } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
 import type { ActorAFMBE } from "actor";
 import type { PositiveIntergerValueField } from "fields";
-import type { ItemAFMBE, ItemDataSchema, ItemSystem } from "item";
-import type { SkillDataModel, Specialty } from ".";
+import type { ItemAFMBE, ItemDataSchema } from "item";
+import type { SkillDataModel } from ".";
 
 type SkillSpecialtySchema = {
     level: PositiveIntergerValueField;
@@ -25,15 +25,10 @@ type SkillDataSchema = ItemDataSchema & {
 
 type SkillDataSource = ModelPropsFromSchema<SkillDataSchema>;
 
-type SkillSystem<TParent extends Skill = Skill> = ItemSystem<TParent> & {
-    level: { value: number };
-    specialties: Record<string, Specialty<TParent>>;
-};
-
 declare class Skill<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
     system: SkillDataModel;
 }
 
 type SkillSource = ItemSource<"skill", SkillDataSource>;
 
-export type { Skill, SkillDataSchema, SkillDataSource, SkillSource, SkillSpecialtySource, SkillSystem };
+export type { Skill, SkillDataSchema, SkillDataSource, SkillSource, SkillSpecialtySource };

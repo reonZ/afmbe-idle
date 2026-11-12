@@ -16,7 +16,7 @@ import {
     RollTaskTruncatedSelects,
     RollTaskModifier,
 } from ".";
-import { Creature, CREATURE_ATTRIBUTES, CreatureAttributesModule } from "..";
+import { Creature, CREATURE_ATTRIBUTES } from "..";
 
 class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     #actor: Creature;
@@ -112,7 +112,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                     const entries: { value: string; label: string }[] = [];
 
                     if (!this.#modifiers[item.id]) {
-                        const label = `${item.name} (${item.system.bonus})`;
+                        const label = `${item.name} (${item.system.modifier})`;
                         entries.push({ label, value: item.id });
                     }
 
@@ -120,7 +120,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                         const value = specialty.longId;
                         if (this.#modifiers[value]) continue;
 
-                        const label = `${specialty.label} (${specialty.bonus})`;
+                        const label = `${specialty.label} (${specialty.modifier})`;
                         entries.push({ label, value });
                     }
 

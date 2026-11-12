@@ -2,14 +2,7 @@ import { HandlebarsTemplatePart } from "@7h3laughingman/foundry-types/client/app
 import { ActorSheetAFMBE, ActorSheetConfiguration } from "actor";
 import * as R from "remeda";
 import { CreatureSheetPart, CreatureSheetRenderContext, CreatureSheetRenderOptions, RollTaskTargetData } from ".";
-import {
-    Creature,
-    CREATURE_ATTRIBUTES,
-    CREATURE_SECONDARY_ATTRIBUTES,
-    CreatureAttributesModule,
-    RollTaskApplication,
-    RollTaskData,
-} from "..";
+import { Creature, CREATURE_ATTRIBUTES, CREATURE_SECONDARIES, RollTaskApplication, RollTaskData } from "..";
 import { splitString } from "utils";
 
 abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE<TParent> {
@@ -53,14 +46,14 @@ abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE<T
         context.attributes = {
             primary: R.map(CREATURE_ATTRIBUTES, (key) => {
                 const label = CreatureAttributesModule.getLabel(key);
-                const value = actor.attributes[key];
+                const value = actor.system.attributes[key];
                 return { key, label, value };
             }),
-            secondary: R.map(CREATURE_SECONDARY_ATTRIBUTES, (key) => {
-                const { current, label, max } = actor[key];
+            secondary: R.map(CREATURE_SECONDARIES, (key) => {
+                const { current, label, max } = actor.system[key];
                 return { key, label, max: max === Infinity ? null : max, value: current };
             }),
-            speed: actor.speed,
+            speed: actor.system.speed,
         };
 
         return context;

@@ -2,8 +2,8 @@ import type {
     ActorSheetConfiguration,
     ActorSheetRenderContext,
     ActorSheetRenderOptions,
-    CreatureAttribute,
-    CreatureSecondaryAttribute,
+    CreatureAttributeType,
+    CreatureSecondaryType,
     CreatureSpeed,
     RollTaskSelected,
 } from "actor";
@@ -20,12 +20,12 @@ type CreatureSheetRenderContext = ActorSheetRenderContext & {
 
 type CreatureAttributesContext = {
     primary: {
-        key: CreatureAttribute;
+        key: CreatureAttributeType;
         label: string;
         value: number;
     }[];
     secondary: {
-        key: CreatureSecondaryAttribute;
+        key: CreatureSecondaryType;
         label: string;
         value: number;
         max: number | null;

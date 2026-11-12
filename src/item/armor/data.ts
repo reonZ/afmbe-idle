@@ -1,5 +1,5 @@
-import { Armor, ArmorDataSchema, ArmorSystem } from ".";
-import { PhysicalDataModel } from "..";
+import { Armor, ArmorDataSchema, ArmorDataSource } from ".";
+import { PhysicalDataModel, PhysicalDataSource } from "..";
 
 class ArmorDataModel<TParent extends Armor = Armor> extends PhysicalDataModel<TParent, ArmorDataSchema> {
     static defineSchema(): ArmorDataSchema {
@@ -13,6 +13,6 @@ class ArmorDataModel<TParent extends Armor = Armor> extends PhysicalDataModel<TP
     }
 }
 
-interface ArmorDataModel<TParent extends Armor = Armor> extends ArmorSystem<TParent> {}
+interface ArmorDataModel<TParent extends Armor = Armor> extends Omit<ArmorDataSource, keyof PhysicalDataSource> {}
 
 export { ArmorDataModel };

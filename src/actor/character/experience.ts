@@ -1,21 +1,14 @@
 import { ActorModule, Character } from "actor";
 import * as R from "remeda";
 
-class CharacterExperienceModule extends ActorModule<Character> {
-    get current(): number {
-        return Math.min(this.actor.system.experience.value, this.total);
-    }
-
-    get total(): number {
-        return this.actor.system.experience.total;
-    }
-
-    get spent(): number {
-        return this.total - this.current;
+class CharacterExperience<TParent extends Character = Character> extends ActorModule<TParent> {
+    _initialize(): void {
+        this.total = this.actor.system.experience.total;
+        this.value = Math.min(this.actor.system.experience.value, this.total);
     }
 
     giveExperience(value: number): Promise<Character | undefined> {
-        return this.update({ max: this.total + value, value: this.current + value });
+        return this.update({ max: this.total + value, value: this.value + value });
     }
 
     update(changes: Partial<ValueAndMax>): Promise<Character | undefined> {
@@ -32,4 +25,6 @@ class CharacterExperienceModule extends ActorModule<Character> {
     }
 }
 
-export { CharacterExperienceModule };
+interface CharacterExperience extends ValueAndTotal {}
+
+export { CharacterExperience };

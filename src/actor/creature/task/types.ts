@@ -2,7 +2,7 @@ import type {
     ApplicationConfiguration,
     ApplicationRenderContext,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
-import type { Creature, CreatureAttribute } from "..";
+import type { Creature, CreatureAttributeType } from "..";
 
 type RollTaskRenderContext = ApplicationRenderContext & {
     selects: RollTaskSelects;
@@ -11,7 +11,7 @@ type RollTaskRenderContext = ApplicationRenderContext & {
 
 type RollTaskSelects = [
     RollTaskSelect<"difficulty", "simple" | "difficult">,
-    RollTaskSelect<"attribute", CreatureAttribute>,
+    RollTaskSelect<"attribute", CreatureAttributeType>,
     RollTaskSelect<"skill", string>,
 ];
 

@@ -1,7 +1,7 @@
 import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
-import { ActorAFMBE } from "actor";
+import type { ActorAFMBE } from "actor";
 import type { Armor, Physical, PhysicalSource, Quality, QualitySource, Skill, SkillSource, Weapon } from "item";
-import type { ITEM_TYPES, ItemAFMBE } from ".";
+import type { ITEM_TYPES } from ".";
 
 type ItemType = (typeof ITEM_TYPES)[number];
 
@@ -17,8 +17,6 @@ type ItemDataSchema = {};
 
 type ItemDataSource = ModelPropsFromSchema<ItemDataSchema>;
 
-type ItemSystem<TParent extends ItemAFMBE = ItemAFMBE> = {};
-
 type ItemSourceAFMBE = PhysicalSource | QualitySource | SkillSource;
 
-export type { ItemDataSchema, ItemDataSource, ItemInstances, ItemSourceAFMBE, ItemSystem, ItemType };
+export type { ItemDataSchema, ItemDataSource, ItemInstances, ItemSourceAFMBE, ItemType };

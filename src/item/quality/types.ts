@@ -1,14 +1,12 @@
 import type { ItemSource } from "@7h3laughingman/foundry-types/client/documents/_module.mjs";
 import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
 import type { ActorAFMBE } from "actor";
-import type { ItemAFMBE, ItemDataSchema, ItemSystem } from "item";
+import type { ItemAFMBE, ItemDataSchema } from "item";
 import type { QualityDataModel } from ".";
 
 type QualityDataSchema = ItemDataSchema & {};
 
 type QualityDataSource = ModelPropsFromSchema<QualityDataSchema>;
-
-type QualitySystem<TParent extends Quality = Quality> = ItemSystem<TParent>;
 
 declare class Quality<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
     system: QualityDataModel;
@@ -16,4 +14,4 @@ declare class Quality<TParent extends ActorAFMBE | null = ActorAFMBE | null> ext
 
 type QualitySource = ItemSource<"quality", QualityDataSource>;
 
-export type { Quality, QualityDataSchema, QualityDataSource, QualitySource, QualitySystem };
+export type { Quality, QualityDataSchema, QualityDataSource, QualitySource };
