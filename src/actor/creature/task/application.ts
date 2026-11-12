@@ -16,7 +16,7 @@ import {
     RollTaskTruncatedSelects,
     RollTaskModifier,
 } from ".";
-import { Creature, CREATURE_ATTRIBUTES } from "..";
+import { Creature, CREATURE_ATTRIBUTES, CreatureAttributes } from "..";
 
 class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     #actor: Creature;
@@ -47,15 +47,15 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         this.#modifiers = R.pipe(
             R.isArray(modifiers) ? modifiers : [],
             R.map((id): RollTaskModifier | undefined => {
-                const [itemId, embeddedId] = R.split(id, ".");
+                const [itemId, slug] = R.split(id, ".");
                 const item = actor.items.get(itemId);
                 if (!item?.isOfType("skill")) return;
 
-                if (!embeddedId) {
+                if (!slug) {
                     return { id: item.id, label: item.name, value: item.system.level.value };
                 }
 
-                const specialty = item.system.specialties.get(embeddedId);
+                const specialty = item.system.specialties[slug];
                 if (!specialty) return;
 
                 return { id: specialty.longId, label: specialty.label, value: specialty.total };
@@ -100,7 +100,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                 key: "attribute",
                 label: localize("actor.creature.task.attribute"),
                 options: R.map(CREATURE_ATTRIBUTES, (value) => {
-                    const label = CreatureAttributesModule.getLabel(value);
+                    const label = CreatureAttributes.getLabel(value);
                     return { value, label };
                 }),
             },
@@ -116,7 +116,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                         entries.push({ label, value: item.id });
                     }
 
-                    for (const specialty of item.system.specialties) {
+                    for (const specialty of R.values(item.system.specialties)) {
                         const value = specialty.longId;
                         if (this.#modifiers[value]) continue;
 

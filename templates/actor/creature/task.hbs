@@ -1,8 +1,8 @@
-{{#each categories as |category|}}
-<div class="category{{ifThen category.hide " hidden" ""}}">
-    <div class="name">{{category.label}}</div>
-    <select name="{{category.key}}" {{disabled category.disable}}>
-        {{selectOptions category.options blank=category.blank selected=category.selected}}
+{{#each selects as |select|}}
+<div class="category{{ifThen select.hide " hidden" ""}}">
+    <div class="name">{{select.label}}</div>
+    <select name="{{select.key}}" {{disabled select.disable}}>
+        {{selectOptions select.options blank=select.blank selected=select.selected}}
     </select>
 </div>
 {{/each}}
