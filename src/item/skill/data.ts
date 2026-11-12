@@ -1,14 +1,11 @@
 import { PositiveIntegerField } from "fields";
-import { ItemCollections, ItemDataModel } from "item";
+import { ItemDataModel } from "item";
 import { signedNumber } from "utils";
 import { Skill, SkillDataSchema, SkillSpecialtyCollection, SkillSystem } from ".";
 import fields = foundry.data.fields;
 
 class SkillDataModel extends ItemDataModel<Skill, SkillDataSchema> {
-    static collections = {
-        ...super.modules,
-        specialties: SkillSpecialtyCollection,
-    } satisfies ItemCollections<Skill>;
+    collections = new SkillSpecialtyCollection(this.parent);
 
     static defineSchema(): SkillDataSchema {
         return {
@@ -27,24 +24,11 @@ class SkillDataModel extends ItemDataModel<Skill, SkillDataSchema> {
         };
     }
 
-    prepareBaseData(): void {
-        super.prepareBaseData();
-
-        Object.defineProperties(this.parent, {
-            bonus: {
-                get(): string {
-                    return signedNumber(this.level);
-                },
-            },
-            level: {
-                get(): number {
-                    return this.level;
-                },
-            },
-        });
+    get bonus(): string {
+        return signedNumber(this.level);
     }
 }
 
-interface SkillDataModel extends SkillSystem {}
+interface SkillDataModel extends SkillSystem<Skill> {}
 
 export { SkillDataModel };

@@ -13,6 +13,6 @@ class QualityDataModel extends ItemDataModel<Quality, QualityDataSchema> {
     }
 }
 
-interface QualityDataModel extends QualitySystem {}
+interface QualityDataModel extends QualitySystem<Quality> {}
 
 export { QualityDataModel };

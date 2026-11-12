@@ -13,6 +13,6 @@ class ArmorDataModel extends PhysicalDataModel<Armor, ArmorDataSchema> {
     }
 }
 
-interface ArmorDataModel extends ArmorSystem {}
+interface ArmorDataModel extends ArmorSystem<Armor> {}
 
 export { ArmorDataModel };

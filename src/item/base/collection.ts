@@ -1,11 +1,12 @@
 import { ItemAFMBE } from ".";
 
-abstract class ItemCollection<TParent extends ItemAFMBE, V extends { id: string }> extends Collection<string, V> {
+class ItemCollection<TParent extends ItemAFMBE, V extends { id: string }> extends Collection<string, V> {
     #parent: TParent;
 
     constructor(parent: TParent) {
         super();
         this.#parent = parent;
+        this._initialize();
     }
 
     get item(): TParent {
@@ -16,7 +17,7 @@ abstract class ItemCollection<TParent extends ItemAFMBE, V extends { id: string 
         return this.item.actor;
     }
 
-    abstract _initialize(): void;
+    _initialize(): void {}
 }
 
 export { ItemCollection };

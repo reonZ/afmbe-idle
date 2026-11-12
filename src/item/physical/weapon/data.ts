@@ -13,6 +13,6 @@ class WeaponDataModel extends PhysicalDataModel<Weapon, WeaponDataSchema> {
     }
 }
 
-interface WeaponDataModel extends WeaponSystem {}
+interface WeaponDataModel extends WeaponSystem<Weapon> {}
 
 export { WeaponDataModel };

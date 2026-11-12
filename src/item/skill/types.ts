@@ -26,11 +26,12 @@ type SkillDataSchema = ItemDataSchema & {
 
 type SkillDataSource = ModelPropsFromSchema<SkillDataSchema>;
 
-type SkillSystem = ItemSystem & SkillDataSource;
+type SkillSystem<TParent extends ItemAFMBE = ItemAFMBE> = ItemSystem<TParent> &
+    Omit<SkillDataSource, "specialties"> & {
+        specialties: SkillSpecialtyCollection<TParent["actor"]>;
+    };
 
 declare class Skill<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
-    get bonus(): string;
-    specialties: SkillSpecialtyCollection<TParent>;
     system: SkillDataModel;
 }
 

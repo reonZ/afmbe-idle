@@ -7,7 +7,7 @@ type PhysicalDataSchema = ItemDataSchema & {};
 
 type PhysicalDataSource = ModelPropsFromSchema<PhysicalDataSchema>;
 
-type PhysicalSystem = ItemSystem;
+type PhysicalSystem<TParent extends ItemAFMBE = ItemAFMBE> = ItemSystem<TParent>;
 
 declare abstract class Physical<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
     system: PhysicalDataModel;

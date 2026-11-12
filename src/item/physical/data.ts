@@ -15,6 +15,9 @@ class PhysicalDataModel<
     }
 }
 
-interface PhysicalDataModel<TParent extends ItemAFMBE, TSchema extends ItemDataSchema> extends PhysicalSystem {}
+interface PhysicalDataModel<
+    TParent extends ItemAFMBE,
+    TSchema extends ItemDataSchema,
+> extends PhysicalSystem<TParent> {}
 
 export { PhysicalDataModel };

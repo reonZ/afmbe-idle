@@ -55,7 +55,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                     return { id: item.id, label: item.name, value: item.system.level };
                 }
 
-                const specialty = item.specialties.get(embeddedId);
+                const specialty = item.system.specialties.get(embeddedId);
                 if (!specialty) return;
 
                 return { id: specialty.longId, label: specialty.label, value: specialty.total };
@@ -112,11 +112,11 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                     const entries: { value: string; label: string }[] = [];
 
                     if (!this.#modifiers[item.id]) {
-                        const label = `${item.name} (${item.bonus})`;
+                        const label = `${item.name} (${item.system.bonus})`;
                         entries.push({ label, value: item.id });
                     }
 
-                    for (const specialty of item.specialties) {
+                    for (const specialty of item.system.specialties) {
                         const value = specialty.longId;
                         if (this.#modifiers[value]) continue;
 
