@@ -35,9 +35,16 @@ type RollTaskSelect<K extends string, V extends string> = {
     selected: V | undefined;
 };
 
+type RollTaskModifier = {
+    id: string;
+    label: string;
+    value: number;
+};
+
 type RollTaskData = {
     disable?: RollTaskSelectKey[];
     hide?: RollTaskSelectKey[];
+    modifiers?: string[];
     select?: RollTaskSelected;
     title?: string;
 };
@@ -56,11 +63,12 @@ type RollTaskSelected = {
 
 export type {
     RollTaskApplicationConfiguration,
-    RollTaskSelects,
-    RollTaskSelectKey,
     RollTaskData,
+    RollTaskModifier,
     RollTaskRenderContext,
     RollTaskSelect,
     RollTaskSelected,
+    RollTaskSelectKey,
+    RollTaskSelects,
     RollTaskTruncatedSelects,
 };

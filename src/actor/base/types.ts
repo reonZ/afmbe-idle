@@ -5,11 +5,11 @@ import type { ACTOR_TYPES, ActorAFMBE, ActorModule } from ".";
 
 type ActorType = (typeof ACTOR_TYPES)[number];
 
-type ActorInstances = {
-    adversary: Adversary;
-    character: Character;
-    creature: Creature;
-    zombie: Zombie;
+type ActorInstances<TParent extends TokenDocument | null = TokenDocument | null> = {
+    adversary: Adversary<TParent>;
+    character: Character<TParent>;
+    creature: Creature<TParent>;
+    zombie: Zombie<TParent>;
 };
 
 type ActorItemTypes = {

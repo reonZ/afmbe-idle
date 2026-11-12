@@ -1,12 +1,12 @@
 import { ActorAFMBE } from "actor";
 import { Skill, SkillSpecialtySource } from "item";
-import type { SkillSpecialtiesModule } from ".";
+import type { SkillSpecialtyCollection } from ".";
 import { signedNumber } from "utils";
 
 class SkillSpecialty<TActor extends ActorAFMBE | null = ActorAFMBE | null> {
-    #parent: SkillSpecialtiesModule;
+    #parent: SkillSpecialtyCollection;
 
-    constructor(parent: SkillSpecialtiesModule<TActor>, source: SkillSpecialtySource) {
+    constructor(parent: SkillSpecialtyCollection<TActor>, source: SkillSpecialtySource) {
         Object.assign(this, source);
         this.#parent = parent;
     }
@@ -23,12 +23,16 @@ class SkillSpecialty<TActor extends ActorAFMBE | null = ActorAFMBE | null> {
         return this.#parent.item as Skill<TActor>;
     }
 
+    get longId(): string {
+        return this.item.id + "." + this.id;
+    }
+
     get uuid(): string {
-        return this.item.id + ".Specialty." + this.id;
+        return this.item.uuid + ".Specialty." + this.id;
     }
 
     get total(): number {
-        return this.item.level + this.level;
+        return this.item.system.level + this.level;
     }
 
     get bonus(): string {

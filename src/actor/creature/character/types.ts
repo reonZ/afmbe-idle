@@ -38,7 +38,7 @@ type CharacterAttributesSource = SourceFromSchema<CharacterAttributesSchema>;
 
 type CharacterDataSource = ModelPropsFromSchema<CharacterDataSchema>;
 
-type CharacterSystem = Omit<CharacterDataSource, "attributes" | "life"> & CreatureSystem;
+type CharacterSystem = CreatureSystem & Omit<CharacterDataSource, keyof CreatureSystem>;
 
 declare class Character<TParent extends TokenDocument | null = TokenDocument | null> extends Creature<TParent> {
     attributes: CharacterAttributesModule;

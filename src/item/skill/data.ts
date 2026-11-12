@@ -1,14 +1,14 @@
 import { PositiveIntegerField } from "fields";
-import { ItemDataModel, ItemModules } from "item";
-import { Skill, SkillDataSchema, SkillSystem, SkillSpecialtiesModule } from ".";
-import fields = foundry.data.fields;
+import { ItemCollections, ItemDataModel } from "item";
 import { signedNumber } from "utils";
+import { Skill, SkillDataSchema, SkillSpecialtyCollection, SkillSystem } from ".";
+import fields = foundry.data.fields;
 
 class SkillDataModel extends ItemDataModel<Skill, SkillDataSchema> {
-    static modules = {
+    static collections = {
         ...super.modules,
-        specialties: SkillSpecialtiesModule,
-    } satisfies ItemModules<Skill>;
+        specialties: SkillSpecialtyCollection,
+    } satisfies ItemCollections<Skill>;
 
     static defineSchema(): SkillDataSchema {
         return {

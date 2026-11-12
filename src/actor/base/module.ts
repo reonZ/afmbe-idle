@@ -1,6 +1,6 @@
 import { ActorAFMBE } from ".";
 
-class ActorModule<TParent extends ActorAFMBE> {
+class ActorModule<TParent extends ActorAFMBE = ActorAFMBE> {
     #parent: TParent;
 
     constructor(parent: TParent) {

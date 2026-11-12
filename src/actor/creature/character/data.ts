@@ -1,5 +1,6 @@
 import { ActorModules, CREATURE_ATTRIBUTES, CreatureDataModel } from "actor";
 import { BooleanField, PositiveIntegerField, ValueAndTotalField } from "fields";
+import { ItemType } from "item";
 import * as R from "remeda";
 import {
     Character,
@@ -7,15 +8,15 @@ import {
     CharacterAttributesModule,
     CharacterDataSchema,
     CharacterDataSource,
-    CharacterSystem,
     CharacterExperienceModule,
+    CharacterSystem,
 } from ".";
 import fields = foundry.data.fields;
 
 class CharacterDataModel extends CreatureDataModel<Character, CharacterDataSchema> {
     static modules = {
         ...super.modules,
-        attributes: CharacterAttributesModule,
+        attributes: CharacterAttributesModule as any,
         experience: CharacterExperienceModule,
     } satisfies ActorModules<Character>;
 
@@ -44,6 +45,10 @@ class CharacterDataModel extends CreatureDataModel<Character, CharacterDataSchem
                 choices: CHARACTER_TYPES,
             }),
         };
+    }
+
+    get allowedItems(): ItemType[] {
+        return ["armor", "quality", "skill", "weapon"];
     }
 
     prepareBaseData(): void {

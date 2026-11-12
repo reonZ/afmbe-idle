@@ -1,5 +1,6 @@
-import { ActorAFMBE, ActorDataSchema, ActorDataSource, ActorModules } from ".";
+import { ItemType } from "item";
 import * as R from "remeda";
+import { ActorAFMBE, ActorDataSchema, ActorDataSource, ActorModules } from ".";
 
 class ActorDataModel<TParent extends ActorAFMBE, TSchema extends ActorDataSchema> extends foundry.abstract
     .TypeDataModel<TParent, TSchema> {
@@ -7,6 +8,10 @@ class ActorDataModel<TParent extends ActorAFMBE, TSchema extends ActorDataSchema
 
     static defineSchema(): ActorDataSchema {
         return {};
+    }
+
+    get allowedItems(): ItemType[] {
+        return [];
     }
 
     prepareDerivedData(): void {

@@ -1,3 +1,3 @@
 export * from "./types";
-export * from "./modules";
+export * from "./collections";
 export * from "./data";

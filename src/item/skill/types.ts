@@ -9,7 +9,7 @@ import type {
 import type { ActorAFMBE } from "actor";
 import type { PositiveIntegerField } from "fields";
 import type { ItemAFMBE, ItemDataSchema, ItemSystem } from "item";
-import type { SkillDataModel, SkillSpecialtiesModule } from ".";
+import type { SkillDataModel, SkillSpecialtyCollection } from ".";
 
 type SkillSpecialtySchema = {
     id: DocumentIdField<string, true, false, true>;
@@ -30,8 +30,7 @@ type SkillSystem = ItemSystem & SkillDataSource;
 
 declare class Skill<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
     get bonus(): string;
-    get level(): number;
-    specialties: SkillSpecialtiesModule;
+    specialties: SkillSpecialtyCollection<TParent>;
     system: SkillDataModel;
 }
 

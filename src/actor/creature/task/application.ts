@@ -14,6 +14,7 @@ import {
     RollTaskRenderContext,
     RollTaskSelected,
     RollTaskTruncatedSelects,
+    RollTaskModifier,
 } from ".";
 import { Creature, CREATURE_ATTRIBUTES, CreatureAttributesModule } from "..";
 
@@ -22,21 +23,46 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     #disable: RollTaskSelectKey[];
     #event: PointerEvent | undefined;
     #hide: RollTaskSelectKey[];
+    #modifiers: Record<string, RollTaskModifier>;
     #selected: RollTaskSelected;
 
     constructor(
         options: DeepPartial<ApplicationConfiguration> &
             Omit<RollTaskApplicationConfiguration, keyof ApplicationConfiguration>,
     ) {
-        const { actor, data, event } = options;
+        const {
+            actor,
+            data: { disable, hide, modifiers, select },
+            event,
+        } = options;
 
         super(options);
 
         this.#actor = actor;
-        this.#disable = R.isArray(data.disable) ? data.disable.slice() : [];
+        this.#disable = R.isArray(disable) ? disable.slice() : [];
         this.#event = event;
-        this.#hide = R.isArray(data.hide) ? data.hide.slice() : [];
-        this.#selected = R.isObjectType(data.select) ? foundry.utils.deepClone(data.select) : {};
+        this.#hide = R.isArray(hide) ? hide.slice() : [];
+        this.#selected = R.isObjectType(select) ? foundry.utils.deepClone(select) : {};
+
+        this.#modifiers = R.pipe(
+            R.isArray(modifiers) ? modifiers : [],
+            R.map((id): RollTaskModifier | undefined => {
+                const [itemId, embeddedId] = R.split(id, ".");
+                const item = actor.items.get(itemId);
+                if (!item?.isOfType("skill")) return;
+
+                if (!embeddedId) {
+                    return { id: item.id, label: item.name, value: item.system.level };
+                }
+
+                const specialty = item.specialties.get(embeddedId);
+                if (!specialty) return;
+
+                return { id: specialty.longId, label: specialty.label, value: specialty.total };
+            }),
+            R.filter(R.isTruthy),
+            R.indexBy(R.prop("id")),
+        );
     }
 
     static roll(actor: Creature, data: RollTaskData, event?: PointerEvent): RollTaskApplication {
@@ -66,14 +92,16 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                 key: "difficulty",
                 label: localize("actor.creature.task.difficulty.title"),
                 options: R.map(["difficult", "simple"] as const, (value) => {
-                    return { value, label: localize("actor.creature.task.difficulty", value) };
+                    const label = localize("actor.creature.task.difficulty", value);
+                    return { value, label };
                 }),
             },
             {
                 key: "attribute",
                 label: localize("actor.creature.task.attribute"),
                 options: R.map(CREATURE_ATTRIBUTES, (value) => {
-                    return { value, label: CreatureAttributesModule.getLabel(value) };
+                    const label = CreatureAttributesModule.getLabel(value);
+                    return { value, label };
                 }),
             },
             {
@@ -81,13 +109,22 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                 key: "skill",
                 label: localize("actor.creature.task.skill"),
                 options: R.flatMap(this.actor.itemTypes.skill, (item) => {
-                    return [
-                        { value: item.id, label: `${item.name} (${item.bonus})` },
-                        ...item.specialties.map((specialty) => {
-                            const label = `${specialty.label} (${specialty.bonus})`;
-                            return { value: specialty.uuid, label };
-                        }),
-                    ];
+                    const entries: { value: string; label: string }[] = [];
+
+                    if (!this.#modifiers[item.id]) {
+                        const label = `${item.name} (${item.bonus})`;
+                        entries.push({ label, value: item.id });
+                    }
+
+                    for (const specialty of item.specialties) {
+                        const value = specialty.longId;
+                        if (this.#modifiers[value]) continue;
+
+                        const label = `${specialty.label} (${specialty.bonus})`;
+                        entries.push({ label, value });
+                    }
+
+                    return entries;
                 }),
             },
         ];
