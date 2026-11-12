@@ -5,6 +5,7 @@ class ItemModule<TParent extends ItemAFMBE> {
 
     constructor(parent: TParent) {
         this.#parent = parent;
+        this._initialize();
     }
 
     get item(): TParent {
@@ -14,6 +15,8 @@ class ItemModule<TParent extends ItemAFMBE> {
     get actor(): TParent["actor"] {
         return this.item.actor;
     }
+
+    _initialize() {}
 }
 
 export { ItemModule };

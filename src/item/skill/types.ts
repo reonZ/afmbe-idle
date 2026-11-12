@@ -8,7 +8,7 @@ import type {
 import type { ActorAFMBE } from "actor";
 import type { PositiveIntergerValueField } from "fields";
 import type { ItemAFMBE, ItemDataSchema, ItemSystem } from "item";
-import type { SkillDataModel } from ".";
+import type { SkillDataModel, Specialty } from ".";
 
 type SkillSpecialtySchema = {
     level: PositiveIntergerValueField;
@@ -26,8 +26,8 @@ type SkillDataSchema = ItemDataSchema & {
 type SkillDataSource = ModelPropsFromSchema<SkillDataSchema>;
 
 type SkillSystem<TParent extends Skill = Skill> = ItemSystem<TParent> & {
-    level: { value: number; bonus: number };
-    specialties: Record<string, WithBonus<SkillSpecialtySource, "level">>;
+    level: { value: number };
+    specialties: Record<string, Specialty<TParent>>;
 };
 
 declare class Skill<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {

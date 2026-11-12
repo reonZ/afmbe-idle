@@ -1,8 +1,9 @@
 import { PositiveIntergerValueField } from "fields";
 import { ItemDataModel } from "item";
 import { signedNumber } from "utils";
-import { Skill, SkillDataSchema, SkillSystem } from ".";
+import { Skill, SkillDataSchema, SkillSystem, Specialty } from ".";
 import fields = foundry.data.fields;
+import * as R from "remeda";
 
 class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParent, SkillDataSchema> {
     static defineSchema(): SkillDataSchema {
@@ -29,6 +30,10 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
 
     get modifier(): string {
         return signedNumber(this.level.value);
+    }
+
+    prepareDerivedData(): void {
+        this.specialties = R.mapValues(this.specialties, (source) => new Specialty(this.parent, source));
     }
 }
 

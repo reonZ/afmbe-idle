@@ -61,8 +61,4 @@ declare global {
     type ValueAndMax = { max: number; value: number };
 
     type TupleOf<T> = [T, ...T[]];
-
-    type WithBonus<T extends Record<string, any>, K extends keyof T> = Omit<T, K> & {
-        [k in K]: T[k] & { bonus: number };
-    };
 }
