@@ -1,8 +1,32 @@
 {{#each selects as |select|}}
-<div class="category{{ifThen select.hide " hidden" ""}}">
+<div class="select{{ifThen select.hide " hidden" ""}}">
     <div class="name">{{select.label}}</div>
     <select name="{{select.key}}" {{disabled select.disable}}>
         {{selectOptions select.options blank=select.blank selected=select.selected}}
     </select>
+</div>
+{{/each}}
+<div class="private">
+    {{localize 'afmbe.actor.creature.task.private'}}
+    <input type="checkbox" name="private" {{checked private}} />
+</div>
+<div class="manual">
+    <input type="text" name="modifier.label" placeholder="{{localize 'afmbe.actor.creature.task.modifier.label'}}" />
+    <input type="number" name="modifier.value" value="1" min="-10" max="10" />
+    <button type="button" data-action="add-modifier">
+        {{localize 'afmbe.actor.creature.task.modifier.add'}}
+    </button>
+</div>
+{{#each modifiers as |modifier|}}
+<div class="modifier" data-id="{{modifier.id}}">
+    <div class="name">
+        {{modifier.label}}
+    </div>
+    <div class="value">
+        {{modifier.value}}
+    </div>
+    <a data-action="delete-modifier">
+        <i class="fa-solid fa-trash"></i>
+    </a>
 </div>
 {{/each}}

@@ -71,10 +71,11 @@ abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE<T
         const taskData: RollTaskData = {
             disable: splitString(data.disable ?? ""),
             hide: splitString(data.hide ?? ""),
+            mode: event.ctrlKey ? "private" : "public",
             select: R.omit(data, ["disable", "hide", "tooltip"]),
             title: data.tooltip,
         };
-        RollTaskApplication.roll(this.actor, taskData, event);
+        RollTaskApplication.roll(this.actor, taskData);
     }
 }
 

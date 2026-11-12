@@ -5,7 +5,7 @@ import {
     ApplicationRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
 import * as R from "remeda";
-import { localize } from "utils";
+import { localize, signedNumber } from "utils";
 import {
     RollTaskApplicationConfiguration,
     RollTaskSelects,
@@ -21,9 +21,9 @@ import { Creature, CREATURE_ATTRIBUTES, CreatureAttributes } from "..";
 class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     #actor: Creature;
     #disable: RollTaskSelectKey[];
-    #event: PointerEvent | undefined;
     #hide: RollTaskSelectKey[];
     #modifiers: Record<string, RollTaskModifier>;
+    #mode: "private" | "public";
     #selected: RollTaskSelected;
 
     constructor(
@@ -32,16 +32,15 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     ) {
         const {
             actor,
-            data: { disable, hide, modifiers, select },
-            event,
+            data: { disable, hide, modifiers, mode, select },
         } = options;
 
         super(options);
 
         this.#actor = actor;
         this.#disable = R.isArray(disable) ? disable.slice() : [];
-        this.#event = event;
         this.#hide = R.isArray(hide) ? hide.slice() : [];
+        this.#mode = mode ?? "public";
         this.#selected = R.isObjectType(select) ? foundry.utils.deepClone(select) : {};
 
         this.#modifiers = R.pipe(
@@ -65,8 +64,8 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         );
     }
 
-    static roll(actor: Creature, data: RollTaskData, event?: PointerEvent): RollTaskApplication {
-        const app = new this({ actor, data, event });
+    static roll(actor: Creature, data: RollTaskData): RollTaskApplication {
+        const app = new this({ actor, data });
         app.render(true);
         return app;
     }
@@ -130,6 +129,9 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         ];
 
         return {
+            modifiers: R.mapValues(this.#modifiers, ({ id, label, value }) => {
+                return { id, label, value: signedNumber(value) };
+            }),
             selects: R.map(selects, ({ blank, key, label, options }) => {
                 return {
                     blank: blank ? "" : undefined,
@@ -141,7 +143,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                     selected: this.#selected[key],
                 };
             }) as RollTaskSelects,
-            private: !!this.#event?.ctrlKey,
+            private: this.#mode === "private",
         };
     }
 
@@ -167,14 +169,54 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         this.#activateListeners(content);
     }
 
+    protected _onClickAction(event: PointerEvent, target: HTMLElement): void {
+        const action = target.dataset.action as EventAction;
+
+        switch (action) {
+            case "add-modifier":
+                return this.#addModifier(target);
+            case "delete-modifier":
+                return this.#deleteModifier(target);
+        }
+    }
+
+    #deleteModifier(target: HTMLElement) {
+        const id = target.closest<HTMLElement>("[data-id]")?.dataset.id;
+        delete this.#modifiers[id ?? ""];
+        this.render();
+    }
+
+    #addModifier(target: HTMLElement) {
+        const id = foundry.utils.randomID();
+        const value = target.previousElementSibling as HTMLInputElement;
+        const label = value.previousElementSibling as HTMLInputElement;
+
+        this.#modifiers[id] = {
+            id,
+            label: label.value.trim() || localize("actor.creature.task.modifier.manual"),
+            value: value.valueAsNumber,
+        };
+
+        this.render();
+    }
+
     #activateListeners(html: HTMLElement) {
-        for (const el of html.querySelectorAll("select")) {
+        for (const el of html.querySelectorAll<HTMLSelectElement>(".select select")) {
             el.addEventListener("change", () => {
                 const category = el.name as RollTaskSelectKey;
                 this.#selected[category] = el.value as any;
             });
         }
+
+        const privateEl = html.querySelector<HTMLInputElement>(".private input");
+        if (privateEl) {
+            privateEl.addEventListener("change", () => {
+                this.#mode = privateEl.checked ? "private" : "public";
+            });
+        }
     }
 }
+
+type EventAction = "add-modifier" | "delete-modifier";
 
 export { RollTaskApplication };

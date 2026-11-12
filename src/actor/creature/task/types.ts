@@ -5,6 +5,7 @@ import type {
 import type { Creature, CreatureAttributeType } from "..";
 
 type RollTaskRenderContext = ApplicationRenderContext & {
+    modifiers: Record<string, { id: string; label: string; value: string }>;
     selects: RollTaskSelects;
     private: boolean;
 };
@@ -45,6 +46,7 @@ type RollTaskData = {
     disable?: RollTaskSelectKey[];
     hide?: RollTaskSelectKey[];
     modifiers?: string[];
+    mode?: "private" | "public";
     select?: RollTaskSelected;
     title?: string;
 };
@@ -52,7 +54,6 @@ type RollTaskData = {
 type RollTaskApplicationConfiguration = ApplicationConfiguration & {
     actor: Creature;
     data: RollTaskData;
-    event?: PointerEvent;
 };
 
 type RollTaskSelectKey = RollTaskSelects[number]["key"];

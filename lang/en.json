@@ -60,6 +60,12 @@
                         "simple": "Simple",
                         "title": "Difficulty"
                     },
+                    "modifier": {
+                        "add": "Add",
+                        "label": "Modifier Name",
+                        "manual": "User Modifier"
+                    },
+                    "private": "Make message private?",
                     "roll": "Roll {type} Task",
                     "skill": "Skill",
                     "title": "Roll Task"
