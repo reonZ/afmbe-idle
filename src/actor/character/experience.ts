@@ -15,16 +15,16 @@ class CharacterExperienceModule extends ActorModule<Character> {
     }
 
     giveExperience(value: number): Promise<Character | undefined> {
-        return this.update({ total: this.total + value, value: this.current + value });
+        return this.update({ max: this.total + value, value: this.current + value });
     }
 
-    update(changes: Partial<ValueAndTotal>): Promise<Character | undefined> {
-        if (R.isNumber(changes.total)) {
-            changes.total = Math.max(changes.total, 0);
+    update(changes: Partial<ValueAndMax>): Promise<Character | undefined> {
+        if (R.isNumber(changes.max)) {
+            changes.max = Math.max(changes.max, 0);
         }
 
         if (R.isNumber(changes.value)) {
-            const total = changes.total ?? this.total;
+            const total = changes.max ?? this.total;
             changes.value = Math.clamp(changes.value, 0, total);
         }
 

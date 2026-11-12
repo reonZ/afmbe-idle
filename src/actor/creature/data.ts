@@ -1,29 +1,12 @@
-import { ActorDataModel, ActorModules } from "actor";
+import { ActorDataModel } from "actor";
 import { PositiveIntergerValueField } from "fields";
 import * as R from "remeda";
-import {
-    Creature,
-    CreatureAttributesModule,
-    CreatureDataSchema,
-    CreatureEndurance,
-    CreatureEssence,
-    CreatureLife,
-    CreatureSpeed,
-    CreatureSystem,
-} from ".";
+import { Creature, CreatureDataSchema, CreatureSystem } from ".";
 
 class CreatureDataModel<
     TParent extends Creature = Creature,
     TSchema extends CreatureDataSchema = CreatureDataSchema,
 > extends ActorDataModel<TParent, TSchema> {
-    static modules = {
-        attributes: CreatureAttributesModule,
-        endurance: CreatureEndurance,
-        essence: CreatureEssence,
-        life: CreatureLife,
-        speed: CreatureSpeed,
-    } satisfies ActorModules<Creature>;
-
     static defineSchema(): CreatureDataSchema {
         return {
             ...super.defineSchema(),
@@ -43,9 +26,9 @@ class CreatureDataModel<
         const attributes = this.parent.system.attributes;
         const { constitution, dexterity, strength, willpower } = attributes;
 
-        this.endurance.total = (constitution + strength + willpower) * 3 + 5;
-        this.essence.total = R.sum(R.values(attributes));
-        this.life.total = (constitution + strength) * 4 + 10;
+        this.endurance.max = (constitution + strength + willpower) * 3 + 5;
+        this.essence.max = R.sum(R.values(attributes));
+        this.life.max = (constitution + strength) * 4 + 10;
 
         this.speed = {
             value: (constitution + dexterity) * 2,

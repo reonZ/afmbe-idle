@@ -10,7 +10,7 @@ class ZombieDataModel<TParent extends Zombie = Zombie> extends CreatureDataModel
 
     prepareDerivedData(): void {
         super.prepareDerivedData();
-        this.life.total = Infinity;
+        this.life.max = Infinity;
     }
 }
 

@@ -8,7 +8,7 @@ import type {
 import type { ActorSource } from "@7h3laughingman/foundry-types/common/documents/actor.mjs";
 import type { Creature, CreatureAttribute, CreatureDataSchema, CreatureSystem } from "actor";
 import type { BooleanField, PositiveIntegerField, ValueAndTotalField } from "fields";
-import type { CHARACTER_TYPES, CharacterAttributesModule, CharacterDataModel, CharacterExperienceModule } from ".";
+import type { CHARACTER_TYPES, CharacterDataModel } from ".";
 
 type CharacterDetailsSchema = {
     description: HTMLField;
@@ -42,8 +42,8 @@ type CharacterSystem<TParent extends Character = Character> = CreatureSystem<TPa
     Omit<CharacterDataSource, keyof CreatureSystem>;
 
 declare class Character<TParent extends TokenDocument | null = TokenDocument | null> extends Creature<TParent> {
-    attributes: CharacterAttributesModule;
-    experience: CharacterExperienceModule;
+    // attributes: CharacterAttributesModule;
+    // experience: CharacterExperienceModule;
     system: CharacterDataModel;
 }
 

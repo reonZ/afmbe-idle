@@ -4,6 +4,3 @@ export * from "./modules";
 export * from "./data";
 export * from "./task";
 export * from "./sheet";
-export * from "./adversary";
-export * from "./character";
-export * from "./zombie";

@@ -8,7 +8,7 @@ class CreatureEssence<TParent extends Creature = Creature> extends ActorModule<T
     }
 
     get max(): number {
-        return this.actor.system.essence.total;
+        return this.actor.system.essence.max;
     }
 
     get label(): string {

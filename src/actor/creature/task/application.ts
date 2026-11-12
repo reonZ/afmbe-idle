@@ -52,7 +52,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                 if (!item?.isOfType("skill")) return;
 
                 if (!embeddedId) {
-                    return { id: item.id, label: item.name, value: item.system.level };
+                    return { id: item.id, label: item.name, value: item.system.level.value };
                 }
 
                 const specialty = item.system.specialties.get(embeddedId);
