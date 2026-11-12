@@ -1,7 +1,7 @@
 import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
 import type { ActorAFMBE } from "actor";
-import type { ItemAFMBE, ItemDataSchema, ItemSystem } from "item";
-import type { ArmorSource, PhysicalDataModel, WeaponSource } from ".";
+import type { ArmorSource, ItemAFMBE, ItemDataSchema, ItemSystem, WeaponSource } from "item";
+import type { PhysicalDataModel } from ".";
 
 type PhysicalDataSchema = ItemDataSchema & {};
 
