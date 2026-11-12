@@ -4,7 +4,7 @@ import { signedNumber } from "utils";
 import { Skill, SkillDataSchema, SkillSpecialtyCollection, SkillSystem } from ".";
 import fields = foundry.data.fields;
 
-class SkillDataModel extends ItemDataModel<Skill, SkillDataSchema> {
+class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParent, SkillDataSchema> {
     collections = new SkillSpecialtyCollection(this.parent);
 
     static defineSchema(): SkillDataSchema {
@@ -29,6 +29,6 @@ class SkillDataModel extends ItemDataModel<Skill, SkillDataSchema> {
     }
 }
 
-interface SkillDataModel extends SkillSystem<Skill> {}
+interface SkillDataModel<TParent extends Skill = Skill> extends SkillSystem<TParent> {}
 
 export { SkillDataModel };

@@ -1,7 +1,7 @@
 import { Weapon, WeaponDataSchema, WeaponSystem } from ".";
 import { PhysicalDataModel } from "..";
 
-class WeaponDataModel extends PhysicalDataModel<Weapon, WeaponDataSchema> {
+class WeaponDataModel<TParent extends Weapon = Weapon> extends PhysicalDataModel<TParent, WeaponDataSchema> {
     static defineSchema(): WeaponDataSchema {
         return {
             ...super.defineSchema(),
@@ -13,6 +13,6 @@ class WeaponDataModel extends PhysicalDataModel<Weapon, WeaponDataSchema> {
     }
 }
 
-interface WeaponDataModel extends WeaponSystem<Weapon> {}
+interface WeaponDataModel<TParent extends Weapon = Weapon> extends WeaponSystem<TParent> {}
 
 export { WeaponDataModel };

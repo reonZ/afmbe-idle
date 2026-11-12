@@ -26,7 +26,7 @@ type SkillDataSchema = ItemDataSchema & {
 
 type SkillDataSource = ModelPropsFromSchema<SkillDataSchema>;
 
-type SkillSystem<TParent extends ItemAFMBE = ItemAFMBE> = ItemSystem<TParent> &
+type SkillSystem<TParent extends Skill = Skill> = ItemSystem<TParent> &
     Omit<SkillDataSource, "specialties"> & {
         specialties: SkillSpecialtyCollection<TParent["actor"]>;
     };

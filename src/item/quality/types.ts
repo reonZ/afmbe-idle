@@ -8,7 +8,7 @@ type QualityDataSchema = ItemDataSchema & {};
 
 type QualityDataSource = ModelPropsFromSchema<QualityDataSchema>;
 
-type QualitySystem<TParent extends ItemAFMBE = ItemAFMBE> = ItemSystem<TParent>;
+type QualitySystem<TParent extends Quality = Quality> = ItemSystem<TParent>;
 
 declare class Quality<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
     system: QualityDataModel;

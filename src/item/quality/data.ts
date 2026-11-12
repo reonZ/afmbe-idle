@@ -1,7 +1,7 @@
 import { ItemDataModel } from "item";
 import { Quality, QualityDataSchema, QualitySystem } from ".";
 
-class QualityDataModel extends ItemDataModel<Quality, QualityDataSchema> {
+class QualityDataModel<TParent extends Quality = Quality> extends ItemDataModel<TParent, QualityDataSchema> {
     static defineSchema(): QualityDataSchema {
         return {
             ...super.defineSchema(),
@@ -13,6 +13,6 @@ class QualityDataModel extends ItemDataModel<Quality, QualityDataSchema> {
     }
 }
 
-interface QualityDataModel extends QualitySystem<Quality> {}
+interface QualityDataModel<TParent extends Quality = Quality> extends QualitySystem<TParent> {}
 
 export { QualityDataModel };

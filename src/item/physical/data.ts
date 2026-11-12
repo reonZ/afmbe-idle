@@ -1,10 +1,10 @@
-import { ItemAFMBE, ItemDataModel, ItemDataSchema, PhysicalSystem } from "item";
+import { ItemDataModel, Physical, PhysicalDataSchema, PhysicalSystem } from "item";
 
 class PhysicalDataModel<
-    TParent extends ItemAFMBE = ItemAFMBE,
-    TSchema extends ItemDataSchema = ItemDataSchema,
+    TParent extends Physical = Physical,
+    TSchema extends PhysicalDataSchema = PhysicalDataSchema,
 > extends ItemDataModel<TParent, TSchema> {
-    static defineSchema(): ItemDataSchema {
+    static defineSchema(): PhysicalDataSchema {
         return {
             ...super.defineSchema(),
         };
@@ -16,8 +16,8 @@ class PhysicalDataModel<
 }
 
 interface PhysicalDataModel<
-    TParent extends ItemAFMBE,
-    TSchema extends ItemDataSchema,
+    TParent extends Physical = Physical,
+    TSchema extends PhysicalDataSchema = PhysicalDataSchema,
 > extends PhysicalSystem<TParent> {}
 
 export { PhysicalDataModel };
