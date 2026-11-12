@@ -1,30 +1,33 @@
 import { PositiveIntergerValueField } from "fields";
 import { ItemDataModel } from "item";
 import { signedNumber } from "utils";
-import { Skill, SkillDataSchema, SkillSpecialtyCollection, SkillSystem } from ".";
+import { Skill, SkillDataSchema, SkillSystem } from ".";
 import fields = foundry.data.fields;
 
 class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParent, SkillDataSchema> {
-    collections = new SkillSpecialtyCollection(this.parent);
-
     static defineSchema(): SkillDataSchema {
         return {
             ...super.defineSchema(),
             level: new PositiveIntergerValueField({ min: 1 }),
-            specialties: new fields.ArrayField(
+            specialties: new fields.TypedObjectField(
                 new fields.SchemaField({
-                    id: new fields.DocumentIdField({
-                        nullable: false,
-                        initial: () => foundry.utils.randomID(),
-                    }),
                     level: new PositiveIntergerValueField({ min: 1 }),
-                    name: new fields.StringField(),
+                    name: new fields.StringField({
+                        required: true,
+                        nullable: false,
+                        initial: undefined,
+                    }),
+                    slug: new fields.StringField({
+                        required: true,
+                        nullable: false,
+                        initial: undefined,
+                    }),
                 }),
             ),
         };
     }
 
-    get bonus(): string {
+    get modifier(): string {
         return signedNumber(this.level.value);
     }
 }

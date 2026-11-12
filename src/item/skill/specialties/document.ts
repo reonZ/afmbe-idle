@@ -35,7 +35,7 @@ class SkillSpecialty<TActor extends ActorAFMBE | null = ActorAFMBE | null> {
         return this.item.system.level.value + this.level.value;
     }
 
-    get bonus(): string {
+    get modifier(): string {
         return signedNumber(this.total);
     }
 }

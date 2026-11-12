@@ -49,16 +49,20 @@ declare global {
         AFMBE: typeof config;
     }
 
-    type Prettify<T> = { [K in keyof T]: T[K] } & {};
-
-    type ValueAndMax = { max: number; value: number };
-
-    type TupleOf<T> = [T, ...T[]];
-
     namespace globalThis {
         // @ts-ignore
         const CONFIG: SystemConfig;
         // @ts-ignore
         const game: ExtandedGame;
     }
+
+    type Prettify<T> = { [K in keyof T]: T[K] } & {};
+
+    type ValueAndMax = { max: number; value: number };
+
+    type TupleOf<T> = [T, ...T[]];
+
+    type WithBonus<T extends Record<string, any>, K extends keyof T> = Omit<T, K> & {
+        [k in K]: T[k] & { bonus: number };
+    };
 }

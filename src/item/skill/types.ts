@@ -1,35 +1,34 @@
 import type { ItemSource } from "@7h3laughingman/foundry-types/client/documents/_module.mjs";
 import type {
-    ArrayField,
-    DocumentIdField,
     ModelPropsFromSchema,
     SchemaField,
     StringField,
+    TypedObjectField,
 } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
 import type { ActorAFMBE } from "actor";
 import type { PositiveIntergerValueField } from "fields";
 import type { ItemAFMBE, ItemDataSchema, ItemSystem } from "item";
-import type { SkillDataModel, SkillSpecialtyCollection } from ".";
+import type { SkillDataModel } from ".";
 
 type SkillSpecialtySchema = {
-    id: DocumentIdField<string, true, false, true>;
     level: PositiveIntergerValueField;
-    name: StringField<string, string, true, false, true>;
+    name: StringField<string, string, true, false, false>;
+    slug: StringField<string, string, true, false, false>;
 };
 
 type SkillSpecialtySource = ModelPropsFromSchema<SkillSpecialtySchema>;
 
 type SkillDataSchema = ItemDataSchema & {
     level: PositiveIntergerValueField;
-    specialties: ArrayField<SchemaField<SkillSpecialtySchema>>;
+    specialties: TypedObjectField<SchemaField<SkillSpecialtySchema>>;
 };
 
 type SkillDataSource = ModelPropsFromSchema<SkillDataSchema>;
 
-type SkillSystem<TParent extends Skill = Skill> = ItemSystem<TParent> &
-    Omit<SkillDataSource, "specialties"> & {
-        specialties: SkillSpecialtyCollection<TParent["actor"]>;
-    };
+type SkillSystem<TParent extends Skill = Skill> = ItemSystem<TParent> & {
+    level: { value: number; bonus: number };
+    specialties: Record<string, WithBonus<SkillSpecialtySource, "level">>;
+};
 
 declare class Skill<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
     system: SkillDataModel;
