@@ -7,20 +7,20 @@ import type {
     StringField,
 } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
 import type { ActorAFMBE } from "actor";
-import type { PositiveIntegerField } from "fields";
+import type { PositiveIntergerValueField } from "fields";
 import type { ItemAFMBE, ItemDataSchema, ItemSystem } from "item";
 import type { SkillDataModel, SkillSpecialtyCollection } from ".";
 
 type SkillSpecialtySchema = {
     id: DocumentIdField<string, true, false, true>;
-    level: PositiveIntegerField;
+    level: PositiveIntergerValueField;
     name: StringField<string, string, true, false, true>;
 };
 
 type SkillSpecialtySource = ModelPropsFromSchema<SkillSpecialtySchema>;
 
 type SkillDataSchema = ItemDataSchema & {
-    level: PositiveIntegerField;
+    level: PositiveIntergerValueField;
     specialties: ArrayField<SchemaField<SkillSpecialtySchema>>;
 };
 

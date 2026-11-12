@@ -8,8 +8,8 @@ class ValueField<T extends fields.DataField> extends fields.SchemaField<{ value:
 }
 
 class PositiveIntergerValueField extends ValueField<PositiveIntegerField> {
-    constructor() {
-        super(new PositiveIntegerField());
+    constructor(options: { min?: number } = {}) {
+        super(new PositiveIntegerField(options));
     }
 }
 

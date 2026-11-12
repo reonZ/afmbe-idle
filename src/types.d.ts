@@ -51,7 +51,7 @@ declare global {
 
     type Prettify<T> = { [K in keyof T]: T[K] } & {};
 
-    type ValueAndTotal = { total: number; value: number };
+    type ValueAndMax = { max: number; value: number };
 
     type TupleOf<T> = [T, ...T[]];
 

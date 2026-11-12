@@ -1,4 +1,4 @@
-import { PositiveIntegerField } from "fields";
+import { PositiveIntergerValueField } from "fields";
 import { ItemDataModel } from "item";
 import { signedNumber } from "utils";
 import { Skill, SkillDataSchema, SkillSpecialtyCollection, SkillSystem } from ".";
@@ -10,14 +10,14 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
     static defineSchema(): SkillDataSchema {
         return {
             ...super.defineSchema(),
-            level: new PositiveIntegerField({ min: 1 }),
+            level: new PositiveIntergerValueField({ min: 1 }),
             specialties: new fields.ArrayField(
                 new fields.SchemaField({
                     id: new fields.DocumentIdField({
                         nullable: false,
                         initial: () => foundry.utils.randomID(),
                     }),
-                    level: new PositiveIntegerField({ min: 1 }),
+                    level: new PositiveIntergerValueField({ min: 1 }),
                     name: new fields.StringField(),
                 }),
             ),
@@ -25,7 +25,7 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
     }
 
     get bonus(): string {
-        return signedNumber(this.level);
+        return signedNumber(this.level.value);
     }
 }
 
