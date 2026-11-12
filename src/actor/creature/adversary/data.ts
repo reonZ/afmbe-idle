@@ -1,7 +1,10 @@
 import { CreatureDataModel } from "actor";
 import { Adversary, AdversaryDataSchema, AdversarySystem } from ".";
 
-class AdversaryDataModel extends CreatureDataModel<Adversary, AdversaryDataSchema> {
+class AdversaryDataModel<TParent extends Adversary = Adversary> extends CreatureDataModel<
+    TParent,
+    AdversaryDataSchema
+> {
     static defineSchema(): AdversaryDataSchema {
         return {
             ...super.defineSchema(),
@@ -13,6 +16,6 @@ class AdversaryDataModel extends CreatureDataModel<Adversary, AdversaryDataSchem
     }
 }
 
-interface AdversaryDataModel extends AdversarySystem {}
+interface AdversaryDataModel<TParent extends Adversary = Adversary> extends AdversarySystem<TParent> {}
 
 export { AdversaryDataModel };

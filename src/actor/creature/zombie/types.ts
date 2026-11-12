@@ -5,7 +5,7 @@ type ZombieDataSchema = CreatureDataSchema & {};
 
 type ZombieDataSource = foundry.data.fields.ModelPropsFromSchema<ZombieDataSchema>;
 
-type ZombieSystem = CreatureSystem;
+type ZombieSystem<TParent extends Zombie = Zombie> = CreatureSystem<TParent>;
 
 declare class Zombie<TParent extends TokenDocument | null = TokenDocument | null> extends Creature<TParent> {
     system: ZombieDataModel;

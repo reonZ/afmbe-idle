@@ -7,7 +7,7 @@ type AdversaryDataSchema = CreatureDataSchema & {};
 
 type AdversaryDataSource = fields.ModelPropsFromSchema<AdversaryDataSchema>;
 
-type AdversarySystem = CreatureSystem;
+type AdversarySystem<TParent extends Adversary = Adversary> = CreatureSystem<TParent>;
 
 declare class Adversary<TParent extends TokenDocument | null = TokenDocument | null> extends Creature<TParent> {
     system: AdversaryDataModel;

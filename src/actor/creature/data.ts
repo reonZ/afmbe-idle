@@ -53,6 +53,9 @@ class CreatureDataModel<
     }
 }
 
-interface CreatureDataModel<TParent extends Creature, TSchema extends CreatureDataSchema> extends CreatureSystem {}
+interface CreatureDataModel<
+    TParent extends Creature = Creature,
+    TSchema extends CreatureDataSchema = CreatureDataSchema,
+> extends CreatureSystem<TParent> {}
 
 export { CreatureDataModel };

@@ -20,6 +20,8 @@ type ActorDataSchema = {};
 
 type ActorDataSource = ModelPropsFromSchema<ActorDataSchema>;
 
+type ActorSystem<TParent extends ActorAFMBE = ActorAFMBE> = {};
+
 type ActorSourceAFMBE = CreatureSource;
 
 type ActorModules<TParent extends ActorAFMBE> = Partial<Record<keyof TParent, typeof ActorModule<TParent>>>;
@@ -31,5 +33,6 @@ export type {
     ActorItemTypes,
     ActorModules,
     ActorSourceAFMBE,
+    ActorSystem,
     ActorType,
 };

@@ -13,7 +13,10 @@ import {
 } from ".";
 import fields = foundry.data.fields;
 
-class CharacterDataModel extends CreatureDataModel<Character, CharacterDataSchema> {
+class CharacterDataModel<TParent extends Character = Character> extends CreatureDataModel<
+    TParent,
+    CharacterDataSchema
+> {
     static modules = {
         ...super.modules,
         attributes: CharacterAttributesModule as any,
@@ -63,6 +66,6 @@ class CharacterDataModel extends CreatureDataModel<Character, CharacterDataSchem
     }
 }
 
-interface CharacterDataModel extends CharacterSystem {}
+interface CharacterDataModel<TParent extends Character = Character> extends CharacterSystem<TParent> {}
 
 export { CharacterDataModel };

@@ -1,5 +1,5 @@
 import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
-import type { ActorAFMBE, ActorDataSchema } from "actor";
+import type { ActorAFMBE, ActorDataSchema, ActorSystem } from "actor";
 import type { PositiveIntergerValueField } from "fields";
 import type {
     AdversarySource,
@@ -26,7 +26,7 @@ type CreatureDataSchema = ActorDataSchema & {
 
 type CreatureDataSource = ModelPropsFromSchema<CreatureDataSchema>;
 
-type CreatureSystem = {
+type CreatureSystem<TParent extends Creature = Creature> = ActorSystem<TParent> & {
     attributes: CreatureAttributes;
     endurance: ValueAndTotal;
     essence: ValueAndTotal;

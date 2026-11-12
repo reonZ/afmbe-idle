@@ -1,6 +1,6 @@
 import { ItemType } from "item";
 import * as R from "remeda";
-import { ActorAFMBE, ActorDataSchema, ActorDataSource, ActorModules } from ".";
+import { ActorAFMBE, ActorDataSchema, ActorModules, ActorSystem } from ".";
 
 class ActorDataModel<TParent extends ActorAFMBE, TSchema extends ActorDataSchema> extends foundry.abstract
     .TypeDataModel<TParent, TSchema> {
@@ -27,6 +27,6 @@ class ActorDataModel<TParent extends ActorAFMBE, TSchema extends ActorDataSchema
     }
 }
 
-interface ActorDataModel<TParent extends ActorAFMBE, TSchema extends ActorDataSchema> extends ActorDataSource {}
+interface ActorDataModel<TParent extends ActorAFMBE, TSchema extends ActorDataSchema> extends ActorSystem<TParent> {}
 
 export { ActorDataModel };
