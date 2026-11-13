@@ -6,6 +6,8 @@ type SkillSheetRenderOptions = ItemSheetRenderOptions;
 
 type SkillSheetConfiguration = ItemSheetConfiguration;
 
-type SkillSheetRenderContext = ItemSheetRenderContext & {};
+type SkillSheetRenderContext = ItemSheetRenderContext & {
+    level: number;
+};
 
 export type { SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext, SkillSheetRenderOptions };

@@ -1,15 +1,13 @@
-import { ActorParts, ActorSheetAFMBE, ActorSheetConfiguration } from "actor";
+import { ActorSheetAFMBE } from "actor";
+import { ApplicationPartAFMBE } from "handlebars-application";
 import * as R from "remeda";
 import { splitString } from "utils";
-import { CreatureSheetPart, CreatureSheetRenderContext, RollTaskTargetData } from ".";
+import { CreatureSheetConfiguration, CreatureSheetPart, CreatureSheetRenderContext, RollTaskTargetData } from ".";
 import { Creature, CREATURE_ATTRIBUTES, CREATURE_SECONDARIES, CreatureAttributes } from "..";
 
 abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorSheetAFMBE<TParent> {
-    static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
+    static DEFAULT_OPTIONS: DeepPartial<CreatureSheetConfiguration> = {
         classes: ["creature"],
-        position: {
-            width: 480,
-        },
         actions: {
             "roll-task": this.#rollTask,
         },
@@ -21,7 +19,7 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
             template: "systems/afmbe-idle/templates/actor/creature/attributes.hbs",
             prepareContext: this.prepareAttributesContext,
         },
-    } satisfies ActorParts<CreatureSheetPart, CreatureSheetRenderContext>;
+    } satisfies ApplicationPartAFMBE<CreatureSheetPart, CreatureSheetRenderContext>;
 
     static prepareAttributesContext<T extends CreatureSheetRenderContext>(this: CreatureSheet, context: T): T {
         const actor = this.actor;

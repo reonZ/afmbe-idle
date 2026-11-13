@@ -1,13 +1,11 @@
-import { ActorSheetConfiguration, Creature } from "actor";
-import { ItemParts, ItemSheetAFMBE } from "item";
-import { Skill, SkillSheetPart, SkillSheetRenderContext } from "..";
+import { Creature } from "actor";
+import { ApplicationPartAFMBE } from "handlebars-application";
+import { ItemSheetAFMBE } from "item";
+import { Skill, SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext } from "..";
 
-abstract class SkillSheet<TParent extends Skill<Creature>> extends ItemSheetAFMBE<TParent> {
-    static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
+class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>> extends ItemSheetAFMBE<TParent> {
+    static DEFAULT_OPTIONS: DeepPartial<SkillSheetConfiguration> = {
         classes: ["skill"],
-        position: {
-            width: 480,
-        },
         actions: {},
     };
 
@@ -21,13 +19,14 @@ abstract class SkillSheet<TParent extends Skill<Creature>> extends ItemSheetAFMB
             template: "systems/afmbe-idle/templates/item/skill/level.hbs",
             prepareContext: this.prepareLevelContext,
         },
-    } satisfies ItemParts<SkillSheetPart, SkillSheetRenderContext>;
+    } satisfies ApplicationPartAFMBE<SkillSheetPart, SkillSheetRenderContext>;
 
-    static prepareDetailsContext<T extends SkillSheetRenderContext>(context: T): T {
+    static prepareDetailsContext<T extends SkillSheetRenderContext>(this: SkillSheet, context: T): T {
         return context;
     }
 
-    static prepareLevelContext<T extends SkillSheetRenderContext>(context: T): T {
+    static prepareLevelContext<T extends SkillSheetRenderContext>(this: SkillSheet, context: T): T {
+        context.level = this.item.system.level.value;
         return context;
     }
 }

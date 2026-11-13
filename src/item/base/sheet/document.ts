@@ -1,15 +1,13 @@
+import { applicationMixinAFMBE, ApplicationPartAFMBE } from "handlebars-application";
 import { ItemAFMBE } from "item";
-import { ItemParts, ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext } from ".";
+import { ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext } from ".";
 
-abstract class ItemSheetAFMBE<
-    TParent extends ItemAFMBE = ItemAFMBE,
-> extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ItemSheetV2<ItemAFMBE>) {
+abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends applicationMixinAFMBE(
+    foundry.applications.sheets.ItemSheetV2<ItemAFMBE>,
+) {
     static DEFAULT_OPTIONS: DeepPartial<ItemSheetConfiguration> = {
-        classes: ["afmbe", "item"],
-        form: {
-            submitOnChange: true,
-        },
-        actions: {},
+        classes: ["item"],
+        position: { width: 480 },
     };
 
     static PARTS = {
@@ -17,16 +15,11 @@ abstract class ItemSheetAFMBE<
             template: "systems/afmbe-idle/templates/item/header.hbs",
             prepareContext: this.prepareHeaderContext,
         },
-    } satisfies ItemParts<ItemSheetPart, ItemSheetRenderContext>;
+    } satisfies ApplicationPartAFMBE<ItemSheetPart, ItemSheetRenderContext>;
 
     static prepareHeaderContext<T extends ItemSheetRenderContext>(this: ItemSheetAFMBE, context: T): T {
         context.name = this.item.name;
         return context;
-    }
-
-    async _preparePartContext(partId: ItemSheetPart, context: ItemSheetRenderContext): Promise<ItemSheetRenderContext> {
-        const part = (this.constructor as typeof ItemSheetAFMBE).PARTS[partId];
-        return part?.prepareContext.call(this, context) ?? context;
     }
 }
 
