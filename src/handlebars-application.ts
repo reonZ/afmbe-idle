@@ -4,6 +4,7 @@ import {
     DocumentSheetRenderContext,
     HandlebarsApplication,
     HandlebarsApplicationStatic,
+    HandlebarsRenderOptions,
     HandlebarsTemplatePart,
 } from "@7h3laughingman/foundry-types/client/applications/api/_module.mjs";
 
@@ -25,6 +26,32 @@ function applicationMixinAFMBE<
             const part = cls.PARTS[partId];
             return part?.prepareContext.call(this, context) ?? context;
         }
+
+        protected _replaceHTML(
+            result: Record<string, HTMLElement>,
+            content: HTMLElement,
+            options: HandlebarsRenderOptions,
+        ) {
+            super._replaceHTML(result, content, options);
+            this.activateListeners(content);
+        }
+
+        activateListeners(html: HTMLElement): void {
+            const inputs = html.querySelectorAll<HTMLInputElement>(`input[type="number"], input[type="text"]`);
+            for (const el of inputs) {
+                el.addEventListener(
+                    "keydown",
+                    (event) => {
+                        if (event.key === "Enter") {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            el.blur();
+                        }
+                    },
+                    { capture: true },
+                );
+            }
+        }
     }
 
     return HandlebarsApplicationAFMBE as unknown as ApplicationStaticAFMBE<TPart, TContext> & TBase;
@@ -33,6 +60,7 @@ function applicationMixinAFMBE<
 interface ApplicationStaticAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext>
     extends ConstructorOf<HandlebarsApplication>, HandlebarsApplicationStatic {
     PARTS: ApplicationPartAFMBE<TPart, TContext>;
+    activateListeners(html: HTMLElement): void | Promise<void>;
 }
 
 type ApplicationPartAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext> = Record<
