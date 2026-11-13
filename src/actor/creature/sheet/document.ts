@@ -2,14 +2,7 @@ import { ActorParts, ActorSheetAFMBE, ActorSheetConfiguration } from "actor";
 import * as R from "remeda";
 import { splitString } from "utils";
 import { CreatureSheetPart, CreatureSheetRenderContext, RollTaskTargetData } from ".";
-import {
-    Creature,
-    CREATURE_ATTRIBUTES,
-    CREATURE_SECONDARIES,
-    CreatureAttributes,
-    RollTaskApplication,
-    RollTaskData,
-} from "..";
+import { Creature, CREATURE_ATTRIBUTES, CREATURE_SECONDARIES, CreatureAttributes } from "..";
 
 abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
@@ -51,14 +44,13 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
 
     static #rollTask(this: CreatureSheet<Creature>, event: PointerEvent, target: HTMLElement) {
         const data = target.dataset as RollTaskTargetData;
-        const taskData: RollTaskData = {
+        this.actor.system.rollTask({
             disable: splitString(data.disable ?? ""),
             hide: splitString(data.hide ?? ""),
             mode: event.ctrlKey ? "private" : "public",
             select: R.omit(data, ["disable", "hide", "tooltip"]),
             title: data.tooltip,
-        };
-        RollTaskApplication.roll(this.actor, taskData);
+        });
     }
 }
 

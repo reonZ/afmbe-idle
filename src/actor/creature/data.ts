@@ -9,6 +9,8 @@ import {
     CreatureEssence,
     CreatureLife,
     CreatureSpeed,
+    RollTaskApplication,
+    RollTaskData,
 } from ".";
 
 class CreatureDataModel<
@@ -32,6 +34,10 @@ class CreatureDataModel<
         this.essence = new CreatureEssence(this.parent);
         this.life = new CreatureLife(this.parent);
         this.speed = new CreatureSpeed(this.parent);
+    }
+
+    rollTask(options?: RollTaskData): RollTaskApplication {
+        return RollTaskApplication.roll(this.parent, options);
     }
 }
 

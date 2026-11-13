@@ -66,7 +66,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         //         );
     }
 
-    static roll(actor: Creature, data: RollTaskData): RollTaskApplication {
+    static roll(actor: Creature, data: RollTaskData = {}): RollTaskApplication {
         const app = new this({ actor, data });
         app.render(true);
         return app;
