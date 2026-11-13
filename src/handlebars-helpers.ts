@@ -1,7 +1,8 @@
 import { HelperDelegate, HelperOptions } from "handlebars";
 import * as R from "remeda";
+import { signedNumber } from "utils";
 
-function templateArray(...args: Parameters<HelperDelegate>) {
+function templateArray(...args: Parameters<HelperDelegate>): string {
     if (args.length < 2) return "";
 
     const options = args.pop() as HelperOptions;
@@ -34,7 +35,7 @@ function templateLocalize(...args: Parameters<HelperDelegate>): string {
     return _loc(R.join(path, "."), options.hash);
 }
 
-function templateDot(...args: Parameters<HelperDelegate>) {
+function templateDot(...args: Parameters<HelperDelegate>): unknown {
     if (args.length < 3) return;
 
     const parent = args[0];
@@ -44,8 +45,14 @@ function templateDot(...args: Parameters<HelperDelegate>) {
     return foundry.utils.getProperty(parent, path);
 }
 
+function templateSignedNumber(context: unknown): string {
+    const num = Number(context) || 0;
+    return signedNumber(num);
+}
+
 export default {
     array: templateArray,
     dot: templateDot,
     localize: templateLocalize,
+    signedNumber: templateSignedNumber,
 };

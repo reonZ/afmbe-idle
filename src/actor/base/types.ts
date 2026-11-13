@@ -5,6 +5,12 @@ import type { ACTOR_TYPES } from ".";
 
 type ActorType = (typeof ACTOR_TYPES)[number];
 
+type ActorModifier = {
+    id: string;
+    label: string;
+    value: number;
+};
+
 type ActorInstances<TParent extends TokenDocument | null = TokenDocument | null> = {
     adversary: Adversary<TParent>;
     character: Character<TParent>;
@@ -22,4 +28,12 @@ type ActorDataSource = ModelPropsFromSchema<ActorDataSchema>;
 
 type ActorSourceAFMBE = CreatureSource;
 
-export type { ActorDataSchema, ActorDataSource, ActorInstances, ActorItemTypes, ActorSourceAFMBE, ActorType };
+export type {
+    ActorDataSchema,
+    ActorDataSource,
+    ActorInstances,
+    ActorItemTypes,
+    ActorModifier,
+    ActorSourceAFMBE,
+    ActorType,
+};

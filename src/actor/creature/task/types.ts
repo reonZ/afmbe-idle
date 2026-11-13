@@ -2,11 +2,15 @@ import type {
     ApplicationConfiguration,
     ApplicationRenderContext,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
+import type { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
+import type { ActorModifier } from "actor";
 import type { Creature, CreatureAttributeType } from "..";
-import { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 
 type RollTaskRenderContext = ApplicationRenderContext & {
-    modifiers: Record<string, { id: string; label: string; value: string }>;
+    modifiers: {
+        available: ActorModifier[];
+        added: ActorModifier[];
+    };
     selects: RollTaskSelects;
     private: boolean;
 };
@@ -39,12 +43,6 @@ type RollTaskSelect<K extends string, V extends string> = {
 
 type RollTaskSelectOption<V extends string = string> = Omit<FormSelectOption, "value"> & { value: V };
 
-type RollTaskModifier = {
-    id: string;
-    label: string;
-    value: number;
-};
-
 type RollTaskData = {
     disable?: RollTaskSelectKey[];
     hide?: RollTaskSelectKey[];
@@ -68,7 +66,6 @@ type RollTaskSelected = {
 export type {
     RollTaskApplicationConfiguration,
     RollTaskData,
-    RollTaskModifier,
     RollTaskRenderContext,
     RollTaskSelect,
     RollTaskSelected,

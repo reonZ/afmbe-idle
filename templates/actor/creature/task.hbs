@@ -17,13 +17,13 @@
         {{localize 'afmbe.actor.creature.task.modifier.add'}}
     </button>
 </div>
-{{#each modifiers as |modifier|}}
+{{#each modifiers.added as |modifier|}}
 <div class="modifier" data-id="{{modifier.id}}">
     <div class="name">
         {{modifier.label}}
     </div>
     <div class="value">
-        {{modifier.value}}
+        {{signedNumber modifier.value}}
     </div>
     <a data-action="delete-modifier">
         <i class="fa-solid fa-trash"></i>

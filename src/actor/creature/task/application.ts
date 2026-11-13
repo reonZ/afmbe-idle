@@ -4,26 +4,26 @@ import {
     ApplicationRenderContext,
     ApplicationRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
+import { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
+import { ActorModifier } from "actor/base";
 import * as R from "remeda";
-import { localize, signedNumber } from "utils";
+import { localize } from "utils";
 import {
     RollTaskApplicationConfiguration,
-    RollTaskSelects,
-    RollTaskSelectKey,
     RollTaskData,
     RollTaskRenderContext,
     RollTaskSelected,
+    RollTaskSelectKey,
+    RollTaskSelects,
     RollTaskTruncatedSelects,
-    RollTaskModifier,
 } from ".";
 import { Creature, CREATURE_ATTRIBUTES, CreatureAttributes } from "..";
-import { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 
 class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     #actor: Creature;
     #disable: RollTaskSelectKey[];
     #hide: RollTaskSelectKey[];
-    #modifiers: Record<string, RollTaskModifier>;
+    #modifiers: Collection<string, ActorModifier>;
     #mode: "private" | "public";
     #selected: RollTaskSelected;
 
@@ -44,10 +44,10 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         this.#mode = mode ?? "public";
         this.#selected = R.isObjectType(select) ? foundry.utils.deepClone(select) : {};
 
-        this.#modifiers = {};
+        this.#modifiers = new Collection();
         //         this.#modifiers = R.pipe(
         //             R.isArray(modifiers) ? modifiers : [],
-        //             R.map((id): RollTaskModifier | undefined => {
+        //             R.map((id): ActorModifier | undefined => {
         //                 const [itemId, slug] = R.split(id, ".");
         //                 const item = actor.items.get(itemId);
         //                 if (!item?.isOfType("skill")) return;
@@ -133,9 +133,10 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         ];
 
         return {
-            modifiers: R.mapValues(this.#modifiers, ({ id, label, value }) => {
-                return { id, label, value: signedNumber(value) };
-            }),
+            modifiers: {
+                added: this.#modifiers.contents,
+                available: [],
+            },
             selects: R.map(selects, ({ blank, key, label, options }) => {
                 return {
                     blank: blank ? "" : undefined,
@@ -161,19 +162,19 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         delete this.actor.apps[this.id];
     }
 
-    protected _renderHTML(context: ApplicationRenderContext, options: ApplicationRenderOptions): Promise<string> {
+    protected _renderHTML(context: ApplicationRenderContext, _options: ApplicationRenderOptions): Promise<string> {
         return foundry.applications.handlebars.renderTemplate(
             "systems/afmbe-idle/templates/actor/creature/task.hbs",
             context,
         );
     }
 
-    protected _replaceHTML(result: string, content: HTMLElement, options: ApplicationRenderOptions): void {
+    protected _replaceHTML(result: string, content: HTMLElement, _options: ApplicationRenderOptions): void {
         content.innerHTML = result;
         this.#activateListeners(content);
     }
 
-    protected _onClickAction(event: PointerEvent, target: HTMLElement): void {
+    protected _onClickAction(_event: PointerEvent, target: HTMLElement): void {
         const action = target.dataset.action as EventAction;
 
         switch (action) {
@@ -186,7 +187,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
 
     #deleteModifier(target: HTMLElement) {
         const id = target.closest<HTMLElement>("[data-id]")?.dataset.id;
-        delete this.#modifiers[id ?? ""];
+        this.#modifiers.delete(id ?? "");
         this.render();
     }
 
@@ -195,11 +196,11 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         const value = target.previousElementSibling as HTMLInputElement;
         const label = value.previousElementSibling as HTMLInputElement;
 
-        this.#modifiers[id] = {
+        this.#modifiers.set(id, {
             id,
             label: label.value.trim() || localize("actor.creature.task.modifier.manual"),
             value: value.valueAsNumber,
-        };
+        });
 
         this.render();
     }
