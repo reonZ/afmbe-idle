@@ -80,6 +80,11 @@
                     }
                 }
             }
+        },
+        "item": {
+            "skill": {
+                "level": "Level"
+            }
         }
     }
 }

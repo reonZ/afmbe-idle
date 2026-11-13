@@ -5,9 +5,9 @@
     </div>
     <div class="primary">
         {{#each primary as |attribute|}}
-        <div class="name">
+        <label class="name">
             {{attribute.label}}
-        </div>
+        </label>
         <input type="number" class="value" value="{{attribute.value}}" disabled />
         <a
             data-action="roll-task"
@@ -24,12 +24,13 @@
     </div>
     <div class="secondary">
         {{#each secondary as |attribute|}}
-        <div class="name">
+        <label class="name" for="{{rootId}}-{{attribute.key}}">
             {{attribute.label}}
-        </div>
+        </label>
         <input
             type="number"
             name="system.{{attribute.key}}.value"
+            id="{{rootId}}-{{attribute.key}}"
             class="value"
             value="{{attribute.value}}"
             min="0"
