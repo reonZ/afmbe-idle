@@ -22,15 +22,15 @@ class Specialty<TParent extends Skill = Skill> {
     }
 
     get longId(): string {
-        return this.item.id + "." + this.slug;
+        return this.item.id + "." + this.id;
     }
 
     get uuid(): string {
-        return this.item.uuid + ".Specialty." + this.slug;
+        return this.item.uuid + ".Specialty." + this.id;
     }
 
     get total(): number {
-        return this.item.system.level.value + this.level.value;
+        return this.item.system.level.value + this.level.value * 2;
     }
 
     get modifier(): string {

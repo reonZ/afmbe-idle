@@ -40,7 +40,7 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
         return context;
     }
 
-    static #rollTask(this: CreatureSheet<Creature>, event: PointerEvent, target: HTMLElement) {
+    static #rollTask(this: CreatureSheet, event: PointerEvent, target: HTMLElement) {
         const data = target.dataset as RollTaskTargetData;
         this.actor.system.rollTask({
             disable: splitString(data.disable ?? ""),

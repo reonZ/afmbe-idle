@@ -49,6 +49,7 @@ class CharacterDataModel<TParent extends Character = Character> extends Creature
 
     prepareBaseData(): void {
         super.prepareBaseData();
+
         this.attributes = new CharacterAttributes(this.parent);
         this.experience = new CharacterExperience(this.parent);
     }

@@ -27,12 +27,9 @@ function applicationMixinAFMBE<
             return part?.prepareContext.call(this, context) ?? context;
         }
 
-        protected _replaceHTML(
-            result: Record<string, HTMLElement>,
-            content: HTMLElement,
-            options: HandlebarsRenderOptions,
-        ) {
+        _replaceHTML(result: Record<string, HTMLElement>, content: HTMLElement, options: HandlebarsRenderOptions) {
             super._replaceHTML(result, content, options);
+            content.dataset.tooltipDirection = "UP";
             this.activateListeners(content);
         }
 

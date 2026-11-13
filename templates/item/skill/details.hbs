@@ -1,3 +1,18 @@
 <div class="details">
-    details
+    <div class="header">
+        {{localize 'afmbe.item.skill.specialty.title'}}
+        <a data-action="add-specialty" data-tooltip="afmbe.item.skill.specialty.add">
+            <i class="fa-solid fa-plus"></i>
+        </a>
+    </div>
+    {{#each specialties as |specialty|}}
+    <div class="specialty" data-id="{{specialty.id}}">
+        <input type="text" name="system.specialties.{{@index}}.id" value="{{specialty.id}}" />
+        <input type="text" name="system.specialties.{{@index}}.name" value="{{specialty.name}}" />
+        <input type="number" name="system.specialties.{{@index}}.level.value" value="{{specialty.level.value}}" />
+        <a data-action="delete-specialty" data-tooltip="afmbe.item.skill.specialty.delete">
+            <i class="fa-solid fa-trash"></i>
+        </a>
+    </div>
+    {{/each}}
 </div>
