@@ -1,7 +1,9 @@
 import { ItemAFMBE } from "item";
-import { ActorAFMBE, ActorSheetConfiguration, ActorSheetRenderContext, ActorSheetRenderOptions } from "..";
+import { ActorAFMBE, ActorParts, ActorSheetConfiguration, ActorSheetPart, ActorSheetRenderContext } from "..";
 
-abstract class ActorSheetAFMBE<TParent extends ActorAFMBE> extends foundry.applications.api.HandlebarsApplicationMixin(
+abstract class ActorSheetAFMBE<
+    TParent extends ActorAFMBE = ActorAFMBE,
+> extends foundry.applications.api.HandlebarsApplicationMixin(
     foundry.applications.sheets.ActorSheetV2<ActorAFMBE, ItemAFMBE>,
 ) {
     static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
@@ -12,9 +14,24 @@ abstract class ActorSheetAFMBE<TParent extends ActorAFMBE> extends foundry.appli
         actions: {},
     };
 
-    async _prepareContext(options: ActorSheetRenderOptions): Promise<ActorSheetRenderContext> {
-        const context = (await super._prepareContext(options)) as ActorSheetRenderContext;
+    static PARTS = {
+        header: {
+            template: "systems/afmbe-idle/templates/actor/header.hbs",
+            prepareContext: this.prepareHeaderContext,
+        },
+    } satisfies ActorParts<ActorSheetPart, ActorSheetRenderContext>;
+
+    static prepareHeaderContext<T extends ActorSheetRenderContext>(this: ActorSheetAFMBE, context: T): T {
+        context.name = this.actor.name;
         return context;
+    }
+
+    async _preparePartContext(
+        partId: ActorSheetPart,
+        context: ActorSheetRenderContext,
+    ): Promise<ActorSheetRenderContext> {
+        const part = (this.constructor as typeof ActorSheetAFMBE).PARTS[partId];
+        return part?.prepareContext.call(this, context) ?? context;
     }
 }
 

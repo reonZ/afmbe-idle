@@ -1,7 +1,7 @@
-import { HandlebarsTemplatePart } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
-import { ActorSheetAFMBE, ActorSheetConfiguration } from "actor";
+import { ActorParts, ActorSheetAFMBE, ActorSheetConfiguration } from "actor";
 import * as R from "remeda";
-import { CreatureSheetPart, CreatureSheetRenderContext, CreatureSheetRenderOptions, RollTaskTargetData } from ".";
+import { splitString } from "utils";
+import { CreatureSheetPart, CreatureSheetRenderContext, RollTaskTargetData } from ".";
 import {
     Creature,
     CREATURE_ATTRIBUTES,
@@ -10,9 +10,8 @@ import {
     RollTaskApplication,
     RollTaskData,
 } from "..";
-import { splitString } from "utils";
 
-abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE<TParent> {
+abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
         classes: ["creature"],
         position: {
@@ -23,31 +22,15 @@ abstract class CreatureSheet<TParent extends Creature> extends ActorSheetAFMBE<T
         },
     };
 
-    static PARTS: Record<string, HandlebarsTemplatePart> = {
+    static PARTS = {
+        ...super.PARTS,
         attributes: {
-            classes: ["attributes"],
             template: "systems/afmbe-idle/templates/actor/creature/attributes.hbs",
+            prepareContext: this.prepareAttributesContext,
         },
-    };
+    } satisfies ActorParts<CreatureSheetPart, CreatureSheetRenderContext>;
 
-    async _prepareContext(options: CreatureSheetRenderOptions): Promise<CreatureSheetRenderContext> {
-        const context = (await super._prepareContext(options)) as CreatureSheetRenderContext;
-        return context;
-    }
-
-    async _preparePartContext(
-        partId: CreatureSheetPart,
-        context: CreatureSheetRenderContext,
-    ): Promise<CreatureSheetRenderContext> {
-        switch (partId) {
-            case "attributes":
-                return this.#prepareAttributesContext(context);
-            default:
-                return context;
-        }
-    }
-
-    #prepareAttributesContext(context: CreatureSheetRenderContext): CreatureSheetRenderContext {
+    static prepareAttributesContext<T extends CreatureSheetRenderContext>(this: CreatureSheet, context: T): T {
         const actor = this.actor;
 
         context.attributes = {

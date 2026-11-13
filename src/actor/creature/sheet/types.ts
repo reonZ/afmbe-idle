@@ -1,5 +1,6 @@
 import type {
     ActorSheetConfiguration,
+    ActorSheetPart,
     ActorSheetRenderContext,
     ActorSheetRenderOptions,
     CreatureAttributeType,
@@ -8,7 +9,7 @@ import type {
     RollTaskSelected,
 } from "actor";
 
-type CreatureSheetPart = "attributes";
+type CreatureSheetPart = ActorSheetPart | "attributes";
 
 type CreatureSheetRenderOptions = ActorSheetRenderOptions;
 
