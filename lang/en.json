@@ -67,7 +67,10 @@
                     },
                     "private": "Make message private?",
                     "roll": "Roll {type} Task",
-                    "skill": "Skill",
+                    "skill": {
+                        "base": "Base Skill",
+                        "label": "Skill"
+                    },
                     "title": "Roll Task"
                 },
                 "zombie": {

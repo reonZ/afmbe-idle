@@ -17,6 +17,7 @@ import {
     RollTaskModifier,
 } from ".";
 import { Creature, CREATURE_ATTRIBUTES, CreatureAttributes } from "..";
+import { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 
 class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     #actor: Creature;
@@ -43,25 +44,26 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         this.#mode = mode ?? "public";
         this.#selected = R.isObjectType(select) ? foundry.utils.deepClone(select) : {};
 
-        this.#modifiers = R.pipe(
-            R.isArray(modifiers) ? modifiers : [],
-            R.map((id): RollTaskModifier | undefined => {
-                const [itemId, slug] = R.split(id, ".");
-                const item = actor.items.get(itemId);
-                if (!item?.isOfType("skill")) return;
-
-                if (!slug) {
-                    return { id: item.id, label: item.name, value: item.system.level.value };
-                }
-
-                const specialty = item.system.specialties[slug];
-                if (!specialty) return;
-
-                return { id: specialty.longId, label: specialty.label, value: specialty.total };
-            }),
-            R.filter(R.isTruthy),
-            R.indexBy(R.prop("id")),
-        );
+        this.#modifiers = {};
+        //         this.#modifiers = R.pipe(
+        //             R.isArray(modifiers) ? modifiers : [],
+        //             R.map((id): RollTaskModifier | undefined => {
+        //                 const [itemId, slug] = R.split(id, ".");
+        //                 const item = actor.items.get(itemId);
+        //                 if (!item?.isOfType("skill")) return;
+        //
+        //                 if (!slug) {
+        //                     return { id: item.id, label: item.name, value: item.system.level.value };
+        //                 }
+        //
+        //                 const specialty = item.system.specialties[slug];
+        //                 if (!specialty) return;
+        //
+        //                 return { id: specialty.longId, label: specialty.label, value: specialty.total };
+        //             }),
+        //             R.filter(R.isTruthy),
+        //             R.indexBy(R.prop("id")),
+        //         );
     }
 
     static roll(actor: Creature, data: RollTaskData): RollTaskApplication {
@@ -106,24 +108,26 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
             {
                 blank: true,
                 key: "skill",
-                label: localize("actor.creature.task.skill"),
+                label: localize("actor.creature.task.skill.label"),
                 options: R.flatMap(this.actor.itemTypes.skill, (item) => {
-                    const entries: { value: string; label: string }[] = [];
+                    const specialties = R.values(item.system.specialties);
+                    const group = specialties.length ? item.name : undefined;
+                    const name = group ? localize("actor.creature.task.skill.base") : item.name;
 
-                    if (!this.#modifiers[item.id]) {
-                        const label = `${item.name} (${item.system.modifier})`;
-                        entries.push({ label, value: item.id });
-                    }
-
-                    for (const specialty of R.values(item.system.specialties)) {
-                        const value = specialty.longId;
-                        if (this.#modifiers[value]) continue;
-
-                        const label = `${specialty.label} (${specialty.modifier})`;
-                        entries.push({ label, value });
-                    }
-
-                    return entries;
+                    return [
+                        {
+                            label: `${name} (${item.system.modifier})`,
+                            value: item.id,
+                            group,
+                        },
+                        ...R.map(specialties, (specialty): FormSelectOption => {
+                            return {
+                                label: `- ${specialty.name} (${specialty.modifier})`,
+                                value: specialty.longId,
+                                group,
+                            };
+                        }),
+                    ];
                 }),
             },
         ];

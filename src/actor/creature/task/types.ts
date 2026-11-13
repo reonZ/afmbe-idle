@@ -3,6 +3,7 @@ import type {
     ApplicationRenderContext,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
 import type { Creature, CreatureAttributeType } from "..";
+import { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 
 type RollTaskRenderContext = ApplicationRenderContext & {
     modifiers: Record<string, { id: string; label: string; value: string }>;
@@ -24,7 +25,7 @@ type TruncatedSelects<T extends unknown[]> = T extends []
           : [H, ...TruncatedSelects<R>]
       : T;
 
-type RollTaskTruncatedSelects = Prettify<TruncatedSelects<RollTaskSelects>>;
+type RollTaskTruncatedSelects = TruncatedSelects<RollTaskSelects>;
 
 type RollTaskSelect<K extends string, V extends string> = {
     blank: string;
@@ -32,9 +33,11 @@ type RollTaskSelect<K extends string, V extends string> = {
     hide: boolean;
     key: K;
     label: string;
-    options: { value: V; label: string }[];
+    options: RollTaskSelectOption<V>[];
     selected: V | undefined;
 };
+
+type RollTaskSelectOption<V extends string = string> = Omit<FormSelectOption, "value"> & { value: V };
 
 type RollTaskModifier = {
     id: string;
