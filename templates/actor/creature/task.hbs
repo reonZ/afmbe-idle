@@ -10,8 +10,16 @@
     {{localize 'afmbe.actor.creature.task.private'}}
     <input type="checkbox" name="private" {{checked private}} />
 </div>
+<div class="header">
+    {{localize 'afmbe.actor.creature.task.modifier.title'}}
+</div>
+<div class="modifiers">
+    <select name="modifiers" {{disabled (eq modifiers.available.length 0)}}>
+        {{selectOptions modifiers.available blank=""}}
+    </select>
+</div>
 <div class="manual">
-    <input type="text" name="modifier.label" placeholder="{{localize 'afmbe.actor.creature.task.modifier.label'}}" />
+    <input type="text" name="modifier.label" placeholder="{{localize 'afmbe.actor.creature.task.modifier.name'}}" />
     <input type="number" name="modifier.value" placeholder="1" min="-10" max="10" />
     <button type="button" data-action="add-modifier">
         {{localize 'afmbe.actor.creature.task.modifier.add'}}

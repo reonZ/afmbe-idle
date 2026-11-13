@@ -62,8 +62,9 @@
                     },
                     "modifier": {
                         "add": "Add",
-                        "label": "Modifier Name",
-                        "manual": "User Modifier"
+                        "manual": "User Modifier",
+                        "name": "Modifier Name",
+                        "title": "Modifiers"
                     },
                     "private": "Make message private?",
                     "roll": "Roll {type} Task",

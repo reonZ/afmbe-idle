@@ -7,7 +7,7 @@ import {
 import { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 import { ActorModifier } from "actor/base";
 import * as R from "remeda";
-import { localize } from "utils";
+import { localize, signedNumber } from "utils";
 import {
     RollTaskApplicationConfiguration,
     RollTaskData,
@@ -135,7 +135,15 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         return {
             modifiers: {
                 added: this.#modifiers.contents,
-                available: [],
+                available: R.pipe(
+                    this.actor.system.modifiers,
+                    R.filter((modifier) => {
+                        return !this.#modifiers.has(modifier.id);
+                    }),
+                    R.map(({ id, label, value }) => {
+                        return { label: `${label} (${signedNumber(value)})`, value: id };
+                    }),
+                ),
             },
             selects: R.map(selects, ({ blank, key, label, options }) => {
                 return {

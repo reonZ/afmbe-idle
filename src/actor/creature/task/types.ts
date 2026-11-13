@@ -8,7 +8,7 @@ import type { Creature, CreatureAttributeType } from "..";
 
 type RollTaskRenderContext = ApplicationRenderContext & {
     modifiers: {
-        available: ActorModifier[];
+        available: FormSelectOption[];
         added: ActorModifier[];
     };
     selects: RollTaskSelects;
