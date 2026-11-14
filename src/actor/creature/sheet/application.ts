@@ -45,7 +45,13 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
     }
 
     static prepareSkillsContext<T extends CreatureSheetRenderContext>(this: CreatureSheet, context: T): T {
-        context.skills = this.actor.itemTypes.skill;
+        context.skills = R.pipe(
+            this.actor.itemTypes.skill,
+            R.filter((skill) => !skill.system.isSpecialty),
+            R.flatMap((skill) => {
+                return [skill, ...skill.system.specialties] as const;
+            }),
+        );
         return context;
     }
 
