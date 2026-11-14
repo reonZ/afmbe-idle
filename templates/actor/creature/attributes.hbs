@@ -1,9 +1,9 @@
 {{#with attributes}}
-<div class="attributes">
-    <div class="header">
+<div class="attributes sidebar">
+    <div class="title">
         {{localize 'afmbe.actor.creature.attributes.primary'}}
     </div>
-    <div class="primary">
+    <div class="primary list">
         {{#each primary as |attribute|}}
         <label class="name">
             {{attribute.label}}
@@ -19,10 +19,10 @@
         </a>
         {{/each}}
     </div>
-    <div class="header">
+    <div class="title">
         {{localize 'afmbe.actor.creature.attributes.secondary'}}
     </div>
-    <div class="secondary">
+    <div class="secondary list">
         {{#each secondary as |attribute|}}
         <label class="name" for="{{rootId}}-{{attribute.key}}">
             {{attribute.label}}

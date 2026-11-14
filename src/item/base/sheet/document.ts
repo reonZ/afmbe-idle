@@ -13,14 +13,8 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends app
     static PARTS = {
         header: {
             template: "systems/afmbe-idle/templates/item/header.hbs",
-            prepareContext: this.prepareHeaderContext,
         },
     } satisfies ApplicationPartAFMBE<ItemSheetPart, ItemSheetRenderContext>;
-
-    static prepareHeaderContext<T extends ItemSheetRenderContext>(this: ItemSheetAFMBE, context: T): T {
-        context.name = this.item.name;
-        return context;
-    }
 }
 
 interface ItemSheetAFMBE<TParent extends ItemAFMBE> {

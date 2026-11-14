@@ -3,8 +3,8 @@ import * as R from "remeda";
 
 class CharacterExperience<TParent extends Character = Character> extends ActorModule<TParent> {
     _initialize(): void {
-        this.total = this.actor.system.experience.total;
-        this.value = Math.min(this.actor.system.experience.value, this.total);
+        this.total = this.parent.system.experience.total;
+        this.value = Math.min(this.parent.system.experience.value, this.total);
     }
 
     giveExperience(value: number): Promise<Character | undefined> {
@@ -21,7 +21,7 @@ class CharacterExperience<TParent extends Character = Character> extends ActorMo
             changes.value = Math.clamp(changes.value, 0, total);
         }
 
-        return this.actor.update({ "system.experience": changes });
+        return this.parent.update({ "system.experience": changes });
     }
 }
 

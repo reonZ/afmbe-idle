@@ -1,4 +1,11 @@
 <div class="level">
     <label for="{{rootId}}-level">{{localize 'afmbe.item.skill.level'}}</label>
-    <input type="number" id="{{rootId}}-level" name="system.level.value" value="{{level}}" placeholder="{{level}}" min="1"/>
+    <input
+        type="number"
+        id="{{rootId}}-level"
+        name="system.level.value"
+        value="{{document.system.level.value}}"
+        placeholder="{{document.system.level.value}}"
+        min="1"
+    />
 </div>

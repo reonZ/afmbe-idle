@@ -2,10 +2,10 @@ import { signedNumber } from "utils";
 import { Skill, SkillSpecialtySource } from ".";
 
 class Specialty<TParent extends Skill = Skill> {
-    #parent: TParent;
+    parent: TParent;
 
     constructor(parent: TParent, source: SkillSpecialtySource) {
-        this.#parent = parent;
+        this.parent = parent;
         Object.assign(this, source);
     }
 
@@ -14,27 +14,23 @@ class Specialty<TParent extends Skill = Skill> {
     }
 
     get label(): string {
-        return `${this.item.name} [${this.name}]`;
+        return `${this.parent.name} [${this.name}]`;
     }
 
     get actor(): TParent["actor"] {
-        return this.item.actor;
-    }
-
-    get item(): TParent {
-        return this.#parent;
+        return this.parent.actor;
     }
 
     get longId(): string {
-        return this.item.id + "." + this.slug;
+        return this.parent.id + "." + this.slug;
     }
 
     get uuid(): string {
-        return this.item.uuid + ".Specialty." + this.slug;
+        return this.parent.uuid + ".Specialty." + this.slug;
     }
 
     get bonus(): number {
-        return this.#parent.system.bonus + this.level.value * 2;
+        return this.parent.system.bonus + this.level.value * 2;
     }
 
     get modifier(): string {

@@ -33,7 +33,7 @@ class CreatureSpeed<TParent extends Creature = Creature> extends ActorModule<TPa
     }
 
     _initialize() {
-        const { constitution, dexterity } = this.actor.system.attributes;
+        const { constitution, dexterity } = this.parent.system.attributes;
         this.base = (constitution + dexterity) * 2;
     }
 }

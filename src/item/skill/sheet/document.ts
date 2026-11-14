@@ -20,17 +20,11 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         },
         level: {
             template: "systems/afmbe-idle/templates/item/skill/level.hbs",
-            prepareContext: this.prepareLevelContext,
         },
     } satisfies ApplicationPartAFMBE<SkillSheetPart, SkillSheetRenderContext>;
 
     static prepareDetailsContext<T extends SkillSheetRenderContext>(this: SkillSheet, context: T): T {
         context.specialties = this.item._source.system.specialties;
-        return context;
-    }
-
-    static prepareLevelContext<T extends SkillSheetRenderContext>(this: SkillSheet, context: T): T {
-        context.level = this.item.system.bonus;
         return context;
     }
 

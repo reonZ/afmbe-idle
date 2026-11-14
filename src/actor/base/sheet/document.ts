@@ -7,20 +7,14 @@ abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends 
 ) {
     static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
         classes: ["actor"],
-        position: { width: 480 },
+        position: { height: 700, width: 750 },
     };
 
     static PARTS = {
         header: {
             template: "systems/afmbe-idle/templates/actor/header.hbs",
-            prepareContext: this.prepareHeaderContext,
         },
     } satisfies ApplicationPartAFMBE<ActorSheetPart, ActorSheetRenderContext>;
-
-    static prepareHeaderContext<T extends ActorSheetRenderContext>(this: ActorSheetAFMBE, context: T): T {
-        context.name = this.actor.name;
-        return context;
-    }
 }
 
 interface ActorSheetAFMBE<TParent extends ActorAFMBE> {

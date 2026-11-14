@@ -24,7 +24,7 @@ function applicationMixinAFMBE<
         async _preparePartContext(this: HandlebarsApplication, partId: TPart, context: TContext): Promise<TContext> {
             const cls = this.constructor as ApplicationStaticAFMBE<TPart, TContext>;
             const part = cls.PARTS[partId];
-            return part?.prepareContext.call(this, context) ?? context;
+            return part?.prepareContext?.call(this, context) ?? context;
         }
 
         _replaceHTML(result: Record<string, HTMLElement>, content: HTMLElement, options: HandlebarsRenderOptions) {
@@ -63,7 +63,7 @@ interface ApplicationStaticAFMBE<TPart extends string, TContext extends Document
 type ApplicationPartAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext> = Record<
     TPart,
     HandlebarsTemplatePart & {
-        prepareContext: (context: TContext) => Promise<TContext> | TContext;
+        prepareContext?: (context: TContext) => Promise<TContext> | TContext;
     }
 >;
 

@@ -9,7 +9,7 @@ import {
 
 class CharacterAttributes<TParent extends Character = Character> extends CreatureAttributes<TParent> {
     _initialize(): void {
-        const attributes = this.actor.system.attributes as unknown as CharacterAttributesSource;
+        const attributes = this.parent.system.attributes as unknown as CharacterAttributesSource;
 
         for (const key of CREATURE_ATTRIBUTES) {
             const { base, drawback, improved } = attributes[key];
@@ -22,7 +22,7 @@ class CharacterAttributes<TParent extends Character = Character> extends Creatur
     }
 
     update(changes: DeepPartial<CharacterAttributesSource>) {
-        return this.actor.update({ "system.attributes": changes });
+        return this.parent.update({ "system.attributes": changes });
     }
 }
 

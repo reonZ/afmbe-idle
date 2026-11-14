@@ -9,13 +9,13 @@ class CreatureEssence<TParent extends Creature = Creature> extends ActorModule<T
     }
 
     _initialize(): void {
-        const attributes = this.actor.system.attributes.toObect();
+        const attributes = this.parent.system.attributes.toObect();
         this.max = R.sum(R.values(attributes));
-        this.value = Math.min(this.actor.system.essence.value, this.max);
+        this.value = Math.min(this.parent.system.essence.value, this.max);
     }
 
     update(value: number): Promise<TParent | undefined> {
-        return this.actor.update({ "system.essence.value": Math.min(value, this.max) });
+        return this.parent.update({ "system.essence.value": Math.min(value, this.max) });
     }
 }
 

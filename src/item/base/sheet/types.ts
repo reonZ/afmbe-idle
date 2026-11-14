@@ -8,9 +8,7 @@ type ItemSheetPart = "header";
 
 type ItemSheetRenderOptions = DocumentSheetRenderOptions;
 
-type ItemSheetRenderContext = DocumentSheetRenderContext & {
-    name?: string;
-};
+type ItemSheetRenderContext = DocumentSheetRenderContext;
 
 type ItemSheetConfiguration = DocumentSheetConfiguration;
 

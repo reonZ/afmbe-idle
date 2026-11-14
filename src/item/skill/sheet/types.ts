@@ -13,8 +13,7 @@ type SkillSheetRenderOptions = ItemSheetRenderOptions;
 type SkillSheetConfiguration = ItemSheetConfiguration;
 
 type SkillSheetRenderContext = ItemSheetRenderContext & {
-    level?: number;
-    specialties: SkillSpecialtySource[];
+    specialties?: SkillSpecialtySource[];
 };
 
 export type { SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext, SkillSheetRenderOptions };

@@ -1,0 +1,34 @@
+<div class="skills sidebar">
+    <div class="title">
+        {{localize 'afmbe.item.skill.title'}}
+    </div>
+    <div class="list">
+        {{#each skills as |skill|}}
+        <a class="name" data-action="open-sheet" data-item-id="{{skill.id}}">
+            {{skill.name}}
+        </a>
+        <a
+            data-action="roll-task"
+            data-skill="{{skill.id}}"
+            data-disable="skill"
+            data-tooltip="{{localize 'afmbe.actor.creature.task.roll' type=skill.name}}"
+        >
+            <input type="text" class="modifier" value="{{skill.system.modifier}}" disabled />
+        </a>
+        {{#each skill.system.specialties as |specialty|}}
+        <a class="name" data-action="open-sheet" data-item-id="{{specialty.longId}}">
+            <i class="fa-regular fa-arrow-turn-down-right"></i>
+            {{specialty.name}}
+        </a>
+        <a
+            data-action="roll-task"
+            data-skill="{{specialty.longId}}"
+            data-disable="skill"
+            data-tooltip="{{localize 'afmbe.actor.creature.task.roll' type=specialty.name}}"
+        >
+            <input type="text" class="modifier" value="{{specialty.modifier}}" disabled />
+        </a>
+        {{/each}}
+        {{/each}}
+    </div>
+</div>

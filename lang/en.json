@@ -90,7 +90,8 @@
                     "name": "Specialty {index}",
                     "title": "Specialties"
                 },
-                "level": "Level"
+                "level": "Level",
+                "title": "Skills"
             }
         }
     }

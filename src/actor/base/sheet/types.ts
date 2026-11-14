@@ -8,9 +8,7 @@ type ActorSheetPart = "header";
 
 type ActorSheetRenderOptions = DocumentSheetRenderOptions;
 
-type ActorSheetRenderContext = DocumentSheetRenderContext & {
-    name?: string;
-};
+type ActorSheetRenderContext = DocumentSheetRenderContext;
 
 type ActorSheetConfiguration = DocumentSheetConfiguration;
 

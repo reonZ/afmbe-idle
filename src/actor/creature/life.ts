@@ -8,13 +8,13 @@ class CreatureLife<TParent extends Creature = Creature> extends ActorModule<TPar
     }
 
     _initialize(): void {
-        const { constitution, strength } = this.actor.system.attributes;
+        const { constitution, strength } = this.parent.system.attributes;
         this.max = (constitution + strength) * 4 + 10;
-        this.value = Math.min(this.actor.system.life.value, this.max);
+        this.value = Math.min(this.parent.system.life.value, this.max);
     }
 
     update(value: number): Promise<TParent | undefined> {
-        return this.actor.update({ "system.life.value": Math.min(value, this.max) });
+        return this.parent.update({ "system.life.value": Math.min(value, this.max) });
     }
 }
 

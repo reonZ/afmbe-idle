@@ -1,33 +1,14 @@
 @mixin style {
-    input[type="number"] {
-        width: 4ch;
-        text-align: center;
-        padding: 2px 0;
-        line-height: 1;
-        height: fit-content;
-    }
-
-    .header {
-        padding-block: 0.5rem;
-        text-align: center;
-        background: var(--table-row-color-even);
-        margin-inline: -0.3rem;
-    }
-
-    .primary,
-    .secondary {
-        display: inline-grid;
-        align-items: center;
-        gap: 0.3rem 0.5rem;
-    }
-
     .primary {
-        width: stretch;
-        grid-template-columns: auto auto auto;
+        grid-template-columns: 1fr auto auto;
+
+        a {
+            font-size: 1.2em;
+        }
     }
 
     .secondary {
-        grid-template-columns: repeat(4, auto);
+        grid-template-columns: 1fr repeat(3, auto);
         grid-template-rows: repeat(4, 1fr);
 
         .separator {
@@ -45,7 +26,6 @@
         }
     }
 
-    .header,
     .primary {
         margin-bottom: 0.3rem;
     }

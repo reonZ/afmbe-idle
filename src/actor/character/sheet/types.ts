@@ -1,4 +1,11 @@
-import type { CreatureSheetConfiguration, CreatureSheetRenderContext, CreatureSheetRenderOptions } from "actor";
+import type {
+    CreatureSheetConfiguration,
+    CreatureSheetPart,
+    CreatureSheetRenderContext,
+    CreatureSheetRenderOptions,
+} from "actor";
+
+type CharacterSheetPart = CreatureSheetPart;
 
 type CharacterSheetRenderOptions = CreatureSheetRenderOptions;
 
@@ -6,4 +13,9 @@ type CharacterSheetRenderContext = CreatureSheetRenderContext;
 
 type CharacterSheetConfiguration = CreatureSheetConfiguration;
 
-export type { CharacterSheetConfiguration, CharacterSheetRenderContext, CharacterSheetRenderOptions };
+export type {
+    CharacterSheetConfiguration,
+    CharacterSheetPart,
+    CharacterSheetRenderContext,
+    CharacterSheetRenderOptions,
+};

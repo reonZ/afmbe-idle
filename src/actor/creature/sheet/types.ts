@@ -8,8 +8,9 @@ import type {
     CreatureSpeed,
     RollTaskSelected,
 } from "actor";
+import type { Skill } from "item";
 
-type CreatureSheetPart = ActorSheetPart | "attributes";
+type CreatureSheetPart = ActorSheetPart | "attributes" | "skills";
 
 type CreatureSheetRenderOptions = ActorSheetRenderOptions;
 
@@ -17,6 +18,7 @@ type CreatureSheetConfiguration = ActorSheetConfiguration;
 
 type CreatureSheetRenderContext = ActorSheetRenderContext & {
     attributes?: CreatureAttributesContext;
+    skills?: Skill[];
 };
 
 type CreatureAttributesContext = {
