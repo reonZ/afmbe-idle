@@ -6,8 +6,7 @@
         </a>
     </div>
     {{#each specialties as |specialty|}}
-    <div class="specialty" data-id="{{specialty.id}}">
-        <input type="text" name="system.specialties.{{@index}}.id" value="{{specialty.id}}" />
+    <div class="specialty" data-index="{{@index}}">
         <input type="text" name="system.specialties.{{@index}}.name" value="{{specialty.name}}" />
         <input type="number" name="system.specialties.{{@index}}.level.value" value="{{specialty.level.value}}" />
         <a data-action="delete-specialty" data-tooltip="afmbe.item.skill.specialty.delete">

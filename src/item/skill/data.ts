@@ -1,9 +1,9 @@
 import { PositiveIntergerValueField } from "fields";
 import { ItemDataModel, ItemDataSource } from "item";
-import { localize, signedNumber } from "utils";
+import * as R from "remeda";
+import { getNextNameIndex, localize, signedNumber } from "utils";
 import { Skill, SkillDataSchema, SkillDataSource, Specialty } from ".";
 import fields = foundry.data.fields;
-import * as R from "remeda";
 
 class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParent, SkillDataSchema> {
     static defineSchema(): SkillDataSchema {
@@ -12,11 +12,6 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
             level: new PositiveIntergerValueField({ min: 1 }),
             specialties: new fields.ArrayField(
                 new fields.SchemaField({
-                    id: new fields.StringField({
-                        required: true,
-                        nullable: false,
-                        initial: undefined,
-                    }),
                     level: new PositiveIntergerValueField({ min: 1 }),
                     name: new fields.StringField({
                         required: true,
@@ -28,35 +23,31 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
         };
     }
 
-    get modifier(): string {
-        return signedNumber(this.level.value);
+    get bonus(): number {
+        return this.level.value;
     }
 
-    addSpecialty({
-        id = foundry.utils.randomID(),
-        level,
-        name,
-    }: { id?: string; name?: string; level?: number } = {}): Promise<TParent | undefined> {
+    get modifier(): string {
+        return signedNumber(this.bonus);
+    }
+
+    addSpecialty({ level, name }: { name?: string; level?: number } = {}): Promise<TParent | undefined> {
         const specialties = this._source.specialties.slice();
+        const baseName = localize("item.skill.specialty.name", { index: "" }).trim();
+        const index = getNextNameIndex(baseName, specialties);
 
         specialties.push({
-            id,
             level: { value: Math.max(level ?? 1, 1) },
-            name: name ?? localize("item.skill.specialty.name"),
+            name: name ?? localize("item.skill.specialty.name", { index }).trim(),
         });
 
         return this.parent.update({ "system.specialties": specialties });
     }
 
-    deleteSpecialty(id: string): Promise<TParent | undefined> | TParent {
+    deleteSpecialtyByIndex(index: number): Promise<TParent | undefined> {
         const specialties = this._source.specialties.slice();
-        const deleted = specialties.findSplice((speciality) => speciality.id === id);
-
-        if (deleted) {
-            return this.parent.update({ "system.specialties": specialties });
-        } else {
-            return this.parent;
-        }
+        specialties.splice(index, 1);
+        return this.parent.update({ "system.specialties": specialties });
     }
 
     prepareBaseData(): void {
@@ -64,10 +55,10 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
 
         const source = this as SkillDataSource;
 
-        this.specialties = R.pullObject(
+        this.specialties = R.pipe(
             source.specialties,
-            R.prop("id"),
-            (source) => new Specialty(this.parent, source),
+            R.map((source) => new Specialty(this.parent, source)),
+            R.indexBy(R.prop("slug")),
         );
     }
 }

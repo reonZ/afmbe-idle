@@ -3,7 +3,7 @@ import type {
     ItemSheetPart,
     ItemSheetRenderContext,
     ItemSheetRenderOptions,
-    Specialty,
+    SkillSpecialtySource,
 } from "item";
 
 type SkillSheetPart = ItemSheetPart | "details" | "level";
@@ -14,7 +14,7 @@ type SkillSheetConfiguration = ItemSheetConfiguration;
 
 type SkillSheetRenderContext = ItemSheetRenderContext & {
     level?: number;
-    specialties: Specialty[];
+    specialties: SkillSpecialtySource[];
 };
 
 export type { SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext, SkillSheetRenderOptions };

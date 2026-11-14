@@ -9,6 +9,10 @@ class Specialty<TParent extends Skill = Skill> {
         Object.assign(this, source);
     }
 
+    get slug() {
+        return this.name.slugify({ strict: true });
+    }
+
     get label(): string {
         return `${this.item.name} [${this.name}]`;
     }
@@ -22,19 +26,19 @@ class Specialty<TParent extends Skill = Skill> {
     }
 
     get longId(): string {
-        return this.item.id + "." + this.id;
+        return this.item.id + "." + this.slug;
     }
 
     get uuid(): string {
-        return this.item.uuid + ".Specialty." + this.id;
+        return this.item.uuid + ".Specialty." + this.slug;
     }
 
-    get total(): number {
-        return this.item.system.level.value + this.level.value * 2;
+    get bonus(): number {
+        return this.#parent.system.bonus + this.level.value * 2;
     }
 
     get modifier(): string {
-        return signedNumber(this.total);
+        return signedNumber(this.bonus);
     }
 }
 

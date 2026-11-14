@@ -1,7 +1,6 @@
 import { Creature } from "actor";
 import { ApplicationPartAFMBE } from "handlebars-application";
 import { ItemSheetAFMBE } from "item";
-import * as R from "remeda";
 import { Skill, SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext } from "..";
 
 class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>> extends ItemSheetAFMBE<TParent> {
@@ -26,12 +25,12 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
     } satisfies ApplicationPartAFMBE<SkillSheetPart, SkillSheetRenderContext>;
 
     static prepareDetailsContext<T extends SkillSheetRenderContext>(this: SkillSheet, context: T): T {
-        context.specialties = R.values(this.item.system.specialties);
+        context.specialties = this.item._source.system.specialties;
         return context;
     }
 
     static prepareLevelContext<T extends SkillSheetRenderContext>(this: SkillSheet, context: T): T {
-        context.level = this.item.system.level.value;
+        context.level = this.item.system.bonus;
         return context;
     }
 
@@ -40,8 +39,8 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
     }
 
     static #deleteSpecialty(this: SkillSheet, _event: PointerEvent, target: HTMLElement) {
-        const id = target.closest<HTMLElement>("[data-id]")?.dataset.id;
-        this.item.system.deleteSpecialty(id ?? "");
+        const index = target.closest<HTMLElement>("[data-index]")?.dataset.index;
+        this.item.system.deleteSpecialtyByIndex(Number(index));
     }
 }
 

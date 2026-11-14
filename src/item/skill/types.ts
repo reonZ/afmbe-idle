@@ -11,7 +11,6 @@ import type { ItemAFMBE, ItemDataSchema } from "item";
 import type { SkillDataModel } from ".";
 
 type SkillSpecialtySchema = {
-    id: StringField<string, string, true, false, false>;
     level: PositiveIntergerValueField;
     name: StringField<string, string, true, false, false>;
 };
@@ -26,6 +25,7 @@ type SkillDataSchema = ItemDataSchema & {
 type SkillDataSource = ModelPropsFromSchema<SkillDataSchema>;
 
 declare class Skill<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
+    readonly _source: SkillSource;
     system: SkillDataModel;
 }
 

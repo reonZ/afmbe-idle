@@ -87,7 +87,7 @@
                 "specialty": {
                     "add": "Add Specialty",
                     "delete": "Delete Specialty",
-                    "name": "Specialty",
+                    "name": "Specialty {index}",
                     "title": "Specialties"
                 },
                 "level": "Level"
