@@ -4,7 +4,7 @@
         {{localize 'afmbe.item.skill.parent.title'}}
         <i class="fa-solid fa-circle-info" data-tooltip="afmbe.item.skill.parent.tooltip"></i>
     </div>
-    <select name="system.parentSkill" {{disabled (eq parent.available.length 0)}}>
+    <select name="system.parentSkillId" {{disabled (eq parent.available.length 0)}}>
         {{selectOptions parent.available blank="" selected=parent.selected}}
     </select>
     {{/unless}}
@@ -22,7 +22,7 @@
         <a class="name" data-action="open-sheet" >
             {{specialty.name}}
         </a>
-        <input type="number" value="{{specialty.level.value}}" disabled />
+        <input type="number" value="{{specialty.system.level.value}}" disabled />
         <a data-action="delete-specialty" data-tooltip="afmbe.item.skill.specialty.delete">
             <i class="fa-solid fa-trash"></i>
         </a>

@@ -5,7 +5,7 @@
     <div class="list">
         {{#each skills as |skill|}}
         <a class="name" data-action="open-sheet" data-item-id="{{skill.id}}">
-            {{#if skill.isSpecialty}}
+            {{#if skill.system.isSpecialty}}
             <i class="fa-regular fa-arrow-turn-down-right"></i>
             {{/if}}
             {{skill.name}}

@@ -8,6 +8,9 @@ abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends 
     static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
         classes: ["actor"],
         position: { height: 700, width: 750 },
+        actions: {
+            "open-sheet": this.#openSheet,
+        },
     };
 
     static PARTS = {
@@ -20,6 +23,11 @@ abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends 
     static prepareHeaderTemplate<T extends ActorSheetRenderContext>(this: ActorSheetAFMBE, context: T): T {
         context.name = this.actor.name;
         return context;
+    }
+
+    static #openSheet(this: ActorSheetAFMBE, _event: PointerEvent, target: HTMLElement) {
+        const itemId = target.closest<HTMLElement>("[data-item-id]")?.dataset.itemId;
+        this.actor.items.get(itemId ?? "")?.sheet.render(true);
     }
 }
 

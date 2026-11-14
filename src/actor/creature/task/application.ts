@@ -76,6 +76,36 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         return this.#actor;
     }
 
+    prepareSkillsSelect(): RollTaskTruncatedSelects[2] {
+        const parents = R.filter(this.actor.itemTypes.skill, (skill) => !skill.system.isSpecialty);
+
+        return {
+            blank: true,
+            key: "skill",
+            label: localize("actor.creature.task.skill.label"),
+            options: R.flatMap(parents, (skill) => {
+                const specialties = skill.system.specialties;
+                const group = specialties.length ? skill.name : undefined;
+                const name = group ? localize("actor.creature.task.skill.base") : skill.name;
+
+                return [
+                    {
+                        label: `${name} (${skill.system.modifier})`,
+                        value: skill.id,
+                        group,
+                    },
+                    ...specialties.map((specialty): FormSelectOption => {
+                        return {
+                            label: `${specialty.name} (${specialty.system.modifier})`,
+                            value: specialty.id,
+                            group,
+                        };
+                    }),
+                ];
+            }),
+        };
+    }
+
     protected _initializeApplicationOptions(
         options: RollTaskApplicationConfiguration,
     ): RollTaskApplicationConfiguration {
@@ -109,26 +139,30 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                 blank: true,
                 key: "skill",
                 label: localize("actor.creature.task.skill.label"),
-                options: R.flatMap(this.actor.itemTypes.skill, (item) => {
-                    const specialties = R.values(item.system.specialties);
-                    const group = specialties.length ? item.name : undefined;
-                    const name = group ? localize("actor.creature.task.skill.base") : item.name;
+                options: R.pipe(
+                    this.actor.itemTypes.skill,
+                    R.filter((skill) => !skill.system.isSpecialty),
+                    R.flatMap((skill) => {
+                        const specialties = skill.system.specialties;
+                        const group = specialties.length ? skill.name : undefined;
+                        const name = group ? localize("actor.creature.task.skill.base") : skill.name;
 
-                    return [
-                        {
-                            label: `${name} (${item.system.modifier})`,
-                            value: item.id,
-                            group,
-                        },
-                        ...R.map(specialties, (specialty): FormSelectOption => {
-                            return {
-                                label: `- ${specialty.name} (${specialty.modifier})`,
-                                value: specialty.longId,
+                        return [
+                            {
+                                label: `${name} (${skill.system.modifier})`,
+                                value: skill.id,
                                 group,
-                            };
-                        }),
-                    ];
-                }),
+                            },
+                            ...specialties.map((specialty): FormSelectOption => {
+                                return {
+                                    label: `${specialty.name} (${specialty.system.modifier})`,
+                                    value: specialty.id,
+                                    group,
+                                };
+                            }),
+                        ];
+                    }),
+                ),
             },
         ];
 

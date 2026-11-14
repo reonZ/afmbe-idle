@@ -12,7 +12,7 @@ class ActorAFMBE<TParent extends TokenDocument | null = TokenDocument | null> ex
 
 interface ActorAFMBE {
     readonly items: EmbeddedCollection<ItemAFMBE<this>>;
-    get itemTypes(): ActorItemTypes;
+    get itemTypes(): ActorItemTypes<this>;
     system: ActorDataModel<ActorAFMBE, ActorDataSchema>;
 }
 

@@ -17,7 +17,7 @@ class ItemDataModel<
     }
 
     get item(): TParent {
-        return this.item;
+        return this.parent;
     }
 }
 
