@@ -24,10 +24,8 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends app
 
     async _prepareContext(options: ItemSheetRenderOptions): Promise<ItemSheetRenderContext> {
         const context = (await super._prepareContext(options)) as ItemSheetRenderContext;
-
         context.actor = this.item.actor;
         context.isOwned = !!this.item.actor;
-
         return context;
     }
 }

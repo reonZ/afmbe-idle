@@ -3,11 +3,15 @@ import {
     ApplicationFormConfiguration,
 } from "@7h3laughingman/foundry-types/client/applications/_module.mjs";
 import { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
-import { Creature } from "actor";
+import { ActorAFMBE, Creature } from "actor";
 import { ApplicationPartAFMBE } from "handlebars-application";
 import { ItemSheetAFMBE } from "item";
 import * as R from "remeda";
 import { Skill, SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext, SkillSheetRenderOptions } from "..";
+import {
+    DatabaseCreateOperation,
+    DatabaseUpdateOperation,
+} from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
 
 class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>> extends ItemSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<SkillSheetConfiguration> = {
@@ -22,6 +26,7 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         ...super.PARTS,
         details: {
             template: "systems/afmbe-idle/templates/item/skill/details.hbs",
+            activateListeners: this.activateDetailsListeners,
             prepareContext: this.prepareDetailsContext,
         },
         level: {
@@ -32,6 +37,8 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
 
     static prepareDetailsContext<T extends SkillSheetRenderContext>(this: SkillSheet, context: T): T {
         const system = this.item.system;
+
+        console.log(this.item.name, system.specialties);
 
         if (system.isParent) {
             context.specialties = system.specialties;
@@ -49,6 +56,17 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         }
 
         return context;
+    }
+
+    static activateDetailsListeners(this: SkillSheet, html: HTMLElement) {
+        // const parentSelect = html.querySelector<HTMLSelectElement>(`select[class="parent"]`);
+        // parentSelect?.addEventListener(
+        //     "change",
+        //     () => {
+        //         this.#removeParentListener();
+        //     },
+        //     { capture: true },
+        // );
     }
 
     static prepareHeaderTemplate<T extends SkillSheetRenderContext>(this: SkillSheet, context: T): T {
@@ -70,28 +88,51 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         specialty.sheet.render(true);
     }
 
+    // refreshParentSheet() {
+    //     this.item.system.parentSkill?.sheet.render();
+    // }
+
     async _onFirstRender(context: object, options: SkillSheetRenderOptions): Promise<void> {
         super._onFirstRender(context, options);
-
-        const parent = this.item.system.parentSkill;
-        if (parent) {
-            parent.apps[this.id] = this;
-        }
+        this.#addParentListener();
     }
 
-    protected _onClose(options: ApplicationClosingOptions): void {
+    _onClose(options: ApplicationClosingOptions): void {
         super._onClose(options);
-        delete this.item.system.parentSkill?.apps[this.id];
+        this.#removeParentListener();
     }
 
-    async _onSubmitForm(formConfig: ApplicationFormConfiguration, event: Event | SubmitEvent): Promise<void> {
-        await super._onSubmitForm(formConfig, event);
-        this.item.system.parentSkill?.sheet.render();
-    }
+    protected _processSubmitData(
+        event: SubmitEvent,
+        form: HTMLFormElement,
+        submitData: Record<string, unknown>,
+        options?: Partial<DatabaseCreateOperation<TParent>>,
+    ): Promise<void> {}
+
+    //     async _onSubmitForm(formConfig: ApplicationFormConfiguration, event: Event | SubmitEvent): Promise<void> {
+    //         await super._onSubmitForm(formConfig, event);
+    //         this.refreshParentSheet();
+    //     }
 
     static #deleteSpecialty(this: SkillSheet, _event: PointerEvent, target: HTMLElement) {
         const id = target.closest<HTMLElement>("[data-item-id]")?.dataset.itemId;
         this.actor?.deleteEmbeddedDocuments("Item", [id ?? ""]);
+    }
+
+    #addParentListener() {
+        const parent = this.item.system.parentSkill;
+        if (parent) {
+            parent.apps[this.id] = this;
+            this.item.apps[parent.sheet.id] = parent.sheet;
+        }
+    }
+
+    #removeParentListener() {
+        const parent = this.item.system.parentSkill;
+        if (parent) {
+            delete parent.apps[this.id];
+            delete this.item.apps[parent.sheet.id];
+        }
     }
 }
 

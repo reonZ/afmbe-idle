@@ -37,11 +37,11 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
         return signedNumber(this.bonus);
     }
 
-    get specialties(): TParent[] {
+    get specialties(): ParentSkill<TParent>[] {
         return R.filter(
             this.actor?.itemTypes.skill ?? [],
-            (skill): skill is TParent => skill._source.system.parentSkillId === this.id,
-        );
+            (skill) => skill._source.system.parentSkillId === this.id,
+        ) as ParentSkill<TParent>[];
     }
 
     async addSpecialty({ level, name }: { name?: string; level?: number } = {}): Promise<

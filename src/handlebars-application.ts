@@ -21,20 +21,35 @@ function applicationMixinAFMBE<
             form: { submitOnChange: true },
         };
 
-        async _preparePartContext(this: HandlebarsApplication, partId: TPart, context: TContext): Promise<TContext> {
+        async _preparePartContext(
+            this: HandlebarsApplication,
+            partId: TPart,
+            context: TContext,
+            options: HandlebarsRenderOptions,
+        ): Promise<TContext> {
+            super._preparePartContext(partId, context, options);
             const cls = this.constructor as ApplicationStaticAFMBE<TPart, TContext>;
             const part = cls.PARTS[partId];
-            return part?.prepareContext?.call(this, context) ?? context;
+            return part?.prepareContext?.call(this, context, options) ?? context;
+        }
+
+        _attachPartListeners(
+            this: HandlebarsApplication,
+            partId: TPart,
+            html: HTMLElement,
+            options: HandlebarsRenderOptions,
+        ) {
+            super._attachPartListeners(partId, html, options);
+            const cls = this.constructor as ApplicationStaticAFMBE<TPart, TContext>;
+            const part = cls.PARTS[partId];
+            part?.activateListeners?.call(this, html, options);
         }
 
         _replaceHTML(result: Record<string, HTMLElement>, content: HTMLElement, options: HandlebarsRenderOptions) {
             super._replaceHTML(result, content, options);
             content.dataset.tooltipDirection = "UP";
-            this.activateListeners(content);
-        }
 
-        activateListeners(html: HTMLElement): void {
-            const inputs = html.querySelectorAll<HTMLInputElement>(`input[type="number"], input[type="text"]`);
+            const inputs = content.querySelectorAll<HTMLInputElement>(`input[type="number"], input[type="text"]`);
             for (const el of inputs) {
                 el.addEventListener(
                     "keydown",
@@ -54,16 +69,18 @@ function applicationMixinAFMBE<
     return HandlebarsApplicationAFMBE as unknown as ApplicationStaticAFMBE<TPart, TContext> & TBase;
 }
 
+interface HandlebarsApplicationAFMBE extends HandlebarsApplication {}
+
 interface ApplicationStaticAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext>
-    extends ConstructorOf<HandlebarsApplication>, HandlebarsApplicationStatic {
+    extends ConstructorOf<HandlebarsApplicationAFMBE>, HandlebarsApplicationStatic {
     PARTS: ApplicationPartAFMBE<TPart, TContext>;
-    activateListeners(html: HTMLElement): void | Promise<void>;
 }
 
 type ApplicationPartAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext> = Record<
     TPart,
     HandlebarsTemplatePart & {
-        prepareContext: (context: TContext) => Promise<TContext> | TContext;
+        activateListeners?: (html: HTMLElement, options: HandlebarsRenderOptions) => void | Promise<void>;
+        prepareContext?: (context: TContext, options: HandlebarsRenderOptions) => Promise<TContext> | TContext;
     }
 >;
 

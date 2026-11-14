@@ -4,7 +4,7 @@
         {{localize 'afmbe.item.skill.parent.title'}}
         <i class="fa-solid fa-circle-info" data-tooltip="afmbe.item.skill.parent.tooltip"></i>
     </div>
-    <select name="system.parentSkillId" {{disabled (eq parent.available.length 0)}}>
+    <select class="parent" name="system.parentSkillId" {{disabled (eq parent.available.length 0)}}>
         {{selectOptions parent.available blank="" selected=parent.selected}}
     </select>
     {{/unless}}
