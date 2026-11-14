@@ -9,10 +9,6 @@ class Specialty<TParent extends Skill = Skill> {
         Object.assign(this, source);
     }
 
-    get slug() {
-        return this.name.slugify({ strict: true });
-    }
-
     get label(): string {
         return `${this.parent.name} [${this.name}]`;
     }
@@ -23,10 +19,6 @@ class Specialty<TParent extends Skill = Skill> {
 
     get longId(): string {
         return this.parent.id + "." + this.slug;
-    }
-
-    get uuid(): string {
-        return this.parent.uuid + ".Specialty." + this.slug;
     }
 
     get bonus(): number {

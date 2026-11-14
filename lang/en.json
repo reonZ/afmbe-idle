@@ -84,13 +84,17 @@
         },
         "item": {
             "skill": {
+                "level": "Level",
+                "parent": {
+                    "title": "Parent Skill",
+                    "tooltip": "Will become a specialty of parent"
+                },
                 "specialty": {
                     "add": "Add Specialty",
                     "delete": "Delete Specialty",
                     "name": "Specialty {index}",
                     "title": "Specialties"
                 },
-                "level": "Level",
                 "title": "Skills"
             }
         }

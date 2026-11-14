@@ -1,74 +1,72 @@
 import { PositiveIntergerValueField } from "fields";
 import { ItemDataModel, ItemDataSource } from "item";
-import * as R from "remeda";
 import { getNextNameIndex, localize, signedNumber } from "utils";
-import { Skill, SkillDataSchema, SkillDataSource, Specialty } from ".";
+import { Skill, SkillDataSchema, SkillDataSource, SkillSource } from ".";
 import fields = foundry.data.fields;
+import * as R from "remeda";
 
 class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParent, SkillDataSchema> {
+    #specialties?: Collection<string, Skill<TParent["parent"]>>;
+
     static defineSchema(): SkillDataSchema {
         return {
             ...super.defineSchema(),
             level: new PositiveIntergerValueField({ min: 1 }),
-            specialties: new fields.ArrayField(
-                new fields.SchemaField({
-                    level: new PositiveIntergerValueField({ min: 1 }),
-                    name: new fields.StringField({
-                        required: true,
-                        nullable: false,
-                        initial: undefined,
-                    }),
-                }),
-            ),
+            parentSkill: new fields.ForeignDocumentField(SkillDataModel),
         };
     }
 
     get bonus(): number {
-        return this.level.value;
+        return this.level.value + (this.parentSkill?.system.bonus ?? 0);
+    }
+
+    get isParent(): boolean {
+        return this.specialties.size > 0;
+    }
+
+    get isSpeciality(): boolean {
+        return !!this.parentSkill;
     }
 
     get modifier(): string {
         return signedNumber(this.bonus);
     }
 
-    addSpecialty({ level, name }: { name?: string; level?: number } = {}): Promise<TParent | undefined> {
-        const specialties = this._source.specialties.slice();
+    get specialties() {
+        return (this.#specialties ??= new Collection(
+            R.pipe(
+                this.actor?.itemTypes.skill ?? [],
+                R.filter((skill) => skill._source.system.parentSkill === this.id),
+                R.map((skill) => [skill.id, skill] as const),
+            ),
+        ));
+    }
+
+    async addSpecialty({ level, name }: { name?: string; level?: number } = {}): Promise<
+        Skill<TParent["parent"]> | undefined
+    > {
         const baseName = localize("item.skill.specialty.name", { index: "" }).trim();
-        const index = getNextNameIndex(baseName, specialties);
+        const index = getNextNameIndex(baseName, this.specialties.contents);
 
-        specialties.push({
-            level: { value: Math.max(level ?? 1, 1) },
-            name: name ?? localize("item.skill.specialty.name", { index }).trim(),
-        });
+        const source: PreCreate<SkillSource> = {
+            type: "skill",
+            name: name?.trim() || localize("item.skill.specialty.name", { index }).trim(),
+            system: {
+                level: { value: level },
+                parentSkill: this.item.id,
+            },
+        };
 
-        return this.parent.update({ "system.specialties": specialties });
-    }
-
-    deleteSpecialtyByIndex(index: number): Promise<TParent | undefined> {
-        const specialties = this._source.specialties.slice();
-        specialties.splice(index, 1);
-        return this.parent.update({ "system.specialties": specialties });
-    }
-
-    prepareBaseData(): void {
-        super.prepareBaseData();
-
-        const source = this as SkillDataSource;
-
-        this.specialties = R.pipe(
-            source.specialties,
-            R.map((source) => new Specialty(this.parent, source)),
-            R.indexBy(R.prop("slug")),
-        );
+        const results = await this.actor?.createEmbeddedDocuments("Item", [source]);
+        return results?.[0] as Skill<TParent["parent"]> | undefined;
     }
 }
 
 interface SkillDataModel<TParent extends Skill = Skill> extends Omit<
     SkillDataSource,
-    keyof ItemDataSource | "specialties"
+    keyof ItemDataSource | "parentSkill"
 > {
-    level: { value: number };
-    specialties: Record<string, Specialty<TParent>>;
+    parentSkill: TParent | null;
 }
 
 export { SkillDataModel };

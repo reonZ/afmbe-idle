@@ -13,8 +13,14 @@ abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends 
     static PARTS = {
         header: {
             template: "systems/afmbe-idle/templates/actor/header.hbs",
+            prepareContext: this.prepareHeaderTemplate,
         },
     } satisfies ApplicationPartAFMBE<ActorSheetPart, ActorSheetRenderContext>;
+
+    static prepareHeaderTemplate<T extends ActorSheetRenderContext>(this: ActorSheetAFMBE, context: T): T {
+        context.name = this.actor.name;
+        return context;
+    }
 }
 
 interface ActorSheetAFMBE<TParent extends ActorAFMBE> {

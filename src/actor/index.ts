@@ -5,4 +5,5 @@ export * from "./character";
 export * from "./zombie";
 
 import { CharacterDataModel, CharacterSheet } from "./character";
-export const ACTOR_CONFIG = [{ data: CharacterDataModel, sheet: CharacterSheet, type: "character" }];
+
+export const ACTOR_CONFIG = [{ type: "character", data: CharacterDataModel, sheet: CharacterSheet }];

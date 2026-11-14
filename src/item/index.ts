@@ -6,4 +6,5 @@ export * from "./skill";
 export * from "./weapon";
 
 import { SkillDataModel, SkillSheet } from "./skill";
-export const ITEM_CONFIG = [{ data: SkillDataModel, sheet: SkillSheet, type: "skill" }];
+
+export const ITEM_CONFIG = [{ type: "skill", data: SkillDataModel, sheet: SkillSheet }];

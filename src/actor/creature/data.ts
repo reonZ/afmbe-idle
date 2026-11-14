@@ -12,8 +12,6 @@ import {
     RollTaskApplication,
     RollTaskData,
 } from ".";
-import { EmbeddedCollectionGetOptions } from "@7h3laughingman/foundry-types/common/abstract/embedded-collection.mjs";
-import * as R from "remeda";
 
 class CreatureDataModel<
     TParent extends Creature = Creature,
@@ -32,12 +30,12 @@ class CreatureDataModel<
         super.prepareBaseData();
 
         // we override Creature#items#get to account for specialties
-        const getItem = this.parent.items.get.bind(this.parent.items);
-        this.parent.items.get = function (key: string, options?: EmbeddedCollectionGetOptions) {
-            const [itemId, slug] = R.split(key, ".");
-            const item = getItem(itemId, options);
-            return slug && item?.isOfType("skill") ? item.system.specialties[slug] : item;
-        };
+        // const getItem = this.parent.items.get.bind(this.parent.items);
+        // this.parent.items.get = function (key: string, options?: EmbeddedCollectionGetOptions) {
+        //     const [itemId, slug] = R.split(key, ".");
+        //     const item = getItem(itemId, options);
+        //     return slug && item?.isOfType("skill") ? item.system.specialties[slug] : item;
+        // };
     }
 
     // we prepare secondary attributes after primary attributes have been prepared AND modified by active effects

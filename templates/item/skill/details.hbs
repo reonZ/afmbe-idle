@@ -1,17 +1,32 @@
 <div class="details">
+    {{#unless specialties.length}}
+    <div class="title">
+        {{localize 'afmbe.item.skill.parent.title'}}
+        <i class="fa-solid fa-circle-info" data-tooltip="afmbe.item.skill.parent.tooltip"></i>
+    </div>
+    <select name="system.parentSkill" {{disabled (eq parent.available.length 0)}}>
+        {{selectOptions parent.available blank="" selected=parent.selected}}
+    </select>
+    {{/unless}}
+    {{#unless parent.selected}}
     <div class="title">
         {{localize 'afmbe.item.skill.specialty.title'}}
+        {{#if isOwned}}
         <a data-action="add-specialty" data-tooltip="afmbe.item.skill.specialty.add">
             <i class="fa-solid fa-plus"></i>
         </a>
+        {{/if}}
     </div>
     {{#each specialties as |specialty|}}
-    <div class="specialty" data-index="{{@index}}">
-        <input type="text" name="system.specialties.{{@index}}.name" value="{{specialty.name}}" />
-        <input type="number" name="system.specialties.{{@index}}.level.value" value="{{specialty.level.value}}" />
+    <div class="specialty" data-item-id="{{specialty.id}}">
+        <a class="name" data-action="open-sheet" >
+            {{specialty.name}}
+        </a>
+        <input type="number" value="{{specialty.level.value}}" disabled />
         <a data-action="delete-specialty" data-tooltip="afmbe.item.skill.specialty.delete">
             <i class="fa-solid fa-trash"></i>
         </a>
     </div>
     {{/each}}
+    {{/unless}}
 </div>

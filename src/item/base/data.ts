@@ -1,4 +1,4 @@
-import { ItemAFMBE, ItemDataSchema, ItemSystem } from ".";
+import { ItemAFMBE, ItemDataSchema, ItemDataSource } from ".";
 
 class ItemDataModel<
     TParent extends ItemAFMBE = ItemAFMBE,
@@ -7,8 +7,20 @@ class ItemDataModel<
     static defineSchema(): ItemDataSchema {
         return {};
     }
+
+    get actor(): TParent["actor"] {
+        return this.parent.actor;
+    }
+
+    get id(): string {
+        return this.item.id;
+    }
+
+    get item(): TParent {
+        return this.item;
+    }
 }
 
-interface ItemDataModel<TParent extends ItemAFMBE, TSchema extends ItemDataSchema> extends ItemSystem {}
+interface ItemDataModel<TParent extends ItemAFMBE, TSchema extends ItemDataSchema> extends ItemDataSource {}
 
 export { ItemDataModel };

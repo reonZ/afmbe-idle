@@ -63,7 +63,7 @@ interface ApplicationStaticAFMBE<TPart extends string, TContext extends Document
 type ApplicationPartAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext> = Record<
     TPart,
     HandlebarsTemplatePart & {
-        prepareContext?: (context: TContext) => Promise<TContext> | TContext;
+        prepareContext: (context: TContext) => Promise<TContext> | TContext;
     }
 >;
 
