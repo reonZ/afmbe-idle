@@ -74,11 +74,15 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
     async _onFirstRender(context: object, options: SkillSheetRenderOptions): Promise<void> {
         super._onFirstRender(context, options);
         this.#addParentListener();
+        if (this.actor) {
+            this.actor.apps[this.id] = this;
+        }
     }
 
     _onClose(options: ApplicationClosingOptions): void {
         super._onClose(options);
         this.#removeParentListener();
+        delete this.actor?.apps[this.id];
     }
 
     async _processSubmitData(
@@ -110,14 +114,12 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
     #addParentListener(parent: Skill | null = this.item.system.parentSkill) {
         if (parent) {
             parent.apps[this.id] = this;
-            this.item.apps[parent.sheet.id] = parent.sheet;
         }
     }
 
     #removeParentListener(parent: Skill | null = this.item.system.parentSkill) {
         if (parent) {
             delete parent.apps[this.id];
-            delete this.item.apps[parent.sheet.id];
         }
     }
 }
