@@ -2,7 +2,7 @@ import { CollectionGetOptions } from "@7h3laughingman/foundry-types/common/utils
 import * as R from "remeda";
 import type { ItemAFMBE } from ".";
 
-class SubItems<V extends ItemAFMBE = ItemAFMBE> extends Collection<string, V> {
+class SubItems<V extends ItemAFMBE = ItemAFMBE, TParent extends ItemAFMBE = ItemAFMBE> extends Collection<string, V> {
     get<T extends ItemAFMBE<V["parent"]> = V>(key: Maybe<string | string[]>, options: { strict: true }): T;
     get<T extends ItemAFMBE<V["parent"]> = V>(key: string | string[], options?: CollectionGetOptions): T | undefined;
     get(id: Maybe<string | string[]>, options?: CollectionGetOptions) {

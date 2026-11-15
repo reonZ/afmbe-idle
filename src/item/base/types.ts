@@ -1,4 +1,5 @@
 import { DocumentConstructionContext } from "@7h3laughingman/foundry-types/common/_types.mjs";
+import { DatabaseCreateOperation } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
 import type {
     ArrayField,
     ModelPropsFromSchema,
@@ -22,15 +23,19 @@ type ItemInstances<TParent extends ActorAFMBE | null = ActorAFMBE | null> = {
 
 type SubItemDataSchema = Omit<ItemSchema<ItemType>, "effects">;
 
-type SubItemDataSource = SourceFromSchema<SubItemDataSchema>;
+type SubItemDataSource = ModelPropsFromSchema<SubItemDataSchema>;
 
 type ItemDataSchema = {
     subItems: ArrayField<SchemaField<SubItemDataSchema>>;
 };
 
+type ItemCreateOperation<TParent extends ActorAFMBE | ItemAFMBE | null> = DatabaseCreateOperation<
+    TParent extends ItemAFMBE ? null : TParent | null
+>;
+
 type SubItem<TParent extends ItemAFMBE, TSubItem extends ItemType> = ItemInstances<TParent["actor"]>[TSubItem];
 
-type ItemDataSource = ModelPropsFromSchema<ItemDataSchema>;
+type ItemDataSource = SourceFromSchema<ItemDataSchema>;
 
 type ItemSourceAFMBE = PhysicalSource | QualitySource | SkillSource;
 
@@ -40,6 +45,7 @@ interface ItemConstructionContext<TParent extends ActorAFMBE | null> extends Doc
 
 export type {
     ItemConstructionContext,
+    ItemCreateOperation,
     ItemDataSchema,
     ItemDataSource,
     ItemInstances,

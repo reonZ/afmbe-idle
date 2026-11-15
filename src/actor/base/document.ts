@@ -10,6 +10,9 @@ class ActorAFMBE<TParent extends TokenDocument | null = TokenDocument | null> ex
     _initialize(options?: Record<string, unknown>): void {
         super._initialize(options);
 
+        const getDescriptor = Reflect.getOwnPropertyDescriptor(this.items, "get");
+        if (getDescriptor && !getDescriptor.writable) return; // we already overridden it
+
         const getItem = this.items.get.bind(this.items);
         Object.defineProperty(this.items, "get", {
             value: function (key: string, options?: EmbeddedCollectionGetOptions) {
@@ -17,9 +20,7 @@ class ActorAFMBE<TParent extends TokenDocument | null = TokenDocument | null> ex
                 const item = getItem(itemId, options);
                 return subId.length ? item?.subItems.get(subId, options) : item;
             },
-            configurable: false,
             enumerable: false,
-            writable: false,
         });
     }
 
