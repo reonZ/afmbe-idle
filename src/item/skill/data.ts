@@ -16,6 +16,10 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
         };
     }
 
+    get allowedSubItems(): ["skill"] {
+        return ["skill"];
+    }
+
     get bonus(): number {
         return this.level.value * (this.parentSkill ? 2 : 1) + (this.parentSkill?.system.bonus ?? 0);
     }
@@ -64,8 +68,6 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
     }
 }
 
-interface SkillDataModel<TParent extends Skill = Skill> extends Omit<SkillDataSource, keyof ItemDataSource> {
-    // parentSkill: TParent | null;
-}
+interface SkillDataModel<TParent extends Skill = Skill> extends Omit<SkillDataSource, keyof ItemDataSource> {}
 
 export { SkillDataModel };

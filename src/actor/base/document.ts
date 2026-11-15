@@ -1,10 +1,28 @@
+import EmbeddedCollection, {
+    EmbeddedCollectionGetOptions,
+} from "@7h3laughingman/foundry-types/common/abstract/embedded-collection.mjs";
 import { ACTOR_CREATURE_TYPES } from "actor";
+import { ItemAFMBE } from "item";
 import * as R from "remeda";
 import { ActorDataModel, ActorDataSchema, ActorInstances, ActorItemTypes, ActorType } from ".";
-import EmbeddedCollection from "@7h3laughingman/foundry-types/common/abstract/embedded-collection.mjs";
-import { ItemAFMBE } from "item";
 
 class ActorAFMBE<TParent extends TokenDocument | null = TokenDocument | null> extends Actor<TParent> {
+    _initialize(options?: Record<string, unknown>): void {
+        super._initialize(options);
+
+        const getItem = this.items.get.bind(this.items);
+        Object.defineProperty(this.items, "get", {
+            value: function (key: string, options?: EmbeddedCollectionGetOptions) {
+                const [itemId, ...subId] = R.split(key, ".");
+                const item = getItem(itemId, options);
+                return subId.length ? item?.subItems.get(subId, options) : item;
+            },
+            configurable: false,
+            enumerable: false,
+            writable: false,
+        });
+    }
+
     isOfType<T extends ActorType | "creature">(type: T): this is ActorInstances<this["parent"]>[T] {
         return type === "creature" ? R.isIncludedIn(this.type, ACTOR_CREATURE_TYPES) : this.type === type;
     }

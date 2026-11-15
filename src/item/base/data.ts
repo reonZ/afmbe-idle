@@ -1,15 +1,25 @@
-import { ItemAFMBE, ItemDataSchema, ItemDataSource } from ".";
+import * as R from "remeda";
+import { ItemAFMBE, ItemDataSchema, ItemDataSource, ItemType, SubItemDataSchema } from ".";
+import fields = foundry.data.fields;
 
 class ItemDataModel<
     TParent extends ItemAFMBE = ItemAFMBE,
     TSchema extends ItemDataSchema = ItemDataSchema,
 > extends foundry.abstract.TypeDataModel<TParent, TSchema> {
     static defineSchema(): ItemDataSchema {
-        return {};
+        const subItemsSchema = R.omit(foundry.documents.Item.defineSchema(), ["effects"]) as SubItemDataSchema;
+
+        return {
+            subItems: new fields.ArrayField(new fields.SchemaField(subItemsSchema)),
+        };
     }
 
     get actor(): TParent["actor"] {
         return this.parent.actor;
+    }
+
+    get allowedSubItems(): ItemType[] {
+        return [];
     }
 
     get id(): string {
