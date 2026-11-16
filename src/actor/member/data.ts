@@ -2,21 +2,11 @@ import { CREATURE_ATTRIBUTES, CreatureDataModel, CreatureDataSource } from "acto
 import { BooleanField, PositiveIntegerField, ValueAndTotalField } from "fields";
 import { ItemType } from "item";
 import * as R from "remeda";
-import {
-    Character,
-    CHARACTER_TYPES,
-    CharacterAttributes,
-    CharacterDataSchema,
-    CharacterDataSource,
-    CharacterExperience,
-} from ".";
+import { Member, MEMBER_CATEGORY, MemberAttributes, MemberDataSchema, MemberDataSource, MemberExperience } from ".";
 import fields = foundry.data.fields;
 
-class CharacterDataModel<TParent extends Character = Character> extends CreatureDataModel<
-    TParent,
-    CharacterDataSchema
-> {
-    static defineSchema(): CharacterDataSchema {
+class MemberDataModel<TParent extends Member = Member> extends CreatureDataModel<TParent, MemberDataSchema> {
+    static defineSchema(): MemberDataSchema {
         return {
             ...super.defineSchema(),
             attributes: new fields.SchemaField({
@@ -34,11 +24,11 @@ class CharacterDataModel<TParent extends Character = Character> extends Creature
                 quote: new fields.HTMLField(),
             }),
             experience: new ValueAndTotalField(),
-            type: new fields.StringField({
+            category: new fields.StringField({
                 required: true,
                 nullable: false,
                 initial: "norm",
-                choices: CHARACTER_TYPES,
+                choices: MEMBER_CATEGORY,
             }),
         };
     }
@@ -50,17 +40,17 @@ class CharacterDataModel<TParent extends Character = Character> extends Creature
     prepareBaseData(): void {
         super.prepareBaseData();
 
-        this.attributes = new CharacterAttributes(this.parent);
-        this.experience = new CharacterExperience(this.parent);
+        this.attributes = new MemberAttributes(this.parent);
+        this.experience = new MemberExperience(this.parent);
     }
 }
 
-interface CharacterDataModel<TParent extends Character = Character> extends Omit<
-    CharacterDataSource,
+interface MemberDataModel<TParent extends Member = Member> extends Omit<
+    MemberDataSource,
     keyof CreatureDataSource | "attributes" | "experience"
 > {
-    attributes: CharacterAttributes;
-    experience: CharacterExperience;
+    attributes: MemberAttributes;
+    experience: MemberExperience;
 }
 
-export { CharacterDataModel };
+export { MemberDataModel };

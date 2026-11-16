@@ -1,9 +1,9 @@
 export * from "./base";
 export * from "./creature";
 export * from "./adversary";
-export * from "./character";
+export * from "./member";
 export * from "./zombie";
 
-import { CharacterDataModel, CharacterSheet } from "./character";
+import { MemberDataModel, MemberSheet } from "./member";
 
-export const ACTOR_CONFIG = [{ type: "character", data: CharacterDataModel, sheet: CharacterSheet }];
+export const ACTOR_CONFIG = [{ type: "member", data: MemberDataModel, sheet: MemberSheet }];

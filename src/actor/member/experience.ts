@@ -1,17 +1,17 @@
-import { ActorModule, Character } from "actor";
+import { ActorModule, Member } from "actor";
 import * as R from "remeda";
 
-class CharacterExperience<TParent extends Character = Character> extends ActorModule<TParent> {
+class MemberExperience<TParent extends Member = Member> extends ActorModule<TParent> {
     _initialize(): void {
         this.total = this.parent.system.experience.total;
         this.value = Math.min(this.parent.system.experience.value, this.total);
     }
 
-    giveExperience(value: number): Promise<Character | undefined> {
+    giveExperience(value: number): Promise<Member | undefined> {
         return this.update({ max: this.total + value, value: this.value + value });
     }
 
-    update(changes: Partial<ValueAndMax>): Promise<Character | undefined> {
+    update(changes: Partial<ValueAndMax>): Promise<Member | undefined> {
         if (R.isNumber(changes.max)) {
             changes.max = Math.max(changes.max, 0);
         }
@@ -25,6 +25,6 @@ class CharacterExperience<TParent extends Character = Character> extends ActorMo
     }
 }
 
-interface CharacterExperience extends ValueAndTotal {}
+interface MemberExperience extends ValueAndTotal {}
 
-export { CharacterExperience };
+export { MemberExperience };

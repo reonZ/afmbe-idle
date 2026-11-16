@@ -11,6 +11,6 @@ declare class Adversary<TParent extends TokenDocument | null = TokenDocument | n
     system: AdversaryDataModel;
 }
 
-type AdversarySource = ActorSource<"character", AdversaryDataSource>;
+type AdversarySource = ActorSource<"adversary", AdversaryDataSource>;
 
 export type { Adversary, AdversaryDataSchema, AdversaryDataSource, AdversarySource };

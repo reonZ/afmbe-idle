@@ -1,4 +1,4 @@
-import { CharacterType } from "actor";
+import { MemberCategory } from "actor";
 
 const config = {
     ATTRIBUTES: {
@@ -6,7 +6,7 @@ const config = {
             inspired: 20,
             norm: 14,
             survivor: 20,
-        } satisfies Record<CharacterType, number>,
+        } satisfies Record<MemberCategory, number>,
         DRAWBACK_COST: 1,
         IMPROVEMENT: {
             low: 5,

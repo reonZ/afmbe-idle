@@ -1,5 +1,5 @@
 import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
-import type { ActorAFMBE, ActorDataSchema, AdversarySource, CharacterSource, ZombieSource } from "actor";
+import type { ActorAFMBE, ActorDataSchema, AdversarySource, MemberSource, ZombieSource } from "actor";
 import type { PositiveIntergerValueField } from "fields";
 import type { CREATURE_ATTRIBUTES, CREATURE_SECONDARIES, CreatureDataModel } from ".";
 
@@ -22,7 +22,7 @@ declare abstract class Creature<
     system: CreatureDataModel;
 }
 
-type CreatureSource = AdversarySource | CharacterSource | ZombieSource;
+type CreatureSource = AdversarySource | MemberSource | ZombieSource;
 
 export type {
     Creature,

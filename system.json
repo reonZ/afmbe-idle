@@ -37,7 +37,7 @@
     },
     "documentTypes": {
         "Actor": {
-            "character": {
+            "member": {
                 "htmlFields": ["details.description", "details.personality", "details.quote"]
             }
         },

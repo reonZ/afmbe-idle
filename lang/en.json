@@ -2,7 +2,7 @@
     "TYPES": {
         "Actor": {
             "adversary": "Adversary",
-            "character": "Cast Member",
+            "member": "Cast Member",
             "zombie": "Zombie"
         },
         "Item": {
