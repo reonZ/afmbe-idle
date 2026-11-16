@@ -19,7 +19,16 @@ function applicationMixinAFMBE<
         static DEFAULT_OPTIONS: DeepPartial<DocumentSheetConfiguration> = {
             classes: ["afmbe"],
             form: { submitOnChange: true },
+            actions: {
+                "open-item-sheet": this.#openItemSheet,
+            },
         };
+
+        static async #openItemSheet(this: HandlebarsApplication, _event: PointerEvent, target: HTMLElement) {
+            const uuid = target.closest<HTMLElement>("[data-item-uuid]")?.dataset.itemUuid;
+            const item = await fromUuid(uuid ?? "");
+            if (item instanceof Item) item.sheet.render(true);
+        }
 
         async _preparePartContext(
             this: HandlebarsApplication,

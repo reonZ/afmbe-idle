@@ -1,5 +1,6 @@
 import { PositiveIntergerValueField } from "fields";
 import { ItemDataModel, ItemDataSource, ItemType } from "item";
+import * as R from "remeda";
 import { getNextNameIndex, localize, signedNumber } from "utils";
 import { Skill, SkillDataSchema, SkillDataSource, SkillSource } from ".";
 
@@ -37,6 +38,12 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
 
     get specialties(): Collection<string, Skill<TParent["actor"]>> {
         return this.item.subItems;
+    }
+
+    get deepSpecialties(): Skill<TParent["actor"]>[] {
+        return R.flatMap(this.specialties.contents, (specialty) => {
+            return [specialty, ...specialty.system.deepSpecialties];
+        });
     }
 
     async addSpecialty({ level, name }: { name?: string; level?: number } = {}): Promise<

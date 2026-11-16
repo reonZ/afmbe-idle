@@ -148,7 +148,11 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
     }
 
     get chainId(): string {
-        return this.parentItemChain.concat(this).join(".");
+        return R.pipe(
+            [...this.parentItemChain, this],
+            R.map((item) => item.id),
+            R.join("."),
+        );
     }
 
     get parentItemChain(): ItemAFMBE<TParent>[] {

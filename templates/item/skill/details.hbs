@@ -7,20 +7,13 @@
         </a>
         {{/if}}
     </div>
-    {{> 'specialties' item}}
-</div>
-
-{{#*inline 'specialties'}}
-{{#each this.system.specialties as |skill|}}
-<div class="specialty" data-item-id="{{skill.chainId}}">
-    <a class="name" data-action="open-sheet">
+    {{#each item.system.deepSpecialties as |skill|}}
+    <a class="name" data-action="open-item-sheet" data-item-uuid="{{skill.uuid}}">
         {{skill.name}}
     </a>
     <input type="number" value="{{skill.system.level.value}}" disabled />
     <a data-action="delete-specialty" data-tooltip="afmbe.item.skill.specialty.delete">
         <i class="fa-solid fa-trash"></i>
     </a>
+    {{/each}}
 </div>
-{{> 'specialties' skill}}
-{{/each}}
-{{/inline}}
