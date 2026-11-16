@@ -1,10 +1,8 @@
-import type { ModelPropsFromSchema, SchemaField } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
-import type { AdversarySource, Creature, CreatureAttributesSchema, CreatureDataSchema, MemberSource } from "actor";
+import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
+import type { AdversarySource, Creature, CreatureDataSchema, MemberSource } from "actor";
 import type { CharacterDataModel } from ".";
 
-type CharacterDataSchema = CreatureDataSchema & {
-    // attributes: SchemaField<CreatureAttributesSchema>;
-};
+type CharacterDataSchema = CreatureDataSchema & {};
 
 type CharacterDataSource = ModelPropsFromSchema<CharacterDataSchema>;
 

@@ -8,6 +8,12 @@ class CreatureAttributes<TParent extends Creature = Creature> extends ActorModul
         return localize("actor.creature.attributes", key, "label");
     }
 
+    _initialize(): void {
+        for (const key of CREATURE_ATTRIBUTES) {
+            this[key] = 0;
+        }
+    }
+
     toObect(): Record<CreatureAttributeType, number> {
         return R.fromKeys(CREATURE_ATTRIBUTES, (key) => this[key]);
     }

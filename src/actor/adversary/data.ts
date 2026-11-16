@@ -1,5 +1,8 @@
-import { CharacterDataModel, CharacterDataSource } from "actor";
-import { Adversary, AdversaryDataSchema, AdversaryDataSource } from ".";
+import { CharacterDataModel, CharacterDataSource, CREATURE_ATTRIBUTES } from "actor";
+import { ValueField } from "fields";
+import * as R from "remeda";
+import { Adversary, AdversaryAttributes, AdversaryDataSchema, AdversaryDataSource } from ".";
+import fields = foundry.data.fields;
 
 class AdversaryDataModel<TParent extends Adversary = Adversary> extends CharacterDataModel<
     TParent,
@@ -8,17 +11,30 @@ class AdversaryDataModel<TParent extends Adversary = Adversary> extends Characte
     static defineSchema(): AdversaryDataSchema {
         return {
             ...super.defineSchema(),
+            attributes: new fields.SchemaField({
+                ...R.fromKeys(CREATURE_ATTRIBUTES, () => {
+                    return new ValueField(
+                        new fields.NumberField<number, number, true, false, true>({
+                            required: true,
+                            nullable: false,
+                            integer: true,
+                            initial: 0,
+                        }),
+                    );
+                }),
+            }),
         };
     }
 
     prepareBaseData(): void {
         super.prepareBaseData();
+        this.attributes = new AdversaryAttributes(this.parent);
     }
 }
 
 interface AdversaryDataModel<TParent extends Adversary = Adversary> extends Omit<
     AdversaryDataSource,
-    keyof CharacterDataSource
+    keyof CharacterDataSource | "attributes"
 > {}
 
 export { AdversaryDataModel };

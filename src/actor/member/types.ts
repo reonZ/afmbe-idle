@@ -26,7 +26,7 @@ type MemberAttributesSchema = Record<CreatureAttributeType, SchemaField<MemberAt
 
 type MemberCategory = (typeof MEMBER_CATEGORY)[number];
 
-type MemberDataSchema = CharacterDataSchema & {
+type MemberDataSchema = Omit<CharacterDataSchema, "attributes"> & {
     attributes: SchemaField<MemberAttributesSchema>;
     category: StringField<MemberCategory, MemberCategory, true, false, true>;
     details: SchemaField<MemberDetailsSchema>;

@@ -1,4 +1,4 @@
-import { CreatureDataModel, CreatureDataSource } from "actor";
+import { CreatureAttributes, CreatureDataModel, CreatureDataSource } from "actor";
 import { Zombie, ZombieDataSchema, ZombieDataSource } from ".";
 
 class ZombieDataModel<TParent extends Zombie = Zombie> extends CreatureDataModel<TParent, ZombieDataSchema> {
@@ -6,6 +6,10 @@ class ZombieDataModel<TParent extends Zombie = Zombie> extends CreatureDataModel
         return {
             ...super.defineSchema(),
         };
+    }
+
+    prepareBaseData(): void {
+        this.attributes = new CreatureAttributes(this.parent);
     }
 
     prepareDerivedData(): void {

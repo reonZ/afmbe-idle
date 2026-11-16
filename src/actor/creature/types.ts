@@ -6,8 +6,6 @@ import type { CREATURE_ATTRIBUTES, CREATURE_SECONDARIES, CreatureDataModel } fro
 type CreatureAttributeType = (typeof CREATURE_ATTRIBUTES)[number];
 type CreatureSecondaryType = (typeof CREATURE_SECONDARIES)[number];
 
-type CreatureAttributesSchema = Record<CreatureAttributeType, PositiveIntergerValueField>;
-
 type CreatureDataSchema = ActorDataSchema & {
     endurance: PositiveIntergerValueField;
     essence: PositiveIntergerValueField;
@@ -28,7 +26,6 @@ type CreatureSource = CharacterSource | ZombieSource;
 
 export type {
     Creature,
-    CreatureAttributesSchema,
     CreatureAttributeType,
     CreatureDataSchema,
     CreatureDataSource,
