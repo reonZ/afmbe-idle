@@ -1,13 +1,13 @@
+import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
 import type { ActorSource } from "@7h3laughingman/foundry-types/common/documents/_module.mjs";
-import type { Creature, CreatureDataSchema } from "actor";
+import type { Character, CharacterDataSchema } from "actor";
 import type { AdversaryDataModel } from ".";
-import fields = foundry.data.fields;
 
-type AdversaryDataSchema = CreatureDataSchema & {};
+type AdversaryDataSchema = CharacterDataSchema & {};
 
-type AdversaryDataSource = fields.ModelPropsFromSchema<AdversaryDataSchema>;
+type AdversaryDataSource = ModelPropsFromSchema<AdversaryDataSchema>;
 
-declare class Adversary<TParent extends TokenDocument | null = TokenDocument | null> extends Creature<TParent> {
+declare class Adversary<TParent extends TokenDocument | null = TokenDocument | null> extends Character<TParent> {
     system: AdversaryDataModel;
 }
 

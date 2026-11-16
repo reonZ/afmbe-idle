@@ -37,8 +37,14 @@
     },
     "documentTypes": {
         "Actor": {
+            "adversary": {
+                "htmlFields": []
+            },
             "member": {
                 "htmlFields": ["details.description", "details.personality", "details.quote"]
+            },
+            "zombie": {
+                "htmlFields": []
             }
         },
         "Item": {

@@ -1,5 +1,5 @@
 import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
-import type { Adversary, Member, Creature, CreatureSource, Zombie } from "actor";
+import type { Adversary, Member, Creature, CreatureSource, Zombie, Character } from "actor";
 import type { ItemInstances, ItemType } from "item";
 import type { ACTOR_TYPES, ActorAFMBE } from ".";
 
@@ -13,6 +13,7 @@ type ActorModifier = {
 
 type ActorInstances<TParent extends TokenDocument | null = TokenDocument | null> = {
     adversary: Adversary<TParent>;
+    character: Character<TParent>;
     creature: Creature<TParent>;
     member: Member<TParent>;
     zombie: Zombie<TParent>;

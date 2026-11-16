@@ -6,7 +6,7 @@ import type {
     StringField,
 } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
 import type { ActorSource } from "@7h3laughingman/foundry-types/common/documents/actor.mjs";
-import type { Creature, CreatureAttributeType, CreatureDataSchema } from "actor";
+import type { Character, CreatureAttributeType, CharacterDataSchema } from "actor";
 import type { BooleanField, PositiveIntegerField, ValueAndTotalField } from "fields";
 import type { MEMBER_CATEGORY, MemberDataModel } from ".";
 
@@ -26,7 +26,7 @@ type MemberAttributesSchema = Record<CreatureAttributeType, SchemaField<MemberAt
 
 type MemberCategory = (typeof MEMBER_CATEGORY)[number];
 
-type MemberDataSchema = CreatureDataSchema & {
+type MemberDataSchema = CharacterDataSchema & {
     attributes: SchemaField<MemberAttributesSchema>;
     category: StringField<MemberCategory, MemberCategory, true, false, true>;
     details: SchemaField<MemberDetailsSchema>;
@@ -38,7 +38,7 @@ type MemberAttributesSource = SourceFromSchema<MemberAttributesSchema>;
 
 type MemberDataSource = ModelPropsFromSchema<MemberDataSchema>;
 
-declare class Member<TParent extends TokenDocument | null = TokenDocument | null> extends Creature<TParent> {
+declare class Member<TParent extends TokenDocument | null = TokenDocument | null> extends Character<TParent> {
     system: MemberDataModel;
 }
 

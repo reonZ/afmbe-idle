@@ -1,11 +1,10 @@
-import { CREATURE_ATTRIBUTES, CreatureDataModel, CreatureDataSource } from "actor";
+import { CharacterDataModel, CharacterDataSource, CREATURE_ATTRIBUTES } from "actor";
 import { BooleanField, PositiveIntegerField, ValueAndTotalField } from "fields";
-import { ItemType } from "item";
 import * as R from "remeda";
 import { Member, MEMBER_CATEGORY, MemberAttributes, MemberDataSchema, MemberDataSource, MemberExperience } from ".";
 import fields = foundry.data.fields;
 
-class MemberDataModel<TParent extends Member = Member> extends CreatureDataModel<TParent, MemberDataSchema> {
+class MemberDataModel<TParent extends Member = Member> extends CharacterDataModel<TParent, MemberDataSchema> {
     static defineSchema(): MemberDataSchema {
         return {
             ...super.defineSchema(),
@@ -33,10 +32,6 @@ class MemberDataModel<TParent extends Member = Member> extends CreatureDataModel
         };
     }
 
-    get allowedItems(): ItemType[] {
-        return ["armor", "quality", "skill", "weapon"];
-    }
-
     prepareBaseData(): void {
         super.prepareBaseData();
 
@@ -47,7 +42,7 @@ class MemberDataModel<TParent extends Member = Member> extends CreatureDataModel
 
 interface MemberDataModel<TParent extends Member = Member> extends Omit<
     MemberDataSource,
-    keyof CreatureDataSource | "attributes" | "experience"
+    keyof CharacterDataSource | "attributes" | "experience"
 > {
     attributes: MemberAttributes;
     experience: MemberExperience;

@@ -19,10 +19,6 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
             template: "systems/afmbe-idle/templates/actor/creature/attributes.hbs",
             prepareContext: this.prepareAttributesContext,
         },
-        skills: {
-            template: "systems/afmbe-idle/templates/actor/creature/skills.hbs",
-            prepareContext: this.prepareSkillsContext,
-        },
     } satisfies ApplicationPartAFMBE<CreatureSheetPart, CreatureSheetRenderContext>;
 
     static prepareAttributesContext<T extends CreatureSheetRenderContext>(this: CreatureSheet, context: T): T {
@@ -41,11 +37,6 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
             speed: actor.system.speed,
         };
 
-        return context;
-    }
-
-    static prepareSkillsContext<T extends CreatureSheetRenderContext>(this: CreatureSheet, context: T): T {
-        context.skills = R.flatMap(this.actor.itemTypes.skill, (skill) => [skill, ...skill.system.deepSpecialties]);
         return context;
     }
 

@@ -1,7 +1,7 @@
-import { CreatureDataModel, CreatureDataSource } from "actor";
+import { CharacterDataModel, CharacterDataSource } from "actor";
 import { Adversary, AdversaryDataSchema, AdversaryDataSource } from ".";
 
-class AdversaryDataModel<TParent extends Adversary = Adversary> extends CreatureDataModel<
+class AdversaryDataModel<TParent extends Adversary = Adversary> extends CharacterDataModel<
     TParent,
     AdversaryDataSchema
 > {
@@ -18,7 +18,7 @@ class AdversaryDataModel<TParent extends Adversary = Adversary> extends Creature
 
 interface AdversaryDataModel<TParent extends Adversary = Adversary> extends Omit<
     AdversaryDataSource,
-    keyof CreatureDataSource
+    keyof CharacterDataSource
 > {}
 
 export { AdversaryDataModel };

@@ -4,7 +4,7 @@ import EmbeddedCollection, {
 import { ACTOR_CREATURE_TYPES } from "actor";
 import { ItemAFMBE } from "item";
 import * as R from "remeda";
-import { ActorDataModel, ActorDataSchema, ActorInstances, ActorItemTypes, ActorType } from ".";
+import { ACTOR_CHARACTER_TYPES, ActorDataModel, ActorDataSchema, ActorInstances, ActorItemTypes, ActorType } from ".";
 
 class ActorAFMBE<TParent extends TokenDocument | null = TokenDocument | null> extends Actor<TParent> {
     _initialize(options?: Record<string, unknown>): void {
@@ -24,8 +24,12 @@ class ActorAFMBE<TParent extends TokenDocument | null = TokenDocument | null> ex
         });
     }
 
-    isOfType<T extends ActorType | "creature">(type: T): this is ActorInstances<this["parent"]>[T] {
-        return type === "creature" ? R.isIncludedIn(this.type, ACTOR_CREATURE_TYPES) : this.type === type;
+    isOfType<T extends ActorType | "character" | "creature">(type: T): this is ActorInstances<this["parent"]>[T] {
+        return type === "creature"
+            ? R.isIncludedIn(this.type, ACTOR_CREATURE_TYPES)
+            : type === "character"
+              ? R.isIncludedIn(this.type, ACTOR_CHARACTER_TYPES)
+              : this.type === type;
     }
 }
 

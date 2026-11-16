@@ -1,16 +1,16 @@
 import type {
-    CreatureSheetConfiguration,
-    CreatureSheetPart,
-    CreatureSheetRenderContext,
-    CreatureSheetRenderOptions,
+    CharacterSheetConfiguration,
+    CharacterSheetPart,
+    CharacterSheetRenderContext,
+    CharacterSheetRenderOptions,
 } from "actor";
 
-type MemberSheetPart = CreatureSheetPart;
+type MemberSheetPart = CharacterSheetPart;
 
-type MemberSheetRenderOptions = CreatureSheetRenderOptions;
+type MemberSheetRenderOptions = CharacterSheetRenderOptions;
 
-type MemberSheetRenderContext = CreatureSheetRenderContext;
+type MemberSheetRenderContext = CharacterSheetRenderContext;
 
-type MemberSheetConfiguration = CreatureSheetConfiguration;
+type MemberSheetConfiguration = CharacterSheetConfiguration;
 
 export type { MemberSheetConfiguration, MemberSheetPart, MemberSheetRenderContext, MemberSheetRenderOptions };

@@ -6,13 +6,25 @@
         grid-row: 1;
     }
 
-    .attributes {
-        grid-column: 1;
-        grid-row: 1;
-    }
+    .sidebar {
+        &.attributes {
+            grid-column: 1;
+            grid-row: 1;
+        }
 
-    .skills {
-        grid-column: 3;
-        grid-row: 1;
+        &.skills {
+            grid-column: 3;
+            grid-row: 1;
+
+            .list {
+                grid-template-columns: 1fr auto;
+
+                .name {
+                    i {
+                        font-size: 0.85em;
+                    }
+                }
+            }
+        }
     }
 }
