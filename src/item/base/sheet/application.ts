@@ -13,7 +13,7 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends app
     static DEFAULT_OPTIONS: DeepPartial<ItemSheetConfiguration> = {
         canCreate: false,
         classes: ["item"],
-        position: { width: 480 },
+        position: { height: 500, width: 650 },
     };
 
     async _prepareContext(options: ItemSheetRenderOptions): Promise<ItemSheetRenderContext> {

@@ -1,17 +1,16 @@
-<div class="details">
+<div class="sidebar">
     <div class="title">
         {{localize 'afmbe.item.skill.specialties.title'}}
         <a data-action="add-specialty" data-tooltip="afmbe.item.skill.specialties.add">
             <i class="fa-solid fa-plus"></i>
         </a>
     </div>
+    <div class="list">
     {{#each item.system.deepSpecialties as |skill|}}
     <a class="name" data-action="open-item-sheet" data-item-uuid="{{skill.uuid}}">
         {{skill.name}}
     </a>
     <input type="number" value="{{skill.system.level.value}}" disabled />
-    <a data-action="delete-item" data-item-uuid="{{skill.uuid}}" data-tooltip="afmbe.item.skill.specialty.delete">
-        <i class="fa-solid fa-trash"></i>
-    </a>
     {{/each}}
+    </div>
 </div>

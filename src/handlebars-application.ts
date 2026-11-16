@@ -7,12 +7,15 @@ import {
     HandlebarsRenderOptions,
     HandlebarsTemplatePart,
 } from "@7h3laughingman/foundry-types/client/applications/api/_module.mjs";
+import { ActorSheetV2, ItemSheetV2 } from "@7h3laughingman/foundry-types/client/applications/sheets/_module.mjs";
+import { ContextMenuEntry } from "@7h3laughingman/foundry-types/client/applications/ux/context-menu.mjs";
+import { ImageFilePath } from "@7h3laughingman/foundry-types/common/constants.mjs";
 import { ItemAFMBE } from "item";
 
 function applicationMixinAFMBE<
     TBase extends AbstractConstructorOf<ApplicationV2<any>>,
     TPart extends "header" | (string & {}),
-    TContext extends DocumentSheetRenderContext,
+    TContext extends ApplicationRenderContextAFMBE,
 >(BaseApplication: TBase): ApplicationStaticAFMBE<TPart, TContext> & TBase {
     abstract class HandlebarsApplicationAFMBE extends foundry.applications.api.HandlebarsApplicationMixin(
         BaseApplication,
@@ -26,11 +29,22 @@ function applicationMixinAFMBE<
             },
         };
 
-        static PARTS: ApplicationPartAFMBE<"header", DocumentSheetRenderContext> = {
+        static PARTS: ApplicationPartAFMBE<"header", ApplicationRenderContextAFMBE> = {
             header: {
                 template: "systems/afmbe-idle/templates/sheet-header.hbs",
+                prepareContext: this.prepareHeaderContext,
             },
         };
+
+        static prepareHeaderContext<T extends ApplicationRenderContextAFMBE>(
+            this: ActorSheetV2<Actor, Item> | ItemSheetV2<Item>,
+            context: T,
+            _options: HandlebarsRenderOptions,
+        ): T {
+            context.name = this.document.name;
+            context.img = this.document.img;
+            return context;
+        }
 
         static async getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null> {
             const uuid = target.closest<HTMLElement>("[data-item-uuid]")?.dataset.itemUuid;
@@ -92,6 +106,39 @@ function applicationMixinAFMBE<
             }
         }
 
+        async _onFirstRender(context: object, options: HandlebarsRenderOptions): Promise<void> {
+            await super._onFirstRender(context, options);
+
+            this._createContextMenu(this.getItemContextOptions, "[data-item-uuid]", {
+                hookName: "get{}ItemContextOptions",
+                parentClassHooks: false,
+            });
+        }
+
+        getItemContextOptions(this: HandlebarsApplicationAFMBE & { isEditable: boolean }): ContextMenuEntry[] {
+            const isEditable = this.isEditable;
+
+            return [
+                {
+                    icon: "fa-solid fa-pen-to-square",
+                    label: "afmbe.actor.contextMenu.item.edit",
+                    onClick: async (event, target) => {
+                        const item = await this.getItemFromTargetElement(target);
+                        item?.sheet.render(true);
+                    },
+                },
+                {
+                    icon: "fa-solid fa-trash",
+                    label: "afmbe.actor.contextMenu.item.delete",
+                    visible: isEditable,
+                    onClick: async (event, target) => {
+                        const item = await this.getItemFromTargetElement(target);
+                        item?.confirmDelete();
+                    },
+                },
+            ];
+        }
+
         getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null> {
             return (this.constructor as typeof HandlebarsApplicationAFMBE).getItemFromTargetElement(target);
         }
@@ -104,13 +151,19 @@ interface HandlebarsApplicationAFMBE extends HandlebarsApplication {
     getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
 }
 
-interface ApplicationStaticAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext>
+type ApplicationRenderContextAFMBE = DocumentSheetRenderContext & {
+    img?: ImageFilePath | null;
+    name?: string;
+};
+
+interface ApplicationStaticAFMBE<TPart extends string, TContext extends ApplicationRenderContextAFMBE>
     extends ConstructorOf<HandlebarsApplicationAFMBE>, HandlebarsApplicationStatic {
     PARTS: ApplicationPartAFMBE<TPart, TContext>;
     getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
+    prepareHeaderContext(context: TContext, options: HandlebarsRenderOptions): TContext;
 }
 
-type ApplicationPartAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext> = Record<
+type ApplicationPartAFMBE<TPart extends string, TContext extends ApplicationRenderContextAFMBE> = Record<
     TPart,
     HandlebarsTemplatePart & {
         activateListeners?: (html: HTMLElement, options: HandlebarsRenderOptions) => void | Promise<void>;
@@ -119,4 +172,4 @@ type ApplicationPartAFMBE<TPart extends string, TContext extends DocumentSheetRe
 >;
 
 export { applicationMixinAFMBE };
-export type { ApplicationPartAFMBE };
+export type { ApplicationPartAFMBE, ApplicationRenderContextAFMBE };

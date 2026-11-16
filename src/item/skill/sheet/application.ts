@@ -4,6 +4,7 @@ import { ApplicationPartAFMBE } from "handlebars-application";
 import { ItemSheetAFMBE } from "item";
 import { Skill, SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext, SkillSheetRenderOptions } from "..";
 import { localize } from "utils";
+import { HandlebarsRenderOptions } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 
 class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>> extends ItemSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<SkillSheetConfiguration> = {
@@ -16,13 +17,19 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
     static PARTS = {
         header: {
             template: "systems/afmbe-idle/templates/item/skill/header.hbs",
+            prepareContext: this.prepareHeaderContext,
         },
-        details: {
-            template: "systems/afmbe-idle/templates/item/skill/details.hbs",
+        sidebar: {
+            template: "systems/afmbe-idle/templates/item/skill/sidebar.hbs",
         },
     } satisfies ApplicationPartAFMBE<SkillSheetPart, SkillSheetRenderContext>;
 
-    static prepareLevelsContext<T extends SkillSheetRenderContext>(this: SkillSheet, context: T): T {
+    static prepareHeaderContext<T extends SkillSheetRenderContext>(
+        this: SkillSheet,
+        context: T,
+        options: HandlebarsRenderOptions,
+    ): T {
+        super.prepareHeaderContext(context, options);
         context.level = this.item.system.level.value;
         return context;
     }

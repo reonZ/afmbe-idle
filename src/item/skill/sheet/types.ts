@@ -7,7 +7,7 @@ import type {
     Skill,
 } from "item";
 
-type SkillSheetPart = ItemSheetPart | "details";
+type SkillSheetPart = ItemSheetPart | "sidebar";
 
 type SkillSheetRenderOptions = ItemSheetRenderOptions;
 

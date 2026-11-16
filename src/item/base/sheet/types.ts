@@ -1,16 +1,16 @@
 import type {
     DocumentSheetConfiguration,
-    DocumentSheetRenderContext,
     DocumentSheetRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/api/document-sheet.mjs";
 import { ActorAFMBE } from "actor";
+import { ApplicationRenderContextAFMBE } from "handlebars-application";
 import { ItemAFMBE } from "..";
 
 type ItemSheetPart = "header";
 
 type ItemSheetRenderOptions = DocumentSheetRenderOptions;
 
-type ItemSheetRenderContext = DocumentSheetRenderContext & {
+type ItemSheetRenderContext = ApplicationRenderContextAFMBE & {
     actor?: ActorAFMBE | null;
     isOwned?: boolean;
     item?: ItemAFMBE;

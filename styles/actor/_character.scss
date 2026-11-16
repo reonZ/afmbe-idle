@@ -1,9 +1,13 @@
 .application.sheet.afmbe.actor.creature.character .window-content {
     grid-template-columns: var(--sidebar-attributes-width) 1fr 200px;
 
+    .sheet-header {
+        grid-column-end: -2;
+    }
+
     .sidebar.skills {
         grid-column: 3;
-        grid-row: 1;
+        grid-row: 1 / -1;
 
         .list {
             grid-template-columns: 1fr auto;
