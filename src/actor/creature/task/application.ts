@@ -43,27 +43,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         this.#hide = R.isArray(hide) ? hide.slice() : [];
         this.#mode = mode ?? "public";
         this.#selected = R.isObjectType(select) ? foundry.utils.deepClone(select) : {};
-
         this.#modifiers = new Collection();
-        //         this.#modifiers = R.pipe(
-        //             R.isArray(modifiers) ? modifiers : [],
-        //             R.map((id): ActorModifier | undefined => {
-        //                 const [itemId, slug] = R.split(id, ".");
-        //                 const item = actor.items.get(itemId);
-        //                 if (!item?.isOfType("skill")) return;
-        //
-        //                 if (!slug) {
-        //                     return { id: item.id, label: item.name, value: item.system.level.value };
-        //                 }
-        //
-        //                 const specialty = item.system.specialties[slug];
-        //                 if (!specialty) return;
-        //
-        //                 return { id: specialty.longId, label: specialty.label, value: specialty.total };
-        //             }),
-        //             R.filter(R.isTruthy),
-        //             R.indexBy(R.prop("id")),
-        //         );
     }
 
     static roll(actor: Creature, data: RollTaskData = {}): RollTaskApplication {
@@ -74,36 +54,6 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
 
     get actor(): Creature {
         return this.#actor;
-    }
-
-    prepareSkillsSelect(): RollTaskTruncatedSelects[2] {
-        const parents = R.filter(this.actor.itemTypes.skill, (skill) => !skill.system.isSpecialty);
-
-        return {
-            blank: true,
-            key: "skill",
-            label: localize("actor.creature.task.skill.label"),
-            options: R.flatMap(parents, (skill) => {
-                const specialties = skill.system.specialties;
-                const group = specialties.length ? skill.name : undefined;
-                const name = group ? localize("actor.creature.task.skill.base") : skill.name;
-
-                return [
-                    {
-                        label: `${name} (${skill.system.modifier})`,
-                        value: skill.id,
-                        group,
-                    },
-                    ...specialties.map((specialty): FormSelectOption => {
-                        return {
-                            label: `${specialty.name} (${specialty.system.modifier})`,
-                            value: specialty.id,
-                            group,
-                        };
-                    }),
-                ];
-            }),
-        };
     }
 
     protected _initializeApplicationOptions(
@@ -143,7 +93,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                     this.actor.itemTypes.skill,
                     R.filter((skill) => !skill.system.isSpecialty),
                     R.flatMap((skill) => {
-                        const specialties = skill.system.specialties;
+                        const specialties = skill.system.deepSpecialties;
                         const group = specialties.length ? skill.name : undefined;
                         const name = group ? localize("actor.creature.task.skill.base") : skill.name;
 
