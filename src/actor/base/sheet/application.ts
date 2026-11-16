@@ -1,12 +1,6 @@
-import { applicationMixinAFMBE, ApplicationPartAFMBE } from "handlebars-application";
+import { applicationMixinAFMBE } from "handlebars-application";
 import { ItemAFMBE } from "item";
-import {
-    ActorAFMBE,
-    ActorSheetConfiguration,
-    ActorSheetPart,
-    ActorSheetRenderContext,
-    ActorSheetRenderOptions,
-} from "..";
+import { ActorAFMBE, ActorSheetConfiguration, ActorSheetRenderContext, ActorSheetRenderOptions } from "..";
 
 abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends applicationMixinAFMBE(
     foundry.applications.sheets.ActorSheetV2<ActorAFMBE, ItemAFMBE>,
@@ -16,16 +10,9 @@ abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends 
         position: { height: 700, width: 750 },
     };
 
-    static PARTS = {
-        header: {
-            template: "systems/afmbe-idle/templates/actor/header.hbs",
-        },
-    } satisfies ApplicationPartAFMBE<ActorSheetPart, ActorSheetRenderContext>;
-
     async _prepareContext(options: ActorSheetRenderOptions): Promise<ActorSheetRenderContext> {
         const context = (await super._prepareContext(options)) as ActorSheetRenderContext;
         context.actor = this.actor;
-        context.isOwned = !!this.actor;
         return context;
     }
 }

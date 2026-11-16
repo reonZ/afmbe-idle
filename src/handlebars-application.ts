@@ -7,10 +7,11 @@ import {
     HandlebarsRenderOptions,
     HandlebarsTemplatePart,
 } from "@7h3laughingman/foundry-types/client/applications/api/_module.mjs";
+import { ItemAFMBE } from "item";
 
 function applicationMixinAFMBE<
     TBase extends AbstractConstructorOf<ApplicationV2<any>>,
-    TPart extends string,
+    TPart extends "header" | (string & {}),
     TContext extends DocumentSheetRenderContext,
 >(BaseApplication: TBase): ApplicationStaticAFMBE<TPart, TContext> & TBase {
     abstract class HandlebarsApplicationAFMBE extends foundry.applications.api.HandlebarsApplicationMixin(
@@ -20,14 +21,31 @@ function applicationMixinAFMBE<
             classes: ["afmbe"],
             form: { submitOnChange: true },
             actions: {
+                "delete-item": this.#deleteItem,
                 "open-item-sheet": this.#openItemSheet,
             },
         };
 
-        static async #openItemSheet(this: HandlebarsApplication, _event: PointerEvent, target: HTMLElement) {
+        static PARTS: ApplicationPartAFMBE<"header", DocumentSheetRenderContext> = {
+            header: {
+                template: "systems/afmbe-idle/templates/sheet-header.hbs",
+            },
+        };
+
+        static async getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null> {
             const uuid = target.closest<HTMLElement>("[data-item-uuid]")?.dataset.itemUuid;
             const item = await fromUuid(uuid ?? "");
-            if (item instanceof Item) item.sheet.render(true);
+            return item instanceof ItemAFMBE ? item : null;
+        }
+
+        static async #deleteItem(_event: PointerEvent, target: HTMLElement) {
+            const item = await HandlebarsApplicationAFMBE.getItemFromTargetElement(target);
+            item?.delete();
+        }
+
+        static async #openItemSheet(_event: PointerEvent, target: HTMLElement) {
+            const item = await HandlebarsApplicationAFMBE.getItemFromTargetElement(target);
+            item?.sheet.render(true);
         }
 
         async _preparePartContext(

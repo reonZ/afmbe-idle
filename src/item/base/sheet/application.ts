@@ -1,6 +1,6 @@
-import { applicationMixinAFMBE, ApplicationPartAFMBE } from "handlebars-application";
+import { applicationMixinAFMBE } from "handlebars-application";
 import { ItemAFMBE } from "item";
-import { ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions } from ".";
+import { ItemSheetConfiguration, ItemSheetRenderContext, ItemSheetRenderOptions } from ".";
 
 abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends applicationMixinAFMBE(
     foundry.applications.sheets.ItemSheetV2<ItemAFMBE>,
@@ -9,12 +9,6 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends app
         classes: ["item"],
         position: { width: 480 },
     };
-
-    static PARTS = {
-        header: {
-            template: "systems/afmbe-idle/templates/item/header.hbs",
-        },
-    } satisfies ApplicationPartAFMBE<ItemSheetPart, ItemSheetRenderContext>;
 
     async _prepareContext(options: ItemSheetRenderOptions): Promise<ItemSheetRenderContext> {
         const context = (await super._prepareContext(options)) as ItemSheetRenderContext;

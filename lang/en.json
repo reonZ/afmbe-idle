@@ -85,7 +85,7 @@
         "item": {
             "skill": {
                 "level": "Level",
-                "speciality": {
+                "specialty": {
                     "delete": "Delete Specialty",
                     "name": "Specialty {index}"
                 },

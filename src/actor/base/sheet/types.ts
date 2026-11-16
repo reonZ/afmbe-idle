@@ -11,7 +11,6 @@ type ActorSheetRenderOptions = DocumentSheetRenderOptions;
 
 type ActorSheetRenderContext = DocumentSheetRenderContext & {
     actor?: ActorAFMBE;
-    isOwned?: boolean;
 };
 
 type ActorSheetConfiguration = DocumentSheetConfiguration;
