@@ -1,0 +1,62 @@
+.application.sheet.afmbe.actor.creature .window-content {
+    --sidebar-attributes-width: minmax(160px, auto);
+
+    grid-template-columns: var(--sidebar-attributes-width) 1fr;
+
+    .sheet-header {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .sidebar.attributes {
+        grid-column: 1;
+        grid-row: 1;
+
+        .primary {
+            grid-template-columns: 1fr auto auto;
+
+            a {
+                font-size: 1.2em;
+            }
+        }
+
+        .secondary {
+            grid-template-columns: 1fr repeat(3, auto);
+            grid-template-rows: repeat(4, 1fr);
+
+            .separator {
+                grid-column: 3;
+
+                &::after {
+                    content: "/";
+                    display: flex;
+                    align-items: center;
+                }
+            }
+
+            .max {
+                grid-column: 4;
+            }
+        }
+
+        .primary {
+            margin-bottom: 0.3rem;
+        }
+
+        .name {
+            grid-column: 1;
+        }
+
+        .value {
+            grid-column: 2;
+        }
+
+        .speed {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-right: 0.1rem;
+        }
+    }
+}
