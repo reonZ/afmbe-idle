@@ -58,10 +58,11 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
                 R.filter((entry): entry is ItemAFMBE | ItemSourceAFMBE => {
                     return "type" in entry && R.isIncludedIn(entry.type, allowedItems);
                 }),
-                R.map((entry): Omit<SubItemDataSource, "_id"> & { _id: string } => {
+                R.map((entry): WithNonNullable<SubItemDataSource, "_id"> => {
                     const source = entry instanceof Item ? entry.toObject() : entry;
                     source._id ??= foundry.utils.randomID();
-                    return source as Omit<SubItemDataSource, "_id"> & { _id: string };
+                    const item = new ItemAFMBE(source);
+                    return item.toObject() as WithNonNullable<SubItemDataSource, "_id">;
                 }),
             );
 
@@ -144,6 +145,18 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
         }
 
         return super.deleteDocuments(ids, operation as DatabaseDeleteOperation<ActorAFMBE | null>);
+    }
+
+    get chainId(): string {
+        return this.parentItemChain.concat(this).join(".");
+    }
+
+    get parentItemChain(): ItemAFMBE<TParent>[] {
+        return this.parentItem ? this.parentItem.parentItemChain.concat(this.parentItem) : [];
+    }
+
+    get rootParentItem(): ItemAFMBE<TParent> | null {
+        return this.parentItem?.rootParentItem ?? this.parentItem;
     }
 
     // generate uuid that chain with parent items

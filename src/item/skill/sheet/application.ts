@@ -1,9 +1,7 @@
 import { ApplicationClosingOptions } from "@7h3laughingman/foundry-types/client/applications/_module.mjs";
-import { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 import { Creature } from "actor";
 import { ApplicationPartAFMBE } from "handlebars-application";
 import { ItemSheetAFMBE } from "item";
-import * as R from "remeda";
 import { Skill, SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext, SkillSheetRenderOptions } from "..";
 
 class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>> extends ItemSheetAFMBE<TParent> {
@@ -16,43 +14,13 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
     };
 
     static PARTS = {
-        ...super.PARTS,
+        header: {
+            template: "systems/afmbe-idle/templates/item/skill/header.hbs",
+        },
         details: {
             template: "systems/afmbe-idle/templates/item/skill/details.hbs",
-            prepareContext: this.prepareDetailsContext,
-        },
-        level: {
-            template: "systems/afmbe-idle/templates/item/skill/level.hbs",
-            prepareContext: this.prepareLevelsContext,
         },
     } satisfies ApplicationPartAFMBE<SkillSheetPart, SkillSheetRenderContext>;
-
-    static prepareDetailsContext<T extends SkillSheetRenderContext>(this: SkillSheet, context: T): T {
-        const system = this.item.system;
-
-        if (system.isParent) {
-            context.specialties = system.specialties;
-        } else {
-            context.parent = {
-                available: R.pipe(
-                    this.actor?.itemTypes.skill ?? [],
-                    R.filter((skill) => skill.id !== this.item.id && !skill.system.isSpecialty),
-                    R.map((skill): FormSelectOption => {
-                        return { label: skill.name, value: skill.id };
-                    }),
-                ),
-                selected: system.parentSkill?.id,
-            };
-        }
-
-        return context;
-    }
-
-    static prepareHeaderTemplate<T extends SkillSheetRenderContext>(this: SkillSheet, context: T): T {
-        const parent = this.item.system.parentSkill;
-        context.name = parent ? `${parent.name} [${this.item.name}]` : this.item.name;
-        return context;
-    }
 
     static prepareLevelsContext<T extends SkillSheetRenderContext>(this: SkillSheet, context: T): T {
         context.level = this.item.system.level.value;

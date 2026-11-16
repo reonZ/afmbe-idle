@@ -1,7 +1,7 @@
 import { PositiveIntergerValueField } from "fields";
 import { ItemDataModel, ItemDataSource, ItemType } from "item";
 import { getNextNameIndex, localize, signedNumber } from "utils";
-import { Skill, SkillDataSchema, SkillDataSource } from ".";
+import { Skill, SkillDataSchema, SkillDataSource, SkillSource } from ".";
 
 class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParent, SkillDataSchema> {
     static defineSchema(): SkillDataSchema {
@@ -16,7 +16,7 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
     }
 
     get bonus(): number {
-        return this.level.value * (this.isSpecialty ? 2 : 1) + (this.parentSkill?.system.bonus ?? 0);
+        return this.level.value * (this.isSpecialty ? 2 : 1) + (this.item.rootParentItem?.system.bonus ?? 0);
     }
 
     get isParent(): boolean {
@@ -44,18 +44,17 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
     > {
         const baseName = localize("item.skill.specialty.name", { index: "" }).trim();
         const index = getNextNameIndex(baseName, this.specialties.contents);
-        //
-        //         const source: PreCreate<SkillSource> = {
-        //             type: "skill",
-        //             name: name?.trim() || localize("item.skill.specialty.name", { index }).trim(),
-        //             system: {
-        //                 level: { value: level },
-        //                 parentSkillId: this.item.id,
-        //             },
-        //         };
-        //
-        //         const results = await this.actor?.createEmbeddedDocuments("Item", [source]);
-        //         return results?.[0] as Skill<TParent["parent"]> | undefined;
+
+        const source: PreCreate<SkillSource> = {
+            type: "skill",
+            name: name?.trim() || localize("item.skill.specialty.name", { index }).trim(),
+            system: {
+                level: { value: level },
+            },
+        };
+
+        const [item] = await this.item.createEmbeddedDocuments("Item", [source]);
+        return item as Skill<TParent["parent"]> | undefined;
     }
 }
 

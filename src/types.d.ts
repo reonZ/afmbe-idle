@@ -62,4 +62,8 @@ declare global {
     type ValueAndTotal = { total: number; value: number };
 
     type TupleOf<T> = [T, ...T[]];
+
+    type WithNonNullable<T extends Record<string, unknown>, K extends keyof T> = Omit<T, K> & {
+        [k in K]: Exclude<T[K], null | undefined>;
+    };
 }

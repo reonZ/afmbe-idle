@@ -14,6 +14,7 @@ type SkillDataSource = ModelPropsFromSchema<SkillDataSchema>;
 declare class Skill<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
     readonly _source: SkillSource;
     readonly parentItem: Skill<TParent> | null;
+    get rootParentItem(): Skill<TParent> | null;
     readonly subItems: Collection<string, Skill<TParent>>;
     system: SkillDataModel;
 }
