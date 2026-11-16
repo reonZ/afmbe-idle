@@ -89,7 +89,7 @@
             }
         },
         "item": {
-            "queryDelete": {
+            "confirmDelete": {
                 "content": "Are you sure you want to delete this item?",
                 "title": "Delete {type} - {name}"
             },
