@@ -1,4 +1,5 @@
 import * as R from "remeda";
+import { localize } from ".";
 
 function splitString<T>(str: string): T[] {
     return R.pipe(
@@ -14,7 +15,7 @@ function signedNumber(num: number): string {
 }
 
 function getLastNameIndex(baseName: string, list: { name: string }[]): number | undefined {
-    const nameRegex = new RegExp(`^${baseName}(:? (\\d+))?$`, "i");
+    const nameRegex = new RegExp(`^${baseName}(?: \\((\\d+)\\))?$`, "i");
     return R.pipe(
         list,
         R.map((source) => source.name.match(nameRegex)),
@@ -25,9 +26,10 @@ function getLastNameIndex(baseName: string, list: { name: string }[]): number | 
     );
 }
 
-function getNextNameIndex(baseName: string, list: { name: string }[]): number | "" {
+function getNextIndexedName(baseName: string, list: { name: string }[]): string {
+    baseName = localize(baseName);
     const lastIndex = getLastNameIndex(baseName, list);
-    return lastIndex === undefined ? "" : lastIndex + 1;
+    return lastIndex === undefined ? baseName : `${baseName} (${lastIndex + 1})`;
 }
 
-export { getNextNameIndex, signedNumber, splitString };
+export { getNextIndexedName, signedNumber, splitString };

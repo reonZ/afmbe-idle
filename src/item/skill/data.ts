@@ -1,7 +1,7 @@
 import { PositiveIntergerValueField } from "fields";
 import { ItemDataModel, ItemDataSource, ItemType } from "item";
 import * as R from "remeda";
-import { getNextNameIndex, localize, signedNumber } from "utils";
+import { getNextIndexedName, signedNumber } from "utils";
 import { Skill, SkillDataSchema, SkillDataSource, SkillSource } from ".";
 
 class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParent, SkillDataSchema> {
@@ -49,12 +49,9 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
     async addSpecialty({ level, name }: { name?: string; level?: number } = {}): Promise<
         Skill<TParent["parent"]> | undefined
     > {
-        const baseName = localize("item.skill.specialty.name", { index: "" }).trim();
-        const index = getNextNameIndex(baseName, this.specialties.contents);
-
         const source: PreCreate<SkillSource> = {
             type: "skill",
-            name: name?.trim() || localize("item.skill.specialty.name", { index }).trim(),
+            name: name?.trim() || getNextIndexedName("item.skill.specialty.name", this.specialties.contents),
             system: {
                 level: { value: level },
             },
