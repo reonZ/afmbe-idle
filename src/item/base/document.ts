@@ -18,6 +18,7 @@ import {
     SubItems,
 } from ".";
 import Document = foundry.abstract.Document;
+import { localize } from "utils";
 
 class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends Item<TParent> {
     declare parentItem: ItemAFMBE<TParent> | null;
@@ -283,6 +284,17 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
             return deleted.shift() as this;
         }
         return super.delete(operation);
+    }
+
+    async queryDelete(): Promise<this | undefined> {
+        const type = _loc(`TYPES.Item.${this.type}`);
+        const result = await foundry.applications.api.DialogV2.confirm({
+            content: localize("item.queryDelete.content"),
+            window: {
+                title: localize("item.queryDelete.title", { name: this.name, type }),
+            },
+        });
+        return result ? this.delete() : undefined;
     }
 }
 

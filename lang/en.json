@@ -14,6 +14,12 @@
     },
     "afmbe": {
         "actor": {
+            "contextMenu": {
+                "item": {
+                    "delete": "Delete Item",
+                    "edit": "Edit Item"
+                }
+            },
             "creature": {
                 "attributes": {
                     "constitution": {
@@ -83,6 +89,10 @@
             }
         },
         "item": {
+            "queryDelete": {
+                "content": "Are you sure you want to delete this item?",
+                "title": "Delete {type} - {name}"
+            },
             "skill": {
                 "level": "Level",
                 "specialty": {

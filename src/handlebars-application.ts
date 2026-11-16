@@ -40,7 +40,7 @@ function applicationMixinAFMBE<
 
         static async #deleteItem(_event: PointerEvent, target: HTMLElement) {
             const item = await HandlebarsApplicationAFMBE.getItemFromTargetElement(target);
-            item?.delete();
+            item?.queryDelete();
         }
 
         static async #openItemSheet(_event: PointerEvent, target: HTMLElement) {
@@ -91,16 +91,23 @@ function applicationMixinAFMBE<
                 );
             }
         }
+
+        getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null> {
+            return (this.constructor as typeof HandlebarsApplicationAFMBE).getItemFromTargetElement(target);
+        }
     }
 
     return HandlebarsApplicationAFMBE as unknown as ApplicationStaticAFMBE<TPart, TContext> & TBase;
 }
 
-interface HandlebarsApplicationAFMBE extends HandlebarsApplication {}
+interface HandlebarsApplicationAFMBE extends HandlebarsApplication {
+    getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
+}
 
 interface ApplicationStaticAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext>
     extends ConstructorOf<HandlebarsApplicationAFMBE>, HandlebarsApplicationStatic {
     PARTS: ApplicationPartAFMBE<TPart, TContext>;
+    getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
 }
 
 type ApplicationPartAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext> = Record<

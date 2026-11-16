@@ -46,7 +46,7 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
     }
 
     async _onFirstRender(context: object, options: SkillSheetRenderOptions): Promise<void> {
-        super._onFirstRender(context, options);
+        await super._onFirstRender(context, options);
 
         const rootParent = this.item.rootParentItem;
         if (rootParent) {
@@ -58,27 +58,6 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         super._onClose(options);
         delete this.item.rootParentItem?.apps[this.id];
     }
-
-    //     async _processSubmitData(
-    //         event: SubmitEvent,
-    //         form: HTMLFormElement,
-    //         submitData: Record<string, unknown>,
-    //         options?: object,
-    //     ): Promise<void> {
-    //         const prevousParent = this.item.system.parentSkill;
-    //         const result = await super._processSubmitData(event, form, submitData, options);
-    //         const newParent = this.item.system.parentSkill;
-    //
-    //         prevousParent?.sheet.render();
-    //
-    //         if (newParent !== prevousParent) {
-    //             this.#removeParentListener(prevousParent);
-    //             this.#addParentListener(newParent);
-    //             newParent?.sheet.render();
-    //         }
-    //
-    //         return result;
-    //     }
 }
 
 export { SkillSheet };

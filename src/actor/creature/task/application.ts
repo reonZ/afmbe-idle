@@ -195,7 +195,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     }
 
     async _onFirstRender(context: object, options: ApplicationRenderOptions): Promise<void> {
-        super._onFirstRender(context, options);
+        await super._onFirstRender(context, options);
         this.actor.apps[this.id] = this;
     }
 
