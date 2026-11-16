@@ -7,7 +7,15 @@ class ItemDataModel<
     TSchema extends ItemDataSchema = ItemDataSchema,
 > extends foundry.abstract.TypeDataModel<TParent, TSchema> {
     static defineSchema(): ItemDataSchema {
-        const subItemsSchema = R.omit(foundry.documents.Item.defineSchema(), ["effects"]) as SubItemDataSchema;
+        const subItemsSchema = R.omit(
+            foundry.documents.Item.defineSchema(), //
+            ["effects", "folder", "_id"],
+        ) as SubItemDataSchema;
+
+        subItemsSchema._id = new fields.DocumentIdField({
+            readonly: false,
+            initial: () => foundry.utils.randomID(),
+        });
 
         return {
             subItems: new fields.ArrayField(new fields.SchemaField(subItemsSchema)),

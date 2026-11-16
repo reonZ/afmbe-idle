@@ -9,7 +9,6 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         classes: ["skill"],
         actions: {
             "add-specialty": this.#addSpecialty,
-            "delete-specialty": this.#deleteSpecialty,
         },
     };
 
@@ -41,55 +40,38 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
 
     async _onFirstRender(context: object, options: SkillSheetRenderOptions): Promise<void> {
         super._onFirstRender(context, options);
-        this.#addParentListener();
-        if (this.actor) {
-            this.actor.apps[this.id] = this;
+
+        const rootParent = this.item.rootParentItem;
+        if (rootParent) {
+            rootParent.apps[this.id] = this;
         }
     }
 
     _onClose(options: ApplicationClosingOptions): void {
         super._onClose(options);
-        this.#removeParentListener();
-        delete this.actor?.apps[this.id];
+        delete this.item.rootParentItem?.apps[this.id];
     }
 
-    async _processSubmitData(
-        event: SubmitEvent,
-        form: HTMLFormElement,
-        submitData: Record<string, unknown>,
-        options?: object,
-    ): Promise<void> {
-        const prevousParent = this.item.system.parentSkill;
-        const result = await super._processSubmitData(event, form, submitData, options);
-        const newParent = this.item.system.parentSkill;
-
-        prevousParent?.sheet.render();
-
-        if (newParent !== prevousParent) {
-            this.#removeParentListener(prevousParent);
-            this.#addParentListener(newParent);
-            newParent?.sheet.render();
-        }
-
-        return result;
-    }
-
-    static #deleteSpecialty(this: SkillSheet, _event: PointerEvent, target: HTMLElement) {
-        const id = target.closest<HTMLElement>("[data-item-id]")?.dataset.itemId;
-        this.actor?.deleteEmbeddedDocuments("Item", [id ?? ""]);
-    }
-
-    #addParentListener(parent: Skill | null = this.item.system.parentSkill) {
-        if (parent) {
-            parent.apps[this.id] = this;
-        }
-    }
-
-    #removeParentListener(parent: Skill | null = this.item.system.parentSkill) {
-        if (parent) {
-            delete parent.apps[this.id];
-        }
-    }
+    //     async _processSubmitData(
+    //         event: SubmitEvent,
+    //         form: HTMLFormElement,
+    //         submitData: Record<string, unknown>,
+    //         options?: object,
+    //     ): Promise<void> {
+    //         const prevousParent = this.item.system.parentSkill;
+    //         const result = await super._processSubmitData(event, form, submitData, options);
+    //         const newParent = this.item.system.parentSkill;
+    //
+    //         prevousParent?.sheet.render();
+    //
+    //         if (newParent !== prevousParent) {
+    //             this.#removeParentListener(prevousParent);
+    //             this.#addParentListener(newParent);
+    //             newParent?.sheet.render();
+    //         }
+    //
+    //         return result;
+    //     }
 }
 
 export { SkillSheet };

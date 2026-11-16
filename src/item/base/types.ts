@@ -21,7 +21,7 @@ type ItemInstances<TParent extends ActorAFMBE | null = ActorAFMBE | null> = {
     skill: Skill<TParent>;
 };
 
-type SubItemDataSchema = Omit<ItemSchema<ItemType>, "effects">;
+type SubItemDataSchema = Omit<ItemSchema<ItemType>, "effects" | "folder">;
 
 type SubItemDataSource = ModelPropsFromSchema<SubItemDataSchema>;
 

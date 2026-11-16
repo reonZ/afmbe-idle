@@ -224,22 +224,37 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
         return type === "physical" ? R.isIncludedIn(this.type, ITEM_PHYSICAL_TYPES) : this.type === type;
     }
 
-    prepareEmbeddedDocuments(): void {
-        super.prepareEmbeddedDocuments();
+    prepareBaseData(): void {
+        super.prepareBaseData();
 
+        const parent = this.actor;
         const allowedSubItems = this.system.allowedSubItems;
 
-        this.subItems.clear();
+        for (const source of this.system.subItems) {
+            if (!R.isIncludedIn(source.type, allowedSubItems)) continue;
 
-        for (const data of this.system.subItems) {
-            if (!R.isIncludedIn(data.type, allowedSubItems)) continue;
+            const previous = this.subItems.get(source._id ?? "");
 
-            try {
-                const source = foundry.utils.deepClone(data);
-                const item = new ItemAFMBE(source, { parent: this.actor, parentItem: this });
-                this.subItems.set(item.id, item as ItemAFMBE<TParent>);
-            } catch (err: any) {
-                console.error(`[System] an error occured while instantiating a sub-item in ${this.uuid}`, err);
+            if (previous) {
+                const diff = previous.updateSource(source);
+                if (R.isEmpty(diff)) {
+                    // foundry doesn't initialize on empty diff but we want to be sure it is done
+                    previous._initialize();
+                }
+            } else {
+                try {
+                    const item = new ItemAFMBE(source, { parent, parentItem: this });
+                    this.subItems.set(item.id, item);
+                } catch (err: any) {
+                    console.error(`[System] an error occured while instantiating a sub-item in ${this.uuid}`, err);
+                }
+            }
+        }
+
+        const subItemsIds = this.system.subItems.map((source) => source._id ?? "");
+        for (const item of this.subItems) {
+            if (!R.isIncludedIn(item.id, subItemsIds)) {
+                this.subItems.delete(item.id);
             }
         }
     }

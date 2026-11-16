@@ -1,11 +1,9 @@
 <div class="details">
     <div class="title">
         {{localize 'afmbe.item.skill.specialties.title'}}
-        {{#if isOwned}}
         <a data-action="add-specialty" data-tooltip="afmbe.item.skill.specialties.add">
             <i class="fa-solid fa-plus"></i>
         </a>
-        {{/if}}
     </div>
     {{#each item.system.deepSpecialties as |skill|}}
     <a class="name" data-action="open-item-sheet" data-item-uuid="{{skill.uuid}}">
