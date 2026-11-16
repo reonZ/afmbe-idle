@@ -44,7 +44,7 @@ abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends 
                 visible: isEditable,
                 onClick: async (event, target) => {
                     const item = await this.getItemFromTargetElement(target);
-                    item?.queryDelete();
+                    item?.confirmDelete();
                 },
             },
         ];

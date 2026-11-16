@@ -25,8 +25,8 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends app
     }
 
     async _processSubmitData(
-        event: SubmitEvent,
-        form: HTMLFormElement,
+        _event: SubmitEvent,
+        _form: HTMLFormElement,
         submitData: Record<string, unknown>,
         options?:
             Partial<DatabaseCreateOperation<ActorAFMBE | null>> | Partial<DatabaseUpdateOperation<ActorAFMBE | null>>,

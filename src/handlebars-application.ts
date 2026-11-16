@@ -40,7 +40,7 @@ function applicationMixinAFMBE<
 
         static async #deleteItem(_event: PointerEvent, target: HTMLElement) {
             const item = await HandlebarsApplicationAFMBE.getItemFromTargetElement(target);
-            item?.queryDelete();
+            item?.confirmDelete();
         }
 
         static async #openItemSheet(_event: PointerEvent, target: HTMLElement) {

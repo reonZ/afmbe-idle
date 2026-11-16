@@ -286,7 +286,7 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
         return super.delete(operation);
     }
 
-    async queryDelete(): Promise<this | undefined> {
+    async confirmDelete(): Promise<this | undefined> {
         const type = _loc(`TYPES.Item.${this.type}`);
         const result = await foundry.applications.api.DialogV2.confirm({
             content: localize("item.queryDelete.content"),
