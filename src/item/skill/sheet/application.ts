@@ -3,6 +3,7 @@ import { Creature } from "actor";
 import { ApplicationPartAFMBE } from "handlebars-application";
 import { ItemSheetAFMBE } from "item";
 import { Skill, SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext, SkillSheetRenderOptions } from "..";
+import { localize } from "utils";
 
 class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>> extends ItemSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<SkillSheetConfiguration> = {
@@ -32,6 +33,12 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
 
         this.render();
         specialty.sheet.render(true);
+    }
+
+    get title() {
+        const { system, id, name } = this.item;
+        const prefix = system.isSpecialty ? localize("item.skill.specialty.name") : _loc("TYPES.Item.skill");
+        return `${prefix}: ${name || id}`;
     }
 
     refreshParentSheet() {
