@@ -36,14 +36,13 @@ function applicationMixinAFMBE<
             },
         };
 
-        static prepareHeaderContext<T extends ApplicationRenderContextAFMBE>(
+        static prepareHeaderContext(
             this: ActorSheetV2<Actor, Item> | ItemSheetV2<Item>,
-            context: T,
+            context: ApplicationRenderContextAFMBE,
             _options: HandlebarsRenderOptions,
-        ): T {
+        ) {
             context.name = this.document.name;
             context.img = this.document.img;
-            return context;
         }
 
         static async getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null> {
@@ -71,7 +70,9 @@ function applicationMixinAFMBE<
             super._preparePartContext(partId, context, options);
             const cls = this.constructor as ApplicationStaticAFMBE<TPart, TContext>;
             const part = cls.PARTS[partId];
-            return part?.prepareContext?.call(this, context, options) ?? context;
+
+            await part?.prepareContext?.call(this, context, options);
+            return context;
         }
 
         _attachPartListeners(
@@ -160,14 +161,14 @@ interface ApplicationStaticAFMBE<TPart extends string, TContext extends Applicat
     extends ConstructorOf<HandlebarsApplicationAFMBE>, HandlebarsApplicationStatic {
     PARTS: ApplicationPartAFMBE<TPart, TContext>;
     getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
-    prepareHeaderContext(context: TContext, options: HandlebarsRenderOptions): TContext;
+    prepareHeaderContext(context: TContext, options: HandlebarsRenderOptions): Promise<void>;
 }
 
 type ApplicationPartAFMBE<TPart extends string, TContext extends ApplicationRenderContextAFMBE> = Record<
     TPart,
     HandlebarsTemplatePart & {
         activateListeners?: (html: HTMLElement, options: HandlebarsRenderOptions) => void | Promise<void>;
-        prepareContext?: (context: TContext, options: HandlebarsRenderOptions) => Promise<TContext> | TContext;
+        prepareContext?: (context: TContext, options: HandlebarsRenderOptions) => Promise<void> | void;
     }
 >;
 

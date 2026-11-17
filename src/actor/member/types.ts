@@ -1,5 +1,4 @@
 import type {
-    HTMLField,
     ModelPropsFromSchema,
     SchemaField,
     SourceFromSchema,
@@ -7,13 +6,13 @@ import type {
 } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
 import type { ActorSource } from "@7h3laughingman/foundry-types/common/documents/actor.mjs";
 import type { Character, CreatureAttributeType, CharacterDataSchema } from "actor";
-import type { BooleanField, PositiveIntegerField, ValueAndTotalField } from "fields";
+import type { BooleanField, PositiveIntegerField, RequiredHTMLField, ValueAndTotalField } from "fields";
 import type { MEMBER_CATEGORY, MemberDataModel } from ".";
 
 type MemberDetailsSchema = {
-    description: HTMLField;
-    personality: HTMLField;
-    quote: HTMLField;
+    description: RequiredHTMLField;
+    personality: RequiredHTMLField;
+    quote: RequiredHTMLField;
 };
 
 type MemberAttributeSchema = {

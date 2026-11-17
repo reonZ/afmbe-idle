@@ -15,6 +15,7 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
     };
 
     static PARTS = {
+        ...super.PARTS,
         header: {
             template: "systems/afmbe-idle/templates/item/skill/header.hbs",
             prepareContext: this.prepareHeaderContext,
@@ -24,14 +25,13 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         },
     } satisfies ApplicationPartAFMBE<SkillSheetPart, SkillSheetRenderContext>;
 
-    static prepareHeaderContext<T extends SkillSheetRenderContext>(
+    static async prepareHeaderContext(
         this: SkillSheet,
-        context: T,
+        context: SkillSheetRenderContext,
         options: HandlebarsRenderOptions,
-    ): T {
-        super.prepareHeaderContext(context, options);
+    ) {
+        await super.prepareHeaderContext(context, options);
         context.level = this.item.system.level.value;
-        return context;
     }
 
     static async #addSpecialty(this: SkillSheet) {

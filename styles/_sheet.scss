@@ -6,6 +6,15 @@
     display: grid;
     gap: 0.5rem 1rem;
 
+    prose-mirror {
+        height: 100%;
+
+        button.toggle {
+            opacity: 0.9;
+            padding: 0;
+        }
+    }
+
     .sheet-header {
         grid-column: 1 / -1;
         grid-row: 1;
@@ -13,12 +22,13 @@
         grid-template-columns: auto 1fr;
         align-items: center;
         font-size: 1.5em;
-        column-gap: 0.5rem;
+        column-gap: 1rem;
 
         img {
             grid-column: 1;
             grid-row: 1 / -1;
             width: 3em;
+            cursor: pointer;
         }
 
         input[name="name"] {

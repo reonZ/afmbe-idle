@@ -6,12 +6,13 @@ import { ActorAFMBE } from "actor";
 import { ApplicationRenderContextAFMBE } from "handlebars-application";
 import { ItemAFMBE } from "..";
 
-type ItemSheetPart = "header";
+type ItemSheetPart = "header" | "description";
 
 type ItemSheetRenderOptions = DocumentSheetRenderOptions;
 
 type ItemSheetRenderContext = ApplicationRenderContextAFMBE & {
     actor?: ActorAFMBE | null;
+    description?: { enriched: string; value: string };
     isOwned?: boolean;
     item?: ItemAFMBE;
     name?: string;

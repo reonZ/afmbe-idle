@@ -21,7 +21,7 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
         },
     } satisfies ApplicationPartAFMBE<CreatureSheetPart, CreatureSheetRenderContext>;
 
-    static prepareAttributesContext<T extends CreatureSheetRenderContext>(this: CreatureSheet, context: T): T {
+    static prepareAttributesContext(this: CreatureSheet, context: CreatureSheetRenderContext) {
         const actor = this.actor;
 
         context.attributes = {
@@ -36,8 +36,6 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
             }),
             speed: actor.system.speed,
         };
-
-        return context;
     }
 
     static #rollTask(this: CreatureSheet, event: PointerEvent, target: HTMLElement) {

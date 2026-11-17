@@ -1,1 +1,9 @@
 @use "./skill";
+
+.application.sheet.afmbe.item.skill .window-content {
+    .item-description {
+        height: 100%;
+        grid-column: 2 / -1;
+        grid-row: 2 / -1;
+    }
+}

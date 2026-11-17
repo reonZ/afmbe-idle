@@ -1,11 +1,12 @@
-import { ActorAFMBE } from "actor";
-import { applicationMixinAFMBE } from "handlebars-application";
-import { ItemAFMBE } from "item";
-import { ItemSheetConfiguration, ItemSheetRenderContext, ItemSheetRenderOptions } from ".";
 import {
     DatabaseCreateOperation,
     DatabaseUpdateOperation,
 } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
+import { ActorAFMBE } from "actor";
+import { applicationMixinAFMBE, ApplicationPartAFMBE } from "handlebars-application";
+import { ItemAFMBE } from "item";
+import { enrichHTML } from "utils";
+import { ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions } from ".";
 
 abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends applicationMixinAFMBE(
     foundry.applications.sheets.ItemSheetV2<ItemAFMBE>,
@@ -15,6 +16,21 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends app
         classes: ["item"],
         position: { height: 500, width: 650 },
     };
+
+    static PARTS = {
+        ...super.PARTS,
+        description: {
+            template: "systems/afmbe-idle/templates/item/description.hbs",
+            prepareContext: this.prepareDescriptionContext,
+        },
+    } satisfies ApplicationPartAFMBE<ItemSheetPart, ItemSheetRenderContext>;
+
+    static async prepareDescriptionContext(this: ItemSheetAFMBE, context: ItemSheetRenderContext) {
+        context.description = {
+            enriched: await enrichHTML(this.item.system.description),
+            value: this.item.system.description,
+        };
+    }
 
     async _prepareContext(options: ItemSheetRenderOptions): Promise<ItemSheetRenderContext> {
         const context = (await super._prepareContext(options)) as ItemSheetRenderContext;

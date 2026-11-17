@@ -1,5 +1,5 @@
-import { DocumentConstructionContext } from "@7h3laughingman/foundry-types/common/_types.mjs";
-import { DatabaseCreateOperation } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
+import type { DocumentConstructionContext } from "@7h3laughingman/foundry-types/common/_types.mjs";
+import type { DatabaseCreateOperation } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
 import type {
     ArrayField,
     ModelPropsFromSchema,
@@ -8,6 +8,7 @@ import type {
 } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
 import type { ItemSchema } from "@7h3laughingman/foundry-types/common/documents/item.mjs";
 import type { ActorAFMBE } from "actor";
+import type { RequiredHTMLField } from "fields";
 import type { Armor, Physical, PhysicalSource, Quality, QualitySource, Skill, SkillSource, Weapon } from "item";
 import type { ITEM_TYPES, ItemAFMBE } from ".";
 
@@ -26,6 +27,7 @@ type SubItemDataSchema = Omit<ItemSchema<ItemType>, "effects" | "folder">;
 type SubItemDataSource = ModelPropsFromSchema<SubItemDataSchema>;
 
 type ItemDataSchema = {
+    description: RequiredHTMLField;
     subItems: ArrayField<SchemaField<SubItemDataSchema>>;
 };
 

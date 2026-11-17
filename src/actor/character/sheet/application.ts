@@ -16,9 +16,8 @@ abstract class CharacterSheet<TParent extends Character = Character> extends Cre
         },
     } satisfies ApplicationPartAFMBE<CharacterSheetPart, CharacterSheetRenderContext>;
 
-    static prepareSkillsContext<T extends CharacterSheetRenderContext>(this: CharacterSheet, context: T): T {
+    static prepareSkillsContext(this: CharacterSheet, context: CharacterSheetRenderContext) {
         context.skills = R.flatMap(this.actor.itemTypes.skill, (skill) => [skill, ...skill.system.deepSpecialties]);
-        return context;
     }
 }
 

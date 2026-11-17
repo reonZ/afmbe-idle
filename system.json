@@ -49,7 +49,7 @@
         },
         "Item": {
             "skill": {
-                "htmlFields": []
+                "htmlFields": ["description"]
             }
         }
     }

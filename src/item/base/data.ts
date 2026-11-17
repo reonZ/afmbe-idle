@@ -1,6 +1,7 @@
 import * as R from "remeda";
 import { ItemAFMBE, ItemDataSchema, ItemDataSource, ItemType, SubItemDataSchema } from ".";
 import fields = foundry.data.fields;
+import { RequiredHTMLField } from "fields";
 
 class ItemDataModel<
     TParent extends ItemAFMBE = ItemAFMBE,
@@ -18,6 +19,7 @@ class ItemDataModel<
         });
 
         return {
+            description: new RequiredHTMLField(),
             subItems: new fields.ArrayField(new fields.SchemaField(subItemsSchema)),
         };
     }
