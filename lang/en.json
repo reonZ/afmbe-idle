@@ -14,6 +14,9 @@
     },
     "afmbe": {
         "actor": {
+            "allowedItems": {
+                "error": "Item of type <b>{type}</b> cannot be added to this actor."
+            },
             "contextMenu": {
                 "item": {
                     "delete": "Delete Item",
@@ -89,6 +92,9 @@
             }
         },
         "item": {
+            "allowedSubItems": {
+                "error": "Item of type <b>{type}</b> cannot be added to this item."
+            },
             "confirmDelete": {
                 "content": "Are you sure you want to delete this item?",
                 "title": "Delete {type} - {name}"
