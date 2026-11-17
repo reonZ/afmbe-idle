@@ -8,6 +8,7 @@ import type { ActorSource } from "@7h3laughingman/foundry-types/common/documents
 import type { Character, CharacterDataSchema, CreatureAttributeType } from "actor";
 import type { ValueField } from "fields";
 import type { AdversaryDataModel } from ".";
+import type { TokenDocumentAFMBE } from "misc";
 
 type AdversaryAttributesSchema = Record<
     CreatureAttributeType,

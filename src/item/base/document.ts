@@ -193,7 +193,7 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
 
     createEmbeddedDocuments(
         embeddedName: string,
-        data: ItemSourceAFMBE[],
+        data: PreCreate<ItemSourceAFMBE>[],
         operation?: Partial<DatabaseCreateOperation<this>>,
     ): Promise<ItemAFMBE[]>;
     createEmbeddedDocuments(
