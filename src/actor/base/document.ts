@@ -3,10 +3,19 @@ import EmbeddedCollection, {
 } from "@7h3laughingman/foundry-types/common/abstract/embedded-collection.mjs";
 import { ACTOR_CREATURE_TYPES } from "actor";
 import { ItemAFMBE } from "item";
+import type { TokenDocumentAFMBE } from "misc";
 import * as R from "remeda";
-import { ACTOR_CHARACTER_TYPES, ActorDataModel, ActorDataSchema, ActorInstances, ActorItemTypes, ActorType } from ".";
+import {
+    ACTOR_CHARACTER_TYPES,
+    ActorDataModel,
+    ActorDataSchema,
+    ActorInstances,
+    ActorItemTypes,
+    ActorSheetAFMBE,
+    ActorType,
+} from ".";
 
-class ActorAFMBE<TParent extends TokenDocument | null = TokenDocument | null> extends Actor<TParent> {
+class ActorAFMBE<TParent extends TokenDocumentAFMBE | null = TokenDocumentAFMBE | null> extends Actor<TParent> {
     _initialize(options?: Record<string, unknown>): void {
         super._initialize(options);
 

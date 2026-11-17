@@ -1,6 +1,7 @@
 import { ACTOR_CONFIG, ActorAFMBE } from "actor";
 import handlebarsHelpers from "handlebars-helpers";
 import { ITEM_CONFIG, ItemAFMBE } from "item";
+import * as R from "remeda";
 import { registerSettings } from "settings";
 import config from "system-config";
 
@@ -31,4 +32,26 @@ Hooks.once("init", () => {
 
     Handlebars.registerHelper(handlebarsHelpers);
     registerSettings();
+});
+
+Hooks.on("dropCanvasData", (canvas, data, _event) => {
+    if (data.type !== "Item") return;
+
+    const rect = new PIXI.Rectangle(data.x, data.y);
+    const target = R.pipe(
+        [...canvas.tokens.quadtree.getObjects(rect)],
+        R.filter((token) => token.visible),
+        R.firstBy([(token) => token.document.elevation, "desc"], [(token) => token.document.sort, "desc"]),
+    );
+
+    const actor = target?.actor;
+    if (!actor) return;
+
+    const dataTransfer = new DataTransfer();
+    dataTransfer.setData("text/plain", JSON.stringify(data));
+
+    const dropEvent = new DragEvent("drop", { dataTransfer });
+    actor.sheet["_onDrop"](dropEvent);
+
+    return false;
 });
