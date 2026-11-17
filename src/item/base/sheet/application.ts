@@ -5,6 +5,7 @@ import {
 import { ActorAFMBE } from "actor";
 import { applicationMixinAFMBE, ApplicationPartAFMBE } from "handlebars-application";
 import { ItemAFMBE } from "item";
+import * as R from "remeda";
 import { enrichHTML } from "utils";
 import { ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions } from ".";
 
@@ -30,6 +31,41 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends app
             enriched: await enrichHTML(this.item.system.description),
             value: this.item.system.description,
         };
+    }
+
+    async _onDropDocument<TDocument extends foundry.abstract.Document>(
+        event: DragEvent,
+        document: TDocument,
+    ): Promise<TDocument | null> {
+        if (document instanceof ItemAFMBE) {
+            return (await this._onDropItem(event, document)) ?? null;
+        }
+        return super._onDropDocument(event, document);
+    }
+
+    async _onDropItem<T extends ItemAFMBE<null>>(_event: DragEvent, item: T): Promise<T | undefined> {
+        if (!this.item.isOwner) return;
+
+        if (!R.isIncludedIn(item.type, this.item.system.allowedSubItems)) {
+            ui.notifications.error("afmbe.item.allowedSubItems.error", {
+                format: { type: _loc(`TYPES.Item.${item.type}`) },
+            });
+            return;
+        }
+
+        if (this.item.id === item.parentItem?.id) {
+            // const result = await this._onSortItem(event, item);
+            // return result?.length ? item : null;
+            return;
+        }
+
+        const keepId = !this.item.subItems.has(item.id);
+        const data = item.inCompendium
+            ? game.items.fromCompendium(item, { clearFolder: true, keepId })
+            : item.toObject();
+
+        const [result] = await this.item.createEmbeddedDocuments("Item", [data], { keepId });
+        return result as T | undefined;
     }
 
     async _prepareContext(options: ItemSheetRenderOptions): Promise<ItemSheetRenderContext> {
