@@ -19,14 +19,23 @@ import {
 } from ".";
 import Document = foundry.abstract.Document;
 import { localize } from "utils";
+import { ImageFilePath } from "@7h3laughingman/foundry-types/common/constants.mjs";
 
 class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends Item<TParent> {
     declare parentItem: ItemAFMBE<TParent> | null;
     declare subItems: SubItems<ItemAFMBE<TParent>>;
 
+    static DEFAULT_ICONS: Partial<Record<ItemType, ImageFilePath>> = {
+        skill: "icons/svg/book.svg",
+    };
+
     constructor(data: PreCreate<ItemSourceAFMBE>, context: ItemConstructionContext<TParent> = {}) {
         super(data, context);
         this.parentItem = context.parentItem ?? null;
+    }
+
+    static getDefaultArtwork(itemData: ItemSourceAFMBE): { img: CONST.ImageFilePath } {
+        return { img: this.DEFAULT_ICONS[itemData.type] ?? this.DEFAULT_ICON };
     }
 
     static async createDocuments<TDocument extends Document>(
@@ -184,9 +193,14 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
 
     createEmbeddedDocuments(
         embeddedName: string,
+        data: ItemSourceAFMBE[],
+        operation?: Partial<DatabaseCreateOperation<this>>,
+    ): Promise<ItemAFMBE[]>;
+    createEmbeddedDocuments(
+        embeddedName: string,
         data: object[],
         operation: Partial<DatabaseCreateOperation<this>> = {},
-    ): Promise<Document[]> {
+    ) {
         if (embeddedName === "Item") {
             operation.parent = this;
             operation.pack = this.pack;
