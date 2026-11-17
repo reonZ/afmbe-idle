@@ -7,10 +7,7 @@ import type { ActorModifier } from "actor";
 import type { Creature, CreatureAttributeType } from "..";
 
 type RollTaskRenderContext = ApplicationRenderContext & {
-    modifiers: {
-        available: FormSelectOption[];
-        added: ActorModifier[];
-    };
+    modifiers: Collection<string, ActorModifier>;
     selects: RollTaskSelects;
     private: boolean;
 };
@@ -34,7 +31,6 @@ type RollTaskTruncatedSelects = TruncatedSelects<RollTaskSelects>;
 type RollTaskSelect<K extends string, V extends string> = {
     blank: string;
     disable: boolean;
-    hide: boolean;
     key: K;
     label: string;
     options: RollTaskSelectOption<V>[];
@@ -45,7 +41,6 @@ type RollTaskSelectOption<V extends string = string> = Omit<FormSelectOption, "v
 
 type RollTaskData = {
     disable?: RollTaskSelectKey[];
-    hide?: RollTaskSelectKey[];
     modifiers?: string[];
     mode?: "private" | "public";
     select?: RollTaskSelected;

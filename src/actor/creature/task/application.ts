@@ -7,7 +7,7 @@ import {
 import { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 import { ActorModifier } from "actor/base";
 import * as R from "remeda";
-import { localize, signedNumber } from "utils";
+import { localize } from "utils";
 import {
     RollTaskApplicationConfiguration,
     RollTaskData,
@@ -22,10 +22,17 @@ import { Creature, CREATURE_ATTRIBUTES, CreatureAttributes } from "..";
 class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     #actor: Creature;
     #disable: RollTaskSelectKey[];
-    #hide: RollTaskSelectKey[];
-    #modifiers: Collection<string, ActorModifier>;
+    #modifiers: Collection<string, ActorModifier & { active?: boolean }>;
     #mode: "private" | "public";
     #selected: RollTaskSelected;
+
+    static DEFAULT_OPTIONS: DeepPartial<ApplicationConfiguration> = {
+        classes: ["creature"],
+        actions: {
+            "add-modifier": this.addModifier,
+            "toggle-modifier": this.toggleModifier,
+        },
+    };
 
     constructor(
         options: DeepPartial<ApplicationConfiguration> &
@@ -33,17 +40,41 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
     ) {
         const {
             actor,
-            data: { disable, hide, modifiers, mode, select },
+            data: { disable, modifiers, mode, select },
         } = options;
 
         super(options);
 
         this.#actor = actor;
         this.#disable = R.isArray(disable) ? disable.slice() : [];
-        this.#hide = R.isArray(hide) ? hide.slice() : [];
         this.#mode = mode ?? "public";
         this.#selected = R.isObjectType(select) ? foundry.utils.deepClone(select) : {};
         this.#modifiers = new Collection();
+    }
+
+    static addModifier(this: RollTaskApplication, _event: PointerEvent, target: HTMLElement) {
+        const id = foundry.utils.randomID();
+        const value = target.previousElementSibling as HTMLInputElement;
+        const label = value.previousElementSibling as HTMLInputElement;
+
+        this.#modifiers.set(id, {
+            active: true,
+            id,
+            label: label.value.trim() || localize("actor.creature.task.modifier.name"),
+            value: value.valueAsNumber || 1,
+        });
+
+        this.render();
+    }
+
+    static toggleModifier(this: RollTaskApplication, _event: PointerEvent, target: HTMLElement) {
+        const id = target.closest<HTMLElement>("[data-id]")?.dataset.id;
+        const modifier = this.#modifiers.get(id ?? "");
+
+        if (modifier) {
+            modifier.active = !modifier.active;
+            this.render();
+        }
     }
 
     static roll(actor: Creature, data: RollTaskData = {}): RollTaskApplication {
@@ -56,9 +87,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         return this.#actor;
     }
 
-    protected _initializeApplicationOptions(
-        options: RollTaskApplicationConfiguration,
-    ): RollTaskApplicationConfiguration {
+    _initializeApplicationOptions(options: RollTaskApplicationConfiguration): RollTaskApplicationConfiguration {
         const { actor, data } = options;
         options = super._initializeApplicationOptions(options) as RollTaskApplicationConfiguration;
         options.id = "{id}";
@@ -95,45 +124,21 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
                     R.flatMap((skill) => {
                         const specialties = skill.system.deepSpecialties;
                         const group = specialties.length ? skill.name : undefined;
-                        const name = group ? localize("actor.creature.task.skill.base") : skill.name;
 
-                        return [
-                            {
-                                label: `${name} (${skill.system.modifier})`,
-                                value: skill.id,
-                                group,
-                            },
-                            ...specialties.map((specialty): FormSelectOption => {
-                                return {
-                                    label: `${specialty.name} (${specialty.system.modifier})`,
-                                    value: specialty.id,
-                                    group,
-                                };
-                            }),
-                        ];
+                        return R.map([skill, ...specialties], ({ chainId, name, system }): FormSelectOption => {
+                            return { group, label: `${name} (${system.modifier})`, value: chainId };
+                        });
                     }),
                 ),
             },
         ];
 
         return {
-            modifiers: {
-                added: this.#modifiers.contents,
-                available: R.pipe(
-                    this.actor.system.modifiers,
-                    R.filter((modifier) => {
-                        return !this.#modifiers.has(modifier.id);
-                    }),
-                    R.map(({ id, label, value }) => {
-                        return { label: `${label} (${signedNumber(value)})`, value: id };
-                    }),
-                ),
-            },
+            modifiers: this.#modifiers,
             selects: R.map(selects, ({ blank, key, label, options }) => {
                 return {
                     blank: blank ? "" : undefined,
                     disable: options.length === 0 || this.#disable.includes(key),
-                    hide: this.#hide.includes(key),
                     key,
                     label,
                     options,
@@ -149,52 +154,22 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         this.actor.apps[this.id] = this;
     }
 
-    protected _onClose(options: ApplicationClosingOptions): void {
+    _onClose(options: ApplicationClosingOptions): void {
         super._onClose(options);
         delete this.actor.apps[this.id];
     }
 
-    protected _renderHTML(context: ApplicationRenderContext, _options: ApplicationRenderOptions): Promise<string> {
+    _renderHTML(context: ApplicationRenderContext, _options: ApplicationRenderOptions): Promise<string> {
         return foundry.applications.handlebars.renderTemplate(
             "systems/afmbe-idle/templates/actor/creature/task.hbs",
             context,
         );
     }
 
-    protected _replaceHTML(result: string, content: HTMLElement, _options: ApplicationRenderOptions): void {
+    _replaceHTML(result: string, content: HTMLElement, _options: ApplicationRenderOptions): void {
         content.innerHTML = result;
+        content.dataset.tooltipDirection = "UP";
         this.#activateListeners(content);
-    }
-
-    protected _onClickAction(_event: PointerEvent, target: HTMLElement): void {
-        const action = target.dataset.action as EventAction;
-
-        switch (action) {
-            case "add-modifier":
-                return this.#addModifier(target);
-            case "delete-modifier":
-                return this.#deleteModifier(target);
-        }
-    }
-
-    #deleteModifier(target: HTMLElement) {
-        const id = target.closest<HTMLElement>("[data-id]")?.dataset.id;
-        this.#modifiers.delete(id ?? "");
-        this.render();
-    }
-
-    #addModifier(target: HTMLElement) {
-        const id = foundry.utils.randomID();
-        const value = target.previousElementSibling as HTMLInputElement;
-        const label = value.previousElementSibling as HTMLInputElement;
-
-        this.#modifiers.set(id, {
-            id,
-            label: label.value.trim() || localize("actor.creature.task.modifier.manual"),
-            value: value.valueAsNumber,
-        });
-
-        this.render();
     }
 
     #activateListeners(html: HTMLElement) {
@@ -213,7 +188,5 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         }
     }
 }
-
-type EventAction = "add-modifier" | "delete-modifier";
 
 export { RollTaskApplication };

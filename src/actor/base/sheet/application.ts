@@ -8,7 +8,7 @@ abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends 
 ) {
     static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
         classes: ["actor"],
-        position: { height: 700, width: 750 },
+        position: { height: 500, width: 550 },
     };
 
     async _prepareContext(options: ActorSheetRenderOptions): Promise<ActorSheetRenderContext> {

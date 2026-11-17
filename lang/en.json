@@ -71,15 +71,14 @@
                     },
                     "modifier": {
                         "add": "Add",
-                        "delete": "Delete Modifier",
-                        "manual": "User Modifier",
-                        "name": "Modifier Name",
-                        "title": "Modifiers"
+                        "name": "User Modifier",
+                        "placeholder": "Modifier Name",
+                        "title": "Modifiers",
+                        "toggle": "Toggle Modifier"
                     },
                     "private": "Make message private?",
                     "roll": "Roll {type} Task",
                     "skill": {
-                        "base": "Base Skill",
                         "label": "Skill"
                     },
                     "title": "Roll Task"

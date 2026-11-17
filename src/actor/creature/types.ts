@@ -2,6 +2,7 @@ import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/common/
 import type { ActorAFMBE, ActorDataSchema, CharacterSource, ZombieSource } from "actor";
 import type { PositiveIntergerValueField } from "fields";
 import type { CREATURE_ATTRIBUTES, CREATURE_SECONDARIES, CreatureDataModel } from ".";
+import { TokenDocumentAFMBE } from "misc";
 
 type CreatureAttributeType = (typeof CREATURE_ATTRIBUTES)[number];
 type CreatureSecondaryType = (typeof CREATURE_SECONDARIES)[number];
@@ -17,7 +18,7 @@ type CreatureDataSource = ModelPropsFromSchema<CreatureDataSchema>;
 type CreatureSecondaryAttributes = Record<CreatureSecondaryType, { value: number; max?: number }>;
 
 declare abstract class Creature<
-    TParent extends TokenDocument | null = TokenDocument | null,
+    TParent extends TokenDocumentAFMBE | null = TokenDocumentAFMBE | null,
 > extends ActorAFMBE<TParent> {
     system: CreatureDataModel;
 }

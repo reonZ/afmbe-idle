@@ -5,15 +5,7 @@ import { ACTOR_CREATURE_TYPES } from "actor";
 import { ItemAFMBE } from "item";
 import type { TokenDocumentAFMBE } from "misc";
 import * as R from "remeda";
-import {
-    ACTOR_CHARACTER_TYPES,
-    ActorDataModel,
-    ActorDataSchema,
-    ActorInstances,
-    ActorItemTypes,
-    ActorSheetAFMBE,
-    ActorType,
-} from ".";
+import { ACTOR_CHARACTER_TYPES, ActorDataModel, ActorDataSchema, ActorInstances, ActorItemTypes, ActorType } from ".";
 
 class ActorAFMBE<TParent extends TokenDocumentAFMBE | null = TokenDocumentAFMBE | null> extends Actor<TParent> {
     _initialize(options?: Record<string, unknown>): void {

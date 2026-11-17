@@ -1,40 +1,40 @@
-{{#each selects as |select|}}
-<div class="select{{ifThen select.hide " hidden" ""}}">
-    <div class="name">{{select.label}}</div>
-    <select name="{{select.key}}" {{disabled select.disable}}>
-        {{selectOptions select.options blank=select.blank selected=select.selected}}
-    </select>
-</div>
-{{/each}}
-<div class="private">
-    {{localize 'afmbe.actor.creature.task.private'}}
-    <input type="checkbox" name="private" {{checked private}} />
-</div>
-<div class="header">
-    {{localize 'afmbe.actor.creature.task.modifier.title'}}
-</div>
-<div class="modifiers">
-    <select name="modifiers" {{disabled (eq modifiers.available.length 0)}}>
-        {{selectOptions modifiers.available blank=""}}
-    </select>
-</div>
-<div class="manual">
-    <input type="text" name="modifier.label" placeholder="{{localize 'afmbe.actor.creature.task.modifier.name'}}" />
-    <input type="number" name="modifier.value" placeholder="1" min="-10" max="10" />
-    <button type="button" data-action="add-modifier">
-        {{localize 'afmbe.actor.creature.task.modifier.add'}}
-    </button>
-</div>
-{{#each modifiers.added as |modifier|}}
-<div class="modifier" data-id="{{modifier.id}}">
-    <div class="name">
-        {{modifier.label}}
+<div class="left">
+    <div class="header">
+        something
     </div>
-    <div class="value">
-        {{signedNumber modifier.value}}
+    <div class="selects">
+        {{#each selects as |select|}}
+        <div class="name">{{select.label}}</div>
+        <select name="{{select.key}}" {{disabled select.disable}}>
+            {{selectOptions select.options blank=select.blank selected=select.selected}}
+        </select>
+        {{/each}}
     </div>
-    <a data-action="delete-modifier" data-tooltip="afmbe.actor.creature.task.modifier.delete">
-        <i class="fa-solid fa-trash"></i>
-    </a>
+    <div class="private">
+        {{localize 'afmbe.actor.creature.task.private'}}
+        <input type="checkbox" name="private" {{checked private}} />
+    </div>
 </div>
-{{/each}}
+<div class="right">
+    <div class="header">
+        {{localize 'afmbe.actor.creature.task.modifier.title'}}
+    </div>
+    <div class="manual">
+        <input type="text" name="modifier.label" placeholder="{{localize 'afmbe.actor.creature.task.modifier.placeholder'}}" />
+        <input type="number" name="modifier.value" placeholder="1" min="-10" max="10" />
+        <button type="button" data-action="add-modifier">
+            {{localize 'afmbe.actor.creature.task.modifier.add'}}
+        </button>
+    </div>
+    <div class="modifiers">
+        {{#each modifiers as |modifier|}}
+        <div class="name">
+            {{modifier.label}}
+        </div>
+        <input type="text" class="modifier" value="{{signedNumber modifier.value}}" disabled />
+        <a data-action="toggle-modifier" data-id="{{modifier.id}}" data-tooltip="afmbe.actor.creature.task.modifier.toggle">
+            <i class="fa-solid fa-toggle-{{ifThen modifier.active 'large-on' 'off'}}"></i>
+        </a>
+        {{/each}}
+    </div>
+</div>

@@ -22,7 +22,9 @@ type AdversaryDataSchema = CharacterDataSchema & {
 
 type AdversaryDataSource = ModelPropsFromSchema<AdversaryDataSchema>;
 
-declare class Adversary<TParent extends TokenDocument | null = TokenDocument | null> extends Character<TParent> {
+declare class Adversary<
+    TParent extends TokenDocumentAFMBE | null = TokenDocumentAFMBE | null,
+> extends Character<TParent> {
     system: AdversaryDataModel;
 }
 
