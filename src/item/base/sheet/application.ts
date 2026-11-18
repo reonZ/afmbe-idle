@@ -19,12 +19,20 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends app
     };
 
     static PARTS = {
-        ...super.PARTS,
+        header: {
+            template: "systems/afmbe-idle/templates/item/sheet-header.hbs",
+            prepareContext: this.prepareHeaderContext,
+        },
         description: {
             template: "systems/afmbe-idle/templates/item/description.hbs",
             prepareContext: this.prepareDescriptionContext,
         },
     } satisfies ApplicationPartAFMBE<ItemSheetPart, ItemSheetRenderContext>;
+
+    static prepareHeaderContext(this: ItemSheetAFMBE, context: ItemSheetRenderContext) {
+        context.name = this.item.name;
+        context.img = this.item.img ?? this.item.defaultArtwork.img;
+    }
 
     static async prepareDescriptionContext(this: ItemSheetAFMBE, context: ItemSheetRenderContext) {
         context.description = {

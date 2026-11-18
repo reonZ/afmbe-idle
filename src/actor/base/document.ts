@@ -1,13 +1,43 @@
 import EmbeddedCollection, {
     EmbeddedCollectionGetOptions,
 } from "@7h3laughingman/foundry-types/common/abstract/embedded-collection.mjs";
+import { ImageFilePath, VideoFilePath } from "@7h3laughingman/foundry-types/common/constants.mjs";
 import { ACTOR_CREATURE_TYPES } from "actor";
 import { ItemAFMBE } from "item";
 import type { TokenDocumentAFMBE } from "misc";
 import * as R from "remeda";
-import { ACTOR_CHARACTER_TYPES, ActorDataModel, ActorDataSchema, ActorInstances, ActorItemTypes, ActorType } from ".";
+import {
+    ACTOR_CHARACTER_TYPES,
+    ActorDataModel,
+    ActorDataSchema,
+    ActorInstances,
+    ActorItemTypes,
+    ActorSourceAFMBE,
+    ActorType,
+} from ".";
 
 class ActorAFMBE<TParent extends TokenDocumentAFMBE | null = TokenDocumentAFMBE | null> extends Actor<TParent> {
+    static DEFAULT_ICONS: Partial<Record<ActorType, ImageFilePath>> = {};
+
+    static getDefaultArtwork(actorData: ActorSourceAFMBE): {
+        img: ImageFilePath;
+        texture: { src: ImageFilePath | VideoFilePath };
+    } {
+        const defaultIcon = this.DEFAULT_ICONS[actorData.type] ?? this.DEFAULT_ICON;
+
+        return {
+            img: defaultIcon,
+            texture: { src: defaultIcon },
+        };
+    }
+
+    get defaultArtwork(): {
+        img: ImageFilePath;
+        texture: { src: ImageFilePath | VideoFilePath };
+    } {
+        return ActorAFMBE.getDefaultArtwork(this._source);
+    }
+
     _initialize(options?: Record<string, unknown>): void {
         super._initialize(options);
 
@@ -35,9 +65,11 @@ class ActorAFMBE<TParent extends TokenDocumentAFMBE | null = TokenDocumentAFMBE 
 }
 
 interface ActorAFMBE {
+    readonly _source: ActorSourceAFMBE;
     readonly items: EmbeddedCollection<ItemAFMBE<this>>;
     get itemTypes(): ActorItemTypes<this>;
     system: ActorDataModel<ActorAFMBE, ActorDataSchema>;
+    readonly type: ActorType;
 }
 
 export { ActorAFMBE };

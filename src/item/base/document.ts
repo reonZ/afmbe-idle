@@ -34,7 +34,7 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
         this.parentItem = context.parentItem ?? null;
     }
 
-    static getDefaultArtwork(itemData: ItemSourceAFMBE): { img: CONST.ImageFilePath } {
+    static getDefaultArtwork(itemData: ItemSourceAFMBE): { img: ImageFilePath } {
         return { img: this.DEFAULT_ICONS[itemData.type] ?? this.DEFAULT_ICON };
     }
 
@@ -163,6 +163,10 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
             R.map((item) => item.id),
             R.join("."),
         );
+    }
+
+    get defaultArtwork(): { img: ImageFilePath } {
+        return ItemAFMBE.getDefaultArtwork(this._source);
     }
 
     get parentItemChain(): ItemAFMBE<TParent>[] {
@@ -315,6 +319,7 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
 interface ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> {
     readonly _source: ItemSourceAFMBE;
     system: ItemDataModel<ItemAFMBE, ItemDataSchema>;
+    readonly type: ItemType;
 }
 
 export { ItemAFMBE };

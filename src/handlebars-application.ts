@@ -7,15 +7,13 @@ import {
     HandlebarsRenderOptions,
     HandlebarsTemplatePart,
 } from "@7h3laughingman/foundry-types/client/applications/api/_module.mjs";
-import { ActorSheetV2, ItemSheetV2 } from "@7h3laughingman/foundry-types/client/applications/sheets/_module.mjs";
 import { ContextMenuEntry } from "@7h3laughingman/foundry-types/client/applications/ux/context-menu.mjs";
-import { ImageFilePath } from "@7h3laughingman/foundry-types/common/constants.mjs";
 import { ItemAFMBE } from "item";
 
 function applicationMixinAFMBE<
     TBase extends AbstractConstructorOf<ApplicationV2<any>>,
     TPart extends "header" | (string & {}),
-    TContext extends ApplicationRenderContextAFMBE,
+    TContext extends DocumentSheetRenderContext,
 >(BaseApplication: TBase): ApplicationStaticAFMBE<TPart, TContext> & TBase {
     abstract class HandlebarsApplicationAFMBE extends foundry.applications.api.HandlebarsApplicationMixin(
         BaseApplication,
@@ -28,22 +26,6 @@ function applicationMixinAFMBE<
                 "open-item-sheet": this.#openItemSheet,
             },
         };
-
-        static PARTS: ApplicationPartAFMBE<"header", ApplicationRenderContextAFMBE> = {
-            header: {
-                template: "systems/afmbe-idle/templates/sheet-header.hbs",
-                prepareContext: this.prepareHeaderContext,
-            },
-        };
-
-        static prepareHeaderContext(
-            this: ActorSheetV2<Actor, Item> | ItemSheetV2<Item>,
-            context: ApplicationRenderContextAFMBE,
-            _options: HandlebarsRenderOptions,
-        ) {
-            context.name = this.document.name;
-            context.img = this.document.img;
-        }
 
         static async getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null> {
             const uuid = target.closest<HTMLElement>("[data-item-uuid]")?.dataset.itemUuid;
@@ -152,19 +134,13 @@ interface HandlebarsApplicationAFMBE extends HandlebarsApplication {
     getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
 }
 
-type ApplicationRenderContextAFMBE = DocumentSheetRenderContext & {
-    img?: ImageFilePath | null;
-    name?: string;
-};
-
-interface ApplicationStaticAFMBE<TPart extends string, TContext extends ApplicationRenderContextAFMBE>
+interface ApplicationStaticAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext>
     extends ConstructorOf<HandlebarsApplicationAFMBE>, HandlebarsApplicationStatic {
     PARTS: ApplicationPartAFMBE<TPart, TContext>;
     getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
-    prepareHeaderContext(context: TContext, options: HandlebarsRenderOptions): Promise<void>;
 }
 
-type ApplicationPartAFMBE<TPart extends string, TContext extends ApplicationRenderContextAFMBE> = Record<
+type ApplicationPartAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext> = Record<
     TPart,
     HandlebarsTemplatePart & {
         activateListeners?: (html: HTMLElement, options: HandlebarsRenderOptions) => void | Promise<void>;
@@ -173,4 +149,4 @@ type ApplicationPartAFMBE<TPart extends string, TContext extends ApplicationRend
 >;
 
 export { applicationMixinAFMBE };
-export type { ApplicationPartAFMBE, ApplicationRenderContextAFMBE };
+export type { ApplicationPartAFMBE };

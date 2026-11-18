@@ -16,22 +16,19 @@ type CreatureSheetRenderOptions = ActorSheetRenderOptions;
 type CreatureSheetConfiguration = ActorSheetConfiguration;
 
 type CreatureSheetRenderContext = ActorSheetRenderContext & {
-    attributes?: CreatureAttributesContext;
-};
-
-type CreatureAttributesContext = {
-    primary: {
+    primary?: {
         key: CreatureAttributeType;
         label: string;
         value: number;
     }[];
-    secondary: {
+    secondary?: {
         key: CreatureSecondaryType;
         label: string;
         value: number;
         max: number | null;
     }[];
-    speed: CreatureSpeed;
+    speed?: CreatureSpeed;
+    name?: string;
 };
 
 type RollTaskTargetData = RollTaskSelected & {
@@ -41,7 +38,6 @@ type RollTaskTargetData = RollTaskSelected & {
 };
 
 export type {
-    CreatureAttributesContext,
     CreatureSheetConfiguration,
     CreatureSheetPart,
     CreatureSheetRenderContext,
