@@ -1,7 +1,7 @@
 import { ApplicationClosingOptions } from "@7h3laughingman/foundry-types/client/applications/_module.mjs";
 import { HandlebarsRenderOptions } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 import { Creature } from "actor";
-import { ApplicationPartAFMBE } from "handlebars-sheet";
+import { DocumentSheetPartAFME } from "handlebars-sheet";
 import { ItemSheetAFMBE } from "item";
 import { localize } from "utils";
 import { Skill, SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext, SkillSheetRenderOptions } from "..";
@@ -23,7 +23,7 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         sidebar: {
             template: "systems/afmbe-idle/templates/item/skill/sidebar.hbs",
         },
-    } satisfies ApplicationPartAFMBE<SkillSheetPart, SkillSheetRenderContext>;
+    } satisfies DocumentSheetPartAFME<SkillSheetPart, SkillSheetRenderContext>;
 
     static async prepareHeaderContext(
         this: SkillSheet,

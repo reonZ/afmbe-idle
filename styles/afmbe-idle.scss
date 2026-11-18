@@ -1,4 +1,7 @@
 @use "application";
+@use "sheet";
+@use "actor/index" as actor;
+@use "item/index" as item;
 
 aside#tooltip.afmbe {
     border: 1px solid red;

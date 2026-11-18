@@ -1,20 +1,19 @@
-import type {
-    ApplicationConfiguration,
-    ApplicationRenderContext,
-} from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
+import type { ApplicationRenderContext } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
 import type { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 import type { ActorModifier } from "actor";
+import { ApplicationConfigurationAFMBE } from "handlebar-application";
 import type { Creature, CreatureAttributeType } from "..";
 
 type RollTaskRenderContext = ApplicationRenderContext & {
     modifiers: Collection<string, ActorModifier>;
     selects: RollTaskSelects;
     private: boolean;
+    total: string;
 };
 
 type RollTaskSelects = [
-    RollTaskSelect<"difficulty", "simple" | "difficult">,
     RollTaskSelect<"attribute", CreatureAttributeType>,
+    RollTaskSelect<"difficulty", "simple" | "standard">,
     RollTaskSelect<"skill", string>,
 ];
 
@@ -41,13 +40,12 @@ type RollTaskSelectOption<V extends string = string> = Omit<FormSelectOption, "v
 
 type RollTaskData = {
     disable?: RollTaskSelectKey[];
-    modifiers?: string[];
     mode?: "private" | "public";
     select?: RollTaskSelected;
     title?: string;
 };
 
-type RollTaskApplicationConfiguration = ApplicationConfiguration & {
+type RollTaskApplicationConfiguration = ApplicationConfigurationAFMBE & {
     actor: Creature;
     data: RollTaskData;
 };
@@ -55,7 +53,7 @@ type RollTaskApplicationConfiguration = ApplicationConfiguration & {
 type RollTaskSelectKey = RollTaskSelects[number]["key"];
 
 type RollTaskSelected = {
-    [k in RollTaskSelectKey]?: Extract<RollTaskSelects[number], { key: k }>["options"][number]["value"];
+    [k in RollTaskSelectKey]: Extract<RollTaskSelects[number], { key: k }>["options"][number]["value"];
 };
 
 export type {

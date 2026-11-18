@@ -37,7 +37,7 @@ class CreatureDataModel<
     }
 
     rollTask(options?: RollTaskData): RollTaskApplication {
-        return RollTaskApplication.roll(this.parent, options);
+        return RollTaskApplication.create(this.parent, options);
     }
 }
 

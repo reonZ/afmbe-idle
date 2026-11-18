@@ -1,5 +1,5 @@
 import { Character, CreatureSheet } from "actor";
-import { ApplicationPartAFMBE } from "handlebars-sheet";
+import { DocumentSheetPartAFME } from "handlebars-sheet";
 import * as R from "remeda";
 import { CharacterSheetConfiguration, CharacterSheetPart, CharacterSheetRenderContext } from ".";
 
@@ -15,7 +15,7 @@ abstract class CharacterSheet<TParent extends Character = Character> extends Cre
             template: "systems/afmbe-idle/templates/actor/character/skills.hbs",
             prepareContext: this.prepareSkillsContext,
         },
-    } satisfies ApplicationPartAFMBE<CharacterSheetPart, CharacterSheetRenderContext>;
+    } satisfies DocumentSheetPartAFME<CharacterSheetPart, CharacterSheetRenderContext>;
 
     static prepareSkillsContext(this: CharacterSheet, context: CharacterSheetRenderContext) {
         context.skills = R.flatMap(this.actor.itemTypes.skill, (skill) => [skill, ...skill.system.deepSpecialties]);

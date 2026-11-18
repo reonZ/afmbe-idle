@@ -1,8 +1,8 @@
-import { ActorSheetConfiguration, CharacterSheet } from "actor";
+import { CharacterSheet, CharacterSheetConfiguration } from "actor";
 import { Member } from "..";
 
 class MemberSheet extends CharacterSheet<Member> {
-    static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
+    static DEFAULT_OPTIONS: DeepPartial<CharacterSheetConfiguration> = {
         classes: ["member"],
     };
 }

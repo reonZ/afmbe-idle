@@ -1,0 +1,82 @@
+.application.afmbe.task .window-content {
+    padding-inline: 0;
+
+    .body {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr auto;
+        gap: 0.3rem 1rem;
+        overflow: hidden;
+    }
+
+    .panel {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
+        .title {
+            font-size: 1.2em;
+            margin-left: 0.3rem;
+        }
+
+        &.left {
+            padding-left: var(--application-padding-column);
+        }
+
+        &.right {
+            padding-right: var(--application-padding-column);
+            overflow-y: auto;
+        }
+    }
+
+    select + div {
+        margin-top: 0.5rem;
+    }
+
+    input[type="number"],
+    input[type="text"].modifier {
+        width: 5ch;
+        text-align: center;
+    }
+
+    .manual {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .modifiers {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
+        gap: 0.3rem 0.5rem;
+
+        a {
+            font-size: 1.5em;
+        }
+    }
+
+    [name="skill"] {
+        margin-bottom: auto;
+    }
+
+    .private {
+        display: flex;
+        align-items: center;
+        gap: 0.1rem;
+        margin-left: 0.3rem;
+    }
+
+    .buttons {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        padding-inline: var(--application-padding-column);
+
+        button {
+            --button-size: 2.4em;
+        }
+    }
+}

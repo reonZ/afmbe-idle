@@ -67,9 +67,13 @@
                 },
                 "task": {
                     "attribute": "Attribute",
+                    "buttons": {
+                        "cancel": "Cancel",
+                        "roll": "Roll ({value})"
+                    },
                     "difficulty": {
-                        "difficult": "Difficult",
-                        "simple": "Simple",
+                        "simple": "Simple (x2)",
+                        "standard": "Standard (x1)",
                         "title": "Difficulty"
                     },
                     "modifier": {

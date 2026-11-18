@@ -1,5 +1,5 @@
 import { ActorSheetAFMBE } from "actor";
-import { ApplicationPartAFMBE } from "handlebars-sheet";
+import { DocumentSheetPartAFME } from "handlebars-sheet";
 import * as R from "remeda";
 import { splitString } from "utils";
 import { CreatureSheetConfiguration, CreatureSheetPart, CreatureSheetRenderContext, RollTaskTargetData } from ".";
@@ -23,7 +23,7 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
             template: "systems/afmbe-idle/templates/actor/creature/attributes.hbs",
             prepareContext: this.prepareAttributesContext,
         },
-    } satisfies ApplicationPartAFMBE<CreatureSheetPart, CreatureSheetRenderContext>;
+    } satisfies DocumentSheetPartAFME<CreatureSheetPart, CreatureSheetRenderContext>;
 
     static prepareHeaderContext(this: CreatureSheet, context: CreatureSheetRenderContext) {
         context.name = this.actor.name;

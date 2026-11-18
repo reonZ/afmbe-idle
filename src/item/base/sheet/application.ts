@@ -4,7 +4,7 @@ import {
     DatabaseUpdateOperation,
 } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
 import { ActorAFMBE } from "actor";
-import { documentSheetMixinAFMBE, ApplicationPartAFMBE } from "handlebars-sheet";
+import { documentSheetMixinAFMBE, DocumentSheetPartAFME } from "handlebars-sheet";
 import { ItemAFMBE } from "item";
 import * as R from "remeda";
 import { enrichHTML, localize } from "utils";
@@ -28,7 +28,7 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
             template: "systems/afmbe-idle/templates/item/description.hbs",
             prepareContext: this.prepareDescriptionContext,
         },
-    } satisfies ApplicationPartAFMBE<ItemSheetPart, ItemSheetRenderContext>;
+    } satisfies DocumentSheetPartAFME<ItemSheetPart, ItemSheetRenderContext>;
 
     static prepareHeaderContext(
         this: ItemSheetAFMBE,

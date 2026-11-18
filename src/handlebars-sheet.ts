@@ -14,7 +14,7 @@ function documentSheetMixinAFMBE<
     TBase extends AbstractConstructorOf<ApplicationV2<any>>,
     TPart extends "header" | (string & {}),
     TContext extends DocumentSheetRenderContext,
->(BaseApplication: TBase): ApplicationStaticAFMBE<TPart, TContext> & TBase {
+>(BaseApplication: TBase): DocumentSheetStaticAFMBE<TPart, TContext> & TBase {
     abstract class HandlebarsApplicationAFMBE extends foundry.applications.api.HandlebarsApplicationMixin(
         BaseApplication,
     ) {
@@ -50,7 +50,7 @@ function documentSheetMixinAFMBE<
             options: HandlebarsRenderOptions,
         ): Promise<TContext> {
             super._preparePartContext(partId, context, options);
-            const cls = this.constructor as ApplicationStaticAFMBE<TPart, TContext>;
+            const cls = this.constructor as DocumentSheetStaticAFMBE<TPart, TContext>;
             const part = cls.PARTS[partId];
 
             await part?.prepareContext?.call(this, context, options);
@@ -64,7 +64,7 @@ function documentSheetMixinAFMBE<
             options: HandlebarsRenderOptions,
         ) {
             super._attachPartListeners(partId, html, options);
-            const cls = this.constructor as ApplicationStaticAFMBE<TPart, TContext>;
+            const cls = this.constructor as DocumentSheetStaticAFMBE<TPart, TContext>;
             const part = cls.PARTS[partId];
             part?.activateListeners?.call(this, html, options);
         }
@@ -132,21 +132,21 @@ function documentSheetMixinAFMBE<
         }
     }
 
-    return HandlebarsApplicationAFMBE as unknown as ApplicationStaticAFMBE<TPart, TContext> & TBase;
+    return HandlebarsApplicationAFMBE as unknown as DocumentSheetStaticAFMBE<TPart, TContext> & TBase;
 }
 
-interface HandlebarsApplicationAFMBE extends HandlebarsApplication {
+interface DocumentSheetAFMBE extends HandlebarsApplication {
     _attachListeners(html: HTMLElement): void | Promise<void>;
     getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
 }
 
-interface ApplicationStaticAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext>
-    extends ConstructorOf<HandlebarsApplicationAFMBE>, HandlebarsApplicationStatic {
-    PARTS: ApplicationPartAFMBE<TPart, TContext>;
+interface DocumentSheetStaticAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext>
+    extends ConstructorOf<DocumentSheetAFMBE>, HandlebarsApplicationStatic {
+    PARTS: DocumentSheetPartAFME<TPart, TContext>;
     getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
 }
 
-type ApplicationPartAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext> = Record<
+type DocumentSheetPartAFME<TPart extends string, TContext extends DocumentSheetRenderContext> = Record<
     TPart,
     HandlebarsTemplatePart & {
         activateListeners?: (html: HTMLElement, options: HandlebarsRenderOptions) => void | Promise<void>;
@@ -155,4 +155,4 @@ type ApplicationPartAFMBE<TPart extends string, TContext extends DocumentSheetRe
 >;
 
 export { documentSheetMixinAFMBE };
-export type { ApplicationPartAFMBE };
+export type { DocumentSheetPartAFME };

@@ -1,5 +1,6 @@
-@use "sheet";
-
 .application.afmbe .window-content {
-    padding: 0.3rem 0.6rem;
+    --application-padding-column: 0.6rem;
+    --application-padding-row: 0.3rem;
+
+    padding: var(--application-padding-row) var(--application-padding-column);
 }
