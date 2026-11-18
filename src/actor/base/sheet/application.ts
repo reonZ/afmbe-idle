@@ -1,10 +1,10 @@
-import { applicationMixinAFMBE } from "handlebars-application";
+import { documentSheetMixinAFMBE } from "handlebars-sheet";
 import { ItemAFMBE } from "item";
 import * as R from "remeda";
 import { localize } from "utils";
 import { ActorAFMBE, ActorSheetConfiguration, ActorSheetRenderContext, ActorSheetRenderOptions } from "..";
 
-abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends applicationMixinAFMBE(
+abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends documentSheetMixinAFMBE(
     foundry.applications.sheets.ActorSheetV2<ActorAFMBE, ItemAFMBE>,
 ) {
     static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {

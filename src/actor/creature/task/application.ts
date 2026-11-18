@@ -1,11 +1,11 @@
 import {
     ApplicationClosingOptions,
     ApplicationConfiguration,
-    ApplicationRenderContext,
     ApplicationRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
 import { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 import { ActorModifier } from "actor/base";
+import { ApplicationAFMBE } from "application";
 import * as R from "remeda";
 import { localize } from "utils";
 import {
@@ -19,15 +19,17 @@ import {
 } from ".";
 import { Creature, CREATURE_ATTRIBUTES, CreatureAttributes } from "..";
 
-class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
+class RollTaskApplication extends ApplicationAFMBE {
     #actor: Creature;
     #disable: RollTaskSelectKey[];
     #modifiers: Collection<string, ActorModifier & { active?: boolean }>;
     #mode: "private" | "public";
     #selected: RollTaskSelected;
 
+    static TEMPLATE: string = "systems/afmbe-idle/templates/actor/creature/task.hbs";
+
     static DEFAULT_OPTIONS: DeepPartial<ApplicationConfiguration> = {
-        classes: ["creature"],
+        classes: ["task"],
         actions: {
             "add-modifier": this.addModifier,
             "toggle-modifier": this.toggleModifier,
@@ -159,20 +161,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         delete this.actor.apps[this.id];
     }
 
-    _renderHTML(context: ApplicationRenderContext, _options: ApplicationRenderOptions): Promise<string> {
-        return foundry.applications.handlebars.renderTemplate(
-            "systems/afmbe-idle/templates/actor/creature/task.hbs",
-            context,
-        );
-    }
-
-    _replaceHTML(result: string, content: HTMLElement, _options: ApplicationRenderOptions): void {
-        content.innerHTML = result;
-        content.dataset.tooltipDirection = "UP";
-        this.#activateListeners(content);
-    }
-
-    #activateListeners(html: HTMLElement) {
+    _activateListeners(html: HTMLElement) {
         for (const el of html.querySelectorAll<HTMLSelectElement>(".select select")) {
             el.addEventListener("change", () => {
                 const category = el.name as RollTaskSelectKey;

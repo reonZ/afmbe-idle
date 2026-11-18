@@ -1,5 +1,5 @@
 import { Character, CreatureSheet } from "actor";
-import { ApplicationPartAFMBE } from "handlebars-application";
+import { ApplicationPartAFMBE } from "handlebars-sheet";
 import * as R from "remeda";
 import { CharacterSheetConfiguration, CharacterSheetPart, CharacterSheetRenderContext } from ".";
 

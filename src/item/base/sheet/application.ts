@@ -4,13 +4,13 @@ import {
     DatabaseUpdateOperation,
 } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
 import { ActorAFMBE } from "actor";
-import { applicationMixinAFMBE, ApplicationPartAFMBE } from "handlebars-application";
+import { documentSheetMixinAFMBE, ApplicationPartAFMBE } from "handlebars-sheet";
 import { ItemAFMBE } from "item";
 import * as R from "remeda";
 import { enrichHTML, localize } from "utils";
 import { ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions } from ".";
 
-abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends applicationMixinAFMBE(
+abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends documentSheetMixinAFMBE(
     foundry.applications.sheets.ItemSheetV2<ItemAFMBE>,
 ) {
     static DEFAULT_OPTIONS: DeepPartial<ItemSheetConfiguration> = {

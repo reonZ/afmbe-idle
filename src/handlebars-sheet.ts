@@ -10,7 +10,7 @@ import {
 import { ContextMenuEntry } from "@7h3laughingman/foundry-types/client/applications/ux/context-menu.mjs";
 import { ItemAFMBE } from "item";
 
-function applicationMixinAFMBE<
+function documentSheetMixinAFMBE<
     TBase extends AbstractConstructorOf<ApplicationV2<any>>,
     TPart extends "header" | (string & {}),
     TContext extends DocumentSheetRenderContext,
@@ -72,6 +72,7 @@ function applicationMixinAFMBE<
         _replaceHTML(result: Record<string, HTMLElement>, content: HTMLElement, options: HandlebarsRenderOptions) {
             super._replaceHTML(result, content, options);
             content.dataset.tooltipDirection = "UP";
+            content.dataset.tooltipClass = "afmbe";
             this._attachListeners(content);
         }
 
@@ -153,5 +154,5 @@ type ApplicationPartAFMBE<TPart extends string, TContext extends DocumentSheetRe
     }
 >;
 
-export { applicationMixinAFMBE };
+export { documentSheetMixinAFMBE };
 export type { ApplicationPartAFMBE };

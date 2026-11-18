@@ -1,1 +1,5 @@
-@use "./sheet";
+@use "application";
+
+aside#tooltip.afmbe {
+    border: 1px solid red;
+}
