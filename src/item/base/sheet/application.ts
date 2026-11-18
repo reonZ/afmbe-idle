@@ -1,3 +1,4 @@
+import { HandlebarsRenderOptions } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 import {
     DatabaseCreateOperation,
     DatabaseUpdateOperation,
@@ -6,7 +7,7 @@ import { ActorAFMBE } from "actor";
 import { applicationMixinAFMBE, ApplicationPartAFMBE } from "handlebars-application";
 import { ItemAFMBE } from "item";
 import * as R from "remeda";
-import { enrichHTML } from "utils";
+import { enrichHTML, localize } from "utils";
 import { ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions } from ".";
 
 abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends applicationMixinAFMBE(
@@ -29,7 +30,11 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends app
         },
     } satisfies ApplicationPartAFMBE<ItemSheetPart, ItemSheetRenderContext>;
 
-    static prepareHeaderContext(this: ItemSheetAFMBE, context: ItemSheetRenderContext) {
+    static prepareHeaderContext(
+        this: ItemSheetAFMBE,
+        context: ItemSheetRenderContext,
+        _options: HandlebarsRenderOptions,
+    ) {
         context.name = this.item.name;
         context.img = this.item.img ?? this.item.defaultArtwork.img;
     }
@@ -56,7 +61,7 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends app
 
         if (!R.isIncludedIn(item.type, this.item.system.allowedSubItems)) {
             ui.notifications.error("afmbe.item.allowedSubItems.error", {
-                format: { type: _loc(`TYPES.Item.${item.type}`) },
+                format: { type: localize("TYPES.Item", item.type) },
             });
             return;
         }

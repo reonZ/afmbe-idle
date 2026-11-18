@@ -4,11 +4,11 @@ import { localize } from "utils";
 
 class CreatureSpeed<TParent extends Creature = Creature> extends ActorModule<TParent> {
     get label(): string {
-        return localize("actor.creature.speed.label");
+        return localize("afmbe.actor.creature.speed.label");
     }
 
     get shortUnit(): string {
-        return localize("actor.creature.speed", this.useMetric ? "mps" : "yps");
+        return localize("afmbe.actor.creature.speed", this.useMetric ? "mps" : "yps");
     }
 
     get shortValue(): number {
@@ -20,7 +20,7 @@ class CreatureSpeed<TParent extends Creature = Creature> extends ActorModule<TPa
     }
 
     get unit(): string {
-        return localize("actor.creature.speed", this.useMetric ? "kph" : "mph");
+        return localize("afmbe.actor.creature.speed", this.useMetric ? "kph" : "mph");
     }
 
     get useMetric(): boolean {

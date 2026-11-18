@@ -72,8 +72,12 @@ function applicationMixinAFMBE<
         _replaceHTML(result: Record<string, HTMLElement>, content: HTMLElement, options: HandlebarsRenderOptions) {
             super._replaceHTML(result, content, options);
             content.dataset.tooltipDirection = "UP";
+            this._attachListeners(content);
+        }
 
-            const inputs = content.querySelectorAll<HTMLInputElement>(`input[type="number"], input[type="text"]`);
+        _attachListeners(html: HTMLElement) {
+            const inputs = html.querySelectorAll<HTMLInputElement>(`input[type="number"], input[type="text"]`);
+
             for (const el of inputs) {
                 el.addEventListener(
                     "keydown",
@@ -131,6 +135,7 @@ function applicationMixinAFMBE<
 }
 
 interface HandlebarsApplicationAFMBE extends HandlebarsApplication {
+    _attachListeners(html: HTMLElement): void | Promise<void>;
     getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
 }
 

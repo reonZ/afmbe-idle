@@ -51,7 +51,7 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
     > {
         const source: PreCreate<SkillSource> = {
             type: "skill",
-            name: name?.trim() || getNextIndexedName("item.skill.specialty.name", this.specialties.contents),
+            name: name?.trim() || getNextIndexedName("afmbe.item.skill.specialty.name", this.specialties.contents),
             system: {
                 level: { value: level },
             },

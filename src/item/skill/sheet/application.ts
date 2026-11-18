@@ -1,10 +1,10 @@
 import { ApplicationClosingOptions } from "@7h3laughingman/foundry-types/client/applications/_module.mjs";
+import { HandlebarsRenderOptions } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 import { Creature } from "actor";
 import { ApplicationPartAFMBE } from "handlebars-application";
 import { ItemSheetAFMBE } from "item";
-import { Skill, SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext, SkillSheetRenderOptions } from "..";
 import { localize } from "utils";
-import { HandlebarsRenderOptions } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
+import { Skill, SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext, SkillSheetRenderOptions } from "..";
 
 class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>> extends ItemSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<SkillSheetConfiguration> = {
@@ -30,7 +30,7 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         context: SkillSheetRenderContext,
         options: HandlebarsRenderOptions,
     ) {
-        await super.prepareHeaderContext(context, options);
+        super.prepareHeaderContext(context, options);
         context.level = this.item.system.level.value;
     }
 
@@ -44,7 +44,7 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
 
     get title() {
         const { system, id, name } = this.item;
-        const prefix = system.isSpecialty ? localize("item.skill.specialty.name") : _loc("TYPES.Item.skill");
+        const prefix = localize(system.isSpecialty ? "afmbe.item.skill.specialty.name" : "TYPES.Item.skill");
         return `${prefix}: ${name || id}`;
     }
 

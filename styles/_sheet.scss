@@ -61,6 +61,11 @@
             a {
                 position: absolute;
                 right: 0.5rem;
+                opacity: 0.2;
+
+                &:hover {
+                    opacity: 1;
+                }
             }
         }
 

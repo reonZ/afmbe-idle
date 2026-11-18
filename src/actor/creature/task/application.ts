@@ -60,7 +60,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         this.#modifiers.set(id, {
             active: true,
             id,
-            label: label.value.trim() || localize("actor.creature.task.modifier.name"),
+            label: label.value.trim() || localize("afmbe.actor.creature.task.modifier.name"),
             value: value.valueAsNumber || 1,
         });
 
@@ -92,7 +92,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         options = super._initializeApplicationOptions(options) as RollTaskApplicationConfiguration;
         options.id = "{id}";
         options.uniqueId = `RollTask-${actor.uuid.replaceAll(".", "-")}`;
-        options.window.title = `${data.title ?? localize("actor.creature.task.title")} - ${actor.name}`;
+        options.window.title = `${data.title ?? localize("afmbe.actor.creature.task.title")} - ${actor.name}`;
         return options;
     }
 
@@ -100,15 +100,15 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
         const selects: RollTaskTruncatedSelects = [
             {
                 key: "difficulty",
-                label: localize("actor.creature.task.difficulty.title"),
+                label: localize("afmbe.actor.creature.task.difficulty.title"),
                 options: R.map(["difficult", "simple"] as const, (value) => {
-                    const label = localize("actor.creature.task.difficulty", value);
+                    const label = localize("afmbe.actor.creature.task.difficulty", value);
                     return { value, label };
                 }),
             },
             {
                 key: "attribute",
-                label: localize("actor.creature.task.attribute"),
+                label: localize("afmbe.actor.creature.task.attribute"),
                 options: R.map(CREATURE_ATTRIBUTES, (value) => {
                     const label = CreatureAttributes.getLabel(value);
                     return { value, label };
@@ -117,7 +117,7 @@ class RollTaskApplication extends foundry.applications.api.ApplicationV2 {
             {
                 blank: true,
                 key: "skill",
-                label: localize("actor.creature.task.skill.label"),
+                label: localize("afmbe.actor.creature.task.skill.label"),
                 options: R.pipe(
                     this.actor.itemTypes.skill,
                     R.filter((skill) => !skill.system.isSpecialty),

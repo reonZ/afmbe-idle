@@ -4,10 +4,13 @@ import {
     DatabaseUpdateOperation,
     DataSchema,
 } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
+import { ImageFilePath } from "@7h3laughingman/foundry-types/common/constants.mjs";
 import { ActorAFMBE } from "actor";
 import { ITEM_PHYSICAL_TYPES } from "item";
 import * as R from "remeda";
+import { localize } from "utils";
 import {
+    ITEM_TYPES,
     ItemConstructionContext,
     ItemDataModel,
     ItemDataSchema,
@@ -18,8 +21,6 @@ import {
     SubItems,
 } from ".";
 import Document = foundry.abstract.Document;
-import { localize } from "utils";
-import { ImageFilePath } from "@7h3laughingman/foundry-types/common/constants.mjs";
 
 class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends Item<TParent> {
     declare parentItem: ItemAFMBE<TParent> | null;
@@ -36,6 +37,10 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
 
     static getDefaultArtwork(itemData: ItemSourceAFMBE): { img: ImageFilePath } {
         return { img: this.DEFAULT_ICONS[itemData.type] ?? this.DEFAULT_ICON };
+    }
+
+    static isItemType(type: Maybe<string>): type is ItemType {
+        return R.isString(type) && R.isIncludedIn(type, ITEM_TYPES);
     }
 
     static async createDocuments<TDocument extends Document>(
@@ -265,7 +270,7 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
                     const item = new ItemAFMBE(source, { parent, parentItem: this });
                     this.subItems.set(item.id, item);
                 } catch (err: any) {
-                    console.error(`[System] an error occured while instantiating a sub-item in ${this.uuid}`, err);
+                    console.error(`[System] an error occurred while instantiating a sub-item in ${this.uuid}`, err);
                 }
             }
         }
@@ -305,11 +310,11 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
     }
 
     async confirmDelete(): Promise<this | undefined> {
-        const type = _loc(`TYPES.Item.${this.type}`);
+        const type = localize("TYPES.Item", this.type);
         const result = await foundry.applications.api.DialogV2.confirm({
-            content: localize("item.confirmDelete.content"),
+            content: localize("afmbe.item.confirmDelete.content"),
             window: {
-                title: localize("item.confirmDelete.title", { name: this.name, type }),
+                title: localize("afmbe.item.confirmDelete.title", { name: this.name, type }),
             },
         });
         return result ? this.delete() : undefined;

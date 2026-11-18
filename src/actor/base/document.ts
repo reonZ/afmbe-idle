@@ -3,7 +3,7 @@ import EmbeddedCollection, {
 } from "@7h3laughingman/foundry-types/common/abstract/embedded-collection.mjs";
 import { ImageFilePath, VideoFilePath } from "@7h3laughingman/foundry-types/common/constants.mjs";
 import { ACTOR_CREATURE_TYPES } from "actor";
-import { ItemAFMBE } from "item";
+import { ItemAFMBE, ItemSourceAFMBE } from "item";
 import type { TokenDocumentAFMBE } from "misc";
 import * as R from "remeda";
 import {
@@ -15,6 +15,7 @@ import {
     ActorSourceAFMBE,
     ActorType,
 } from ".";
+import { DatabaseCreateOperation } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
 
 class ActorAFMBE<TParent extends TokenDocumentAFMBE | null = TokenDocumentAFMBE | null> extends Actor<TParent> {
     static DEFAULT_ICONS: Partial<Record<ActorType, ImageFilePath>> = {};
@@ -70,6 +71,12 @@ interface ActorAFMBE {
     get itemTypes(): ActorItemTypes<this>;
     system: ActorDataModel<ActorAFMBE, ActorDataSchema>;
     readonly type: ActorType;
+
+    createEmbeddedDocuments(
+        embeddedName: "Item",
+        data: PreCreate<ItemSourceAFMBE>[],
+        operation?: Partial<DatabaseCreateOperation<this>>,
+    ): Promise<ItemAFMBE<this>[]>;
 }
 
 export { ActorAFMBE };

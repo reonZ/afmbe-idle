@@ -5,7 +5,7 @@ import { Creature } from "..";
 
 class CreatureEssence<TParent extends Creature = Creature> extends ActorModule<TParent> {
     get label(): string {
-        return localize("actor.creature.essence.label");
+        return localize("afmbe.actor.creature.essence.label");
     }
 
     _initialize(): void {
