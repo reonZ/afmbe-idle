@@ -45,10 +45,12 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
 
     static #rollTask(this: CreatureSheet, event: PointerEvent, target: HTMLElement) {
         const data = target.dataset as RollTaskTargetData;
+
         this.actor.system.rollTask({
             disable: splitString(data.disable ?? ""),
             mode: event.ctrlKey ? "private" : "public",
             select: R.omit(data, ["disable", "hide", "tooltip"]),
+            target: Number(data.target) || undefined,
             title: data.tooltip,
         });
     }

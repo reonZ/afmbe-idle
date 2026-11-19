@@ -1,8 +1,17 @@
 import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
 import type { ActorAFMBE, ActorDataSchema, CharacterSource, ZombieSource } from "actor";
 import type { PositiveIntergerValueField } from "fields";
-import type { CREATURE_ATTRIBUTES, CREATURE_SECONDARIES, CreatureDataModel } from ".";
-import { TokenDocumentAFMBE } from "misc";
+import type { TokenDocumentAFMBE } from "misc";
+import type { CREATURE_ATTRIBUTES, CREATURE_MODIFIER_TYPES, CREATURE_SECONDARIES, CreatureDataModel } from ".";
+
+type CreatureModifierType = (typeof CREATURE_MODIFIER_TYPES)[number];
+
+type CreatureModifier = {
+    id: string;
+    label: string;
+    value: number;
+    type: CreatureModifierType;
+};
 
 type CreatureAttributeType = (typeof CREATURE_ATTRIBUTES)[number];
 type CreatureSecondaryType = (typeof CREATURE_SECONDARIES)[number];
@@ -30,6 +39,8 @@ export type {
     CreatureAttributeType,
     CreatureDataSchema,
     CreatureDataSource,
+    CreatureModifier,
+    CreatureModifierType,
     CreatureSecondaryAttributes,
     CreatureSecondaryType,
     CreatureSource,

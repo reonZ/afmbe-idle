@@ -3,7 +3,7 @@
         {{#each selects as |select|}}
         <div class="title">{{select.label}}</div>
         <select name="{{select.key}}" {{disabled select.disable}}>
-            {{selectOptions select.options blank=select.blank selected=select.selected}}
+            {{selectOptions select.options selected=select.selected}}
         </select>
         {{/each}}
         <div class="private">
@@ -23,6 +23,15 @@
             </button>
         </div>
         <div class="modifiers">
+            {{#if untrained}}
+            <div class="name">
+                {{localize 'afmbe.item.skill.untrained.label'}}
+            </div>
+            <input type="number" name="untrained" value="{{untrained.value}}" min="{{untrained.min}}" max="{{untrained.max}}" />
+            <a class="disabled">
+                <i class="fa-solid fa-toggle-large-on"></i>
+            </a>
+            {{/if}}
             {{#each modifiers as |modifier|}}
             <div class="name">
                 {{modifier.label}}
@@ -37,7 +46,7 @@
 </div>
 <div class="buttons">
     <button type="button" data-action="roll">
-        {{localize 'afmbe.actor.creature.task.buttons.roll' value=total}}
+        {{localize 'afmbe.actor.creature.task.buttons.roll' rollType value=total}}
     </button>
     <button type="button" data-action="cancel">
         {{localize 'afmbe.actor.creature.task.buttons.cancel'}}

@@ -3,29 +3,35 @@ import {
     ApplicationRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
 import { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
-import { ActorModifier } from "actor/base";
-import { ApplicationAFMBE } from "handlebar-application";
+import { ApplicationAFMBE, ApplicationConfigurationAFMBE } from "handlebar-application";
 import * as R from "remeda";
 import { localize, signedNumber } from "utils";
 import {
+    BaseAttributesTaskSelect,
+    BaseDifficultyTaskSelect,
+    BaseSkillTaskSelect,
     RollTaskApplicationConfiguration,
     RollTaskData,
     RollTaskRenderContext,
     RollTaskSelected,
     RollTaskSelectKey,
     RollTaskSelects,
-    RollTaskTruncatedSelects,
+    RollTaskType,
+    TaskModifier,
 } from ".";
-import { Creature, CREATURE_ATTRIBUTES, CreatureAttributes } from "..";
+import { Creature, CREATURE_ATTRIBUTES, CREATURE_MODIFIER_TYPES, CreatureAttributes, CreatureModifier } from "..";
 
-const TASK_DIFFICULTIES = ["standard", "simple"] as const;
+const TEST_DIFFICULTIES = ["simple", "difficult"] as const;
+const UNTRAINED_RANGE = { max: -2, min: -10 };
 
 class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfiguration> {
     #actor: Creature;
     #disable: RollTaskSelectKey[];
-    #modifiers: Collection<string, ActorModifier & { active?: boolean }>;
+    #modifiers: Collection<string, TaskModifier>;
     #mode: "private" | "public";
     #selected: RollTaskSelected;
+    #target: number | undefined;
+    #untrained: number = -2;
 
     static TEMPLATE: string = "systems/afmbe-idle/templates/actor/creature/task.hbs";
 
@@ -40,11 +46,11 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
     };
 
     constructor(
-        options: DeepPartial<Omit<RollTaskApplicationConfiguration, "actor" | "data">> &
-            Pick<RollTaskApplicationConfiguration, "actor" | "data">,
+        options: DeepPartial<ApplicationConfigurationAFMBE> &
+            Omit<RollTaskApplicationConfiguration, keyof ApplicationConfigurationAFMBE>,
     ) {
         const actor = options.actor;
-        const { disable, mode, select } = options.data;
+        const { disable, mode, select, target } = options.data;
 
         super(options);
 
@@ -52,12 +58,23 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         this.#disable = R.isArray(disable) ? disable.slice() : [];
         this.#mode = mode ?? "public";
 
+        this.#modifiers = new Collection(
+            R.map(actor.system.modifiers, (modifier) => {
+                modifier.type = R.isIncludedIn(modifier.type, CREATURE_MODIFIER_TYPES) ? modifier.type : "all";
+                return [modifier.id, modifier] as const;
+            }),
+        );
+
         this.#selected = foundry.utils.mergeObject(
-            { attribute: CREATURE_ATTRIBUTES[0], difficulty: TASK_DIFFICULTIES[0], skill: "" },
+            { attribute: CREATURE_ATTRIBUTES[0], difficulty: TEST_DIFFICULTIES[0], skill: "" },
             R.isObjectType(select) ? foundry.utils.deepClone(select) : {},
         );
 
-        this.#modifiers = new Collection(R.map(actor.system.modifiers, (modifier) => [modifier.id, modifier] as const));
+        if (this.#selected.skill === "") {
+            this.#selected.difficulty === "standard";
+        }
+
+        this.#target = target;
     }
 
     static addModifier(this: RollTaskApplication, _event: PointerEvent, target: HTMLElement) {
@@ -70,6 +87,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
             id,
             label: label.value.trim() || localize("afmbe.actor.creature.task.modifier.name"),
             value: value.valueAsNumber || 1,
+            type: "all",
         });
 
         this.render();
@@ -77,7 +95,9 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
 
     static toggleModifier(this: RollTaskApplication, _event: PointerEvent, target: HTMLElement) {
         const id = target.closest<HTMLElement>("[data-id]")?.dataset.id;
-        const modifier = this.#modifiers.get(id ?? "");
+        if (!id) return;
+
+        const modifier = this.#modifiers.find((modifier) => modifier.id === id);
 
         if (modifier) {
             modifier.active = !modifier.active;
@@ -95,6 +115,18 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         return this.#actor;
     }
 
+    get isTest(): boolean {
+        return this.rollType === "test";
+    }
+
+    get isUntrained(): boolean {
+        return this.#selected.skill === "untrained";
+    }
+
+    get rollType(): RollTaskType {
+        return this.#selected.skill === "" ? "test" : "task";
+    }
+
     _initializeApplicationOptions(options: RollTaskApplicationConfiguration): RollTaskApplicationConfiguration {
         const { actor, data } = options;
         options = super._initializeApplicationOptions(options) as RollTaskApplicationConfiguration;
@@ -104,69 +136,120 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         return options;
     }
 
-    async _prepareContext(): Promise<RollTaskRenderContext> {
-        const preSelects: RollTaskTruncatedSelects = [
-            {
-                key: "attribute",
-                label: localize("afmbe.actor.creature.task.attribute"),
-                options: R.map(CREATURE_ATTRIBUTES, (value) => {
-                    const label = CreatureAttributes.getLabel(value);
-                    const modifier = signedNumber(this.actor.system.attributes[value]);
-                    return { value, label: `${label} (${modifier})` };
-                }),
-            },
-            {
-                key: "difficulty",
-                label: localize("afmbe.actor.creature.task.difficulty.title"),
-                options: R.map(TASK_DIFFICULTIES, (value) => {
-                    const label = localize("afmbe.actor.creature.task.difficulty", value);
-                    return { value, label };
-                }),
-            },
-            {
-                blank: true,
-                key: "skill",
-                label: localize("afmbe.actor.creature.task.skill.label"),
-                options: R.pipe(
-                    this.actor.itemTypes.skill,
-                    R.filter((skill) => !skill.system.isSpecialty),
-                    R.flatMap((skill) => {
-                        const specialties = skill.system.deepSpecialties;
-                        const group = specialties.length ? skill.name : undefined;
+    get attributeSelect(): BaseAttributesTaskSelect {
+        return {
+            key: "attribute",
+            label: localize("afmbe.actor.creature.task.attribute"),
+            options: R.map(CREATURE_ATTRIBUTES, (value) => {
+                const label = CreatureAttributes.getLabel(value);
+                const modifier = signedNumber(this.actor.system.attributes[value]);
+                return { value, label: `${label} (${modifier})` };
+            }),
+        };
+    }
 
-                        return R.map([skill, ...specialties], ({ chainId, name, system }): FormSelectOption => {
-                            return { group, label: `${name} (${system.modifier})`, value: chainId };
-                        });
-                    }),
-                ),
-            },
-        ];
+    get difficultySelect(): BaseDifficultyTaskSelect {
+        return {
+            key: "difficulty",
+            label: localize("afmbe.actor.creature.task.difficulty.title"),
+            options: R.map(this.isTest ? TEST_DIFFICULTIES : (["standard"] as const), (value) => {
+                const label = localize("afmbe.actor.creature.task.difficulty", value);
+                return { value, label };
+            }),
+        };
+    }
 
-        const attributeValue = this.actor.system.attributes[this.#selected.attribute];
-        const attributeModifier = attributeValue * (this.#selected.difficulty === "standard" ? 1 : 2);
-        const selectedSkill = this.actor.items.get(this.#selected.skill);
-        const skillModifier = selectedSkill?.isOfType("skill") ? selectedSkill.system.bonus : 0;
-        const modifiers = R.pipe(
-            this.#modifiers.contents,
-            R.filter((modifier) => !!modifier.active),
-            R.map((modifier) => modifier.value),
-            R.sum(),
+    get skillSelect(): BaseSkillTaskSelect {
+        const options: BaseSkillTaskSelect["options"] = R.pipe(
+            this.actor.itemTypes.skill,
+            R.filter((skill) => !skill.system.isSpecialty),
+            R.flatMap((skill) => {
+                const specialties = skill.system.deepSpecialties;
+                const group = specialties.length ? skill.name : undefined;
+
+                return R.map([skill, ...specialties], ({ chainId, name, system }): FormSelectOption => {
+                    return { group, label: `${name} (${system.modifier})`, value: chainId };
+                });
+            }),
+        );
+
+        options.unshift(
+            { value: "", label: "" },
+            { value: "untrained", label: localize("afmbe.item.skill.untrained.label") },
         );
 
         return {
-            modifiers: this.#modifiers,
-            selects: R.map(preSelects, ({ blank, key, label, options }) => {
+            key: "skill",
+            label: localize("TYPES.Item.skill"),
+            options,
+        };
+    }
+
+    get modifierInstances(): CreatureModifier[] {
+        const rollType = this.rollType;
+        const { attribute, difficulty, skill } = this.#selected;
+
+        const modifiers: CreatureModifier[] = [
+            {
+                id: "attribute",
+                label: CreatureAttributes.getLabel(attribute),
+                type: "all",
+                value: this.actor.system.attributes[attribute] * (difficulty === "simple" ? 2 : 1),
+            },
+        ];
+
+        if (skill === "untrained") {
+            modifiers.push({
+                id: "skill",
+                label: localize("afmbe.item.skill.untrained.label"),
+                type: "task",
+                value: this.#untrained,
+            });
+        } else if (skill !== "") {
+            const actorSkill = this.actor.items.get(skill);
+
+            if (actorSkill?.isOfType("skill")) {
+                modifiers.push({
+                    id: "skill",
+                    label: actorSkill.system.label,
+                    type: "task",
+                    value: actorSkill.system.bonus,
+                });
+            }
+        }
+
+        for (const modifier of this.#modifiers) {
+            if (!modifier.active || (modifier.type !== "all" && modifier.type !== rollType)) continue;
+            modifiers.push(modifier);
+        }
+
+        return modifiers;
+    }
+
+    async _prepareContext(): Promise<RollTaskRenderContext> {
+        const rollType = this.rollType;
+        const modifiers = R.sumBy(this.modifierInstances, R.prop("value"));
+
+        const selects = R.map(
+            [this.attributeSelect, this.difficultySelect, this.skillSelect] as const,
+            ({ key, label, options }) => {
                 return {
-                    blank: blank ? "" : undefined,
-                    disable: options.length === 0 || this.#disable.includes(key),
+                    disable: options.length <= 1 || this.#disable.includes(key),
                     key,
                     label,
                     options,
                     selected: this.#selected[key],
                 };
-            }) as RollTaskSelects,
+            },
+        ) as RollTaskSelects;
+
+        return {
+            modifiers: this.#modifiers.filter(({ type }) => type === "all" || type === rollType),
+            selects,
             private: this.#mode === "private",
-            total: signedNumber(attributeModifier + skillModifier + modifiers),
+            rollType: this.rollType,
+            total: signedNumber(modifiers),
+            untrained: this.isUntrained ? { ...UNTRAINED_RANGE, value: this.#untrained } : null,
         };
     }
 
@@ -189,10 +272,19 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
             });
         }
 
-        const privateEl = html.querySelector<HTMLInputElement>(".private input");
+        const privateEl = html.querySelector<HTMLInputElement>(`[name="private"]`);
         if (privateEl) {
             privateEl.addEventListener("change", () => {
                 this.#mode = privateEl.checked ? "private" : "public";
+            });
+        }
+
+        const untrainedEl = html.querySelector<HTMLInputElement>(`[name="untrained"]`);
+        if (untrainedEl) {
+            untrainedEl.addEventListener("change", () => {
+                const { max, min } = UNTRAINED_RANGE;
+                this.#untrained = Math.clamp(untrainedEl.valueAsNumber, min, max);
+                this.render();
             });
         }
     }

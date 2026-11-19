@@ -1,10 +1,8 @@
 import { ItemType } from "item";
-import { ActorAFMBE, ActorDataSchema, ActorModifier } from ".";
+import { ActorAFMBE, ActorDataSchema } from ".";
 
 class ActorDataModel<TParent extends ActorAFMBE, TSchema extends ActorDataSchema> extends foundry.abstract
     .TypeDataModel<TParent, TSchema> {
-    modifiers: ActorModifier[] = [];
-
     static defineSchema(): ActorDataSchema {
         return {};
     }

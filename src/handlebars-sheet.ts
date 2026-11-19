@@ -71,8 +71,8 @@ function documentSheetMixinAFMBE<
 
         _replaceHTML(result: Record<string, HTMLElement>, content: HTMLElement, options: HandlebarsRenderOptions) {
             super._replaceHTML(result, content, options);
-            content.dataset.tooltipDirection = "UP";
             content.dataset.tooltipClass = "afmbe";
+            content.dataset.tooltipDirection = "UP";
             this._attachListeners(content);
         }
 

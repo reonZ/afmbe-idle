@@ -24,16 +24,21 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
         return this.subItems.length > 0;
     }
 
-    get parentSkill(): Skill<TParent["actor"]> | null {
-        return this.item.parentItem;
-    }
-
     get isSpecialty(): boolean {
         return !!this.parentSkill;
     }
 
+    get label(): string {
+        const parent = this.item.rootParentItem;
+        return parent ? `${parent.name} [${this.item.name}]` : this.item.name;
+    }
+
     get modifier(): string {
         return signedNumber(this.bonus);
+    }
+
+    get parentSkill(): Skill<TParent["actor"]> | null {
+        return this.item.parentItem;
     }
 
     get specialties(): Collection<string, Skill<TParent["actor"]>> {

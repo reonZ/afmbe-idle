@@ -69,11 +69,15 @@
                     "attribute": "Attribute",
                     "buttons": {
                         "cancel": "Cancel",
-                        "roll": "Roll ({value})"
+                        "roll": {
+                            "task": "Roll Task ({value})",
+                            "test": "Roll Test ({value})"
+                        }
                     },
                     "difficulty": {
+                        "difficult": "Difficult (x1)",
                         "simple": "Simple (x2)",
-                        "standard": "Standard (x1)",
+                        "standard": "Standard",
                         "title": "Difficulty"
                     },
                     "modifier": {
@@ -84,11 +88,11 @@
                         "toggle": "Toggle Modifier"
                     },
                     "private": "Make message private?",
-                    "roll": "Roll {type} Task",
-                    "skill": {
-                        "label": "Skill"
+                    "roll": {
+                        "all": "Roll {name}",
+                        "task": "Roll {name} Task"
                     },
-                    "title": "Roll Task"
+                    "title": "Roll Task/Test"
                 },
                 "zombie": {
                     "life": {
@@ -115,7 +119,10 @@
                     "add": "Add Specialty",
                     "title": "Specialties"
                 },
-                "title": "Skills"
+                "title": "Skills",
+                "untrained": {
+                    "label": "Untrained"
+                }
             }
         }
     }

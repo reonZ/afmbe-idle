@@ -30,6 +30,7 @@ abstract class ApplicationAFMBE<
         }
 
         content.innerHTML = result;
+        content.dataset.tooltipClass = "afmbe";
         content.dataset.tooltipDirection = "UP";
 
         for (const [selector, scrollTop, scrollLeft] of scrollPositions) {

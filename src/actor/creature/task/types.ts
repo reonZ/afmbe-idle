@@ -1,34 +1,34 @@
 import type { ApplicationRenderContext } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
 import type { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
-import type { ActorModifier } from "actor";
-import { ApplicationConfigurationAFMBE } from "handlebar-application";
-import type { Creature, CreatureAttributeType } from "..";
+import type { ApplicationConfigurationAFMBE } from "handlebar-application";
+import type { Creature, CreatureAttributeType, CreatureModifier, CreatureModifierType } from "..";
+
+type TaskModifier = CreatureModifier & { active?: boolean };
+
+type RollTaskType = Exclude<CreatureModifierType, "all">;
 
 type RollTaskRenderContext = ApplicationRenderContext & {
-    modifiers: Collection<string, ActorModifier>;
+    modifiers: CreatureModifier[];
     selects: RollTaskSelects;
     private: boolean;
+    rollType: RollTaskType;
     total: string;
+    untrained: { max: number; min: number; value: number } | null;
 };
 
 type RollTaskSelects = [
     RollTaskSelect<"attribute", CreatureAttributeType>,
-    RollTaskSelect<"difficulty", "simple" | "standard">,
-    RollTaskSelect<"skill", string>,
+    RollTaskSelect<"difficulty", "difficult" | "simple" | "standard">,
+    RollTaskSelect<"skill", "" | "untrained" | (string & {})>,
 ];
 
-type TruncatedSelects<T extends unknown[]> = T extends []
-    ? []
-    : T extends [infer H, ...infer R]
-      ? H extends RollTaskSelects[number]
-          ? [Pick<H, "key" | "label" | "options"> & { blank?: boolean }, ...TruncatedSelects<R>]
-          : [H, ...TruncatedSelects<R>]
-      : T;
+type BaseTaskSelect<T extends RollTaskSelects[number]> = Pick<T, "key" | "label" | "options">;
 
-type RollTaskTruncatedSelects = TruncatedSelects<RollTaskSelects>;
+type BaseAttributesTaskSelect = BaseTaskSelect<RollTaskSelects[0]>;
+type BaseDifficultyTaskSelect = BaseTaskSelect<RollTaskSelects[1]>;
+type BaseSkillTaskSelect = BaseTaskSelect<RollTaskSelects[2]>;
 
 type RollTaskSelect<K extends string, V extends string> = {
-    blank: string;
     disable: boolean;
     key: K;
     label: string;
@@ -42,6 +42,7 @@ type RollTaskData = {
     disable?: RollTaskSelectKey[];
     mode?: "private" | "public";
     select?: RollTaskSelected;
+    target?: number;
     title?: string;
 };
 
@@ -57,6 +58,9 @@ type RollTaskSelected = {
 };
 
 export type {
+    BaseAttributesTaskSelect,
+    BaseDifficultyTaskSelect,
+    BaseSkillTaskSelect,
     RollTaskApplicationConfiguration,
     RollTaskData,
     RollTaskRenderContext,
@@ -64,5 +68,6 @@ export type {
     RollTaskSelected,
     RollTaskSelectKey,
     RollTaskSelects,
-    RollTaskTruncatedSelects,
+    RollTaskType,
+    TaskModifier,
 };

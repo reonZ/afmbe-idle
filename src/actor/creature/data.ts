@@ -8,6 +8,7 @@ import {
     CreatureEndurance,
     CreatureEssence,
     CreatureLife,
+    CreatureModifier,
     CreatureSpeed,
     RollTaskApplication,
     RollTaskData,
@@ -17,6 +18,8 @@ class CreatureDataModel<
     TParent extends Creature = Creature,
     TSchema extends CreatureDataSchema = CreatureDataSchema,
 > extends ActorDataModel<TParent, TSchema> {
+    modifiers: CreatureModifier[] = [];
+
     static defineSchema(): CreatureDataSchema {
         return {
             ...super.defineSchema(),
