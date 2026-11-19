@@ -1,4 +1,5 @@
 import { ACTOR_CONFIG, ActorAFMBE } from "actor";
+import { CHAT_MESSAGE_CONFIG, ChatMessageAFMBE } from "chat";
 import handlebarsHelpers from "handlebars-helpers";
 import { ITEM_CONFIG, ItemAFMBE } from "item";
 import * as R from "remeda";
@@ -24,6 +25,11 @@ Hooks.once("init", () => {
             types: [type],
             makeDefault: true,
         });
+    }
+
+    CONFIG.ChatMessage.documentClass = ChatMessageAFMBE;
+    for (const { data, type } of CHAT_MESSAGE_CONFIG) {
+        CONFIG.ChatMessage.dataModels[type] = data;
     }
 
     game.afmbe = {

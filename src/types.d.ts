@@ -1,5 +1,6 @@
 import type Config from "@7h3laughingman/foundry-types/client/config.mjs";
 import type { ActorAFMBE } from "actor";
+import type { ChatMessageAFMBE } from "chat";
 import type { ItemAFMBE } from "item";
 import type { SceneAFMBE, TokenAFMBE, TokenDocumentAFMBE, UserAFMBE } from "misc";
 import type config from "./system-config";
@@ -10,7 +11,7 @@ type ConfiguredConfig = Config<
     ActorAFMBE,
     ActorDelta<TokenDocumentAFMBE>,
     foundry.applications.sidebar.tabs.ChatLog,
-    ChatMessage,
+    ChatMessageAFMBE,
     Combat,
     Combatant<Combat | null, TokenDocumentAFMBE | null>,
     foundry.applications.sidebar.tabs.CombatTracker<foundry.documents.Combat | null>,
@@ -31,7 +32,7 @@ type ConfiguredConfig = Config<
 type GameAFMBE = foundry.Game<
     ActorAFMBE<null>,
     foundry.documents.collections.Actors<ActorAFMBE<null>>,
-    ChatMessage,
+    ChatMessageAFMBE,
     Combat,
     ItemAFMBE<null>,
     Macro,

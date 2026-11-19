@@ -47,6 +47,9 @@
                 "htmlFields": []
             }
         },
+        "ChatMessage": {
+            "task": {}
+        },
         "Item": {
             "skill": {
                 "htmlFields": ["description"]

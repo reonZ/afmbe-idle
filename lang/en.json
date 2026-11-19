@@ -77,7 +77,7 @@
                     "difficulty": {
                         "difficult": "Difficult (x1)",
                         "simple": "Simple (x2)",
-                        "standard": "Standard",
+                        "standard": "Standard Task",
                         "title": "Difficulty"
                     },
                     "modifier": {
