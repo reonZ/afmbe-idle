@@ -1,4 +1,3 @@
-import { ChatMessageCreateOperation } from "@7h3laughingman/foundry-types/client/documents/chat-message.mjs";
 import type { UserAFMBE } from "misc";
 import { ChatMessageDataModel, ChatMessageSourceAFMBE } from ".";
 
@@ -11,17 +10,6 @@ class ChatMessageAFMBE<TUser extends UserAFMBE | null = UserAFMBE | null> extend
         }
 
         return html;
-    }
-
-    protected override _preCreate(
-        data: DeepPartial<this["_source"]>,
-        options: ChatMessageCreateOperation,
-        user: UserAFMBE,
-    ): Promise<boolean | void> {
-        if (data.system?.private === true) {
-            options.messageMode = "blind";
-        }
-        return super._preCreate(data, options, user);
     }
 }
 

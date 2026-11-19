@@ -1,14 +1,11 @@
 import type { ChatMessageAFMBE, ChatMessageDataShema } from ".";
-import { BooleanField } from "fields";
 
 abstract class ChatMessageDataModel<TSchema extends ChatMessageDataShema> extends foundry.abstract.TypeDataModel<
     ChatMessageAFMBE | null,
     TSchema
 > {
     static defineSchema(): ChatMessageDataShema {
-        return {
-            private: new BooleanField(),
-        };
+        return {};
     }
 
     abstract getHTML(html: HTMLElement): Promise<HTMLElement> | HTMLElement;

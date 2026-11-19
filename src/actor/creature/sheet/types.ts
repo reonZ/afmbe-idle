@@ -33,9 +33,9 @@ type CreatureSheetRenderContext = ActorSheetRenderContext & {
 
 type RollTaskTargetData = RollTaskSelected & {
     disable?: string;
-    hide?: string;
+    selectType?: string;
+    selectValue?: string;
     target?: string;
-    tooltip?: string;
 };
 
 export type {

@@ -49,9 +49,8 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
         this.actor.system.rollTask({
             disable: splitString(data.disable ?? ""),
             mode: event.ctrlKey ? "private" : "public",
-            select: R.omit(data, ["disable", "hide", "tooltip"]),
+            select: { type: data.selectType, value: data.selectValue },
             target: Number(data.target) || undefined,
-            title: data.tooltip,
         });
     }
 }

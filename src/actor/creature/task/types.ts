@@ -3,6 +3,8 @@ import type { FormSelectOption } from "@7h3laughingman/foundry-types/client/appl
 import type { ApplicationConfigurationAFMBE } from "handlebar-application";
 import type { Creature, CreatureAttributeType, CreatureModifier, CreatureModifierType } from "..";
 
+type RollTaskModifiers = CreatureModifier[] & { total: number };
+
 type TaskModifier = CreatureModifier & { active?: boolean };
 
 type RollTaskType = Exclude<CreatureModifierType, "all">;
@@ -41,9 +43,8 @@ type RollTaskSelectOption<V extends string = string> = Omit<FormSelectOption, "v
 type RollTaskData = {
     disable?: RollTaskSelectKey[];
     mode?: "private" | "public";
-    select?: RollTaskSelected;
+    select?: { type?: string; value?: string };
     target?: number;
-    title?: string;
 };
 
 type RollTaskApplicationConfiguration = ApplicationConfigurationAFMBE & {
@@ -63,6 +64,7 @@ export type {
     BaseSkillTaskSelect,
     RollTaskApplicationConfiguration,
     RollTaskData,
+    RollTaskModifiers,
     RollTaskRenderContext,
     RollTaskSelect,
     RollTaskSelected,

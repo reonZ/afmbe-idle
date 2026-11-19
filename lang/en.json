@@ -90,7 +90,8 @@
                     "private": "Make message private?",
                     "roll": {
                         "all": "Roll {name}",
-                        "task": "Roll {name} Task"
+                        "task": "Roll {name} Task",
+                        "test": "Roll {name} Test"
                     },
                     "title": "Roll Task/Test"
                 },
