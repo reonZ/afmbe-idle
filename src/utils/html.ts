@@ -4,4 +4,8 @@ function enrichHTML(content: string | null, options?: EnrichmentOptions): Promis
     return foundry.applications.ux.TextEditor.implementation.enrichHTML(content, options);
 }
 
-export { enrichHTML };
+function render(path: string, data?: object): Promise<string> {
+    return foundry.applications.handlebars.renderTemplate(path, data);
+}
+
+export { enrichHTML, render };

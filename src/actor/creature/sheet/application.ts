@@ -49,7 +49,8 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
         this.actor.system.rollTask({
             disable: splitString(data.disable ?? ""),
             mode: event.ctrlKey ? "private" : "public",
-            select: { type: data.selectType, value: data.selectValue },
+            origin: data.origin,
+            select: R.pick(data, ["attribute", "difficulty", "skill"]),
             target: Number(data.target) || undefined,
         });
     }

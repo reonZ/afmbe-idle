@@ -13,9 +13,9 @@
         <input type="number" class="value" value="{{attribute.value}}" disabled />
         <a
             data-action="roll-task"
-            data-select-type="attribute"
-            data-select-value="{{attribute.key}}"
+            data-attribute="{{attribute.key}}"
             data-disable="attribute"
+            data-origin="{{attribute.label}}"
             data-tooltip="{{localize 'afmbe.actor.creature.task.roll.all' name=attribute.label}}"
         >
             <i class="fa-solid fa-dice-d10"></i>

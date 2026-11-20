@@ -43,7 +43,8 @@ type RollTaskSelectOption<V extends string = string> = Omit<FormSelectOption, "v
 type RollTaskData = {
     disable?: RollTaskSelectKey[];
     mode?: "private" | "public";
-    select?: { type?: string; value?: string };
+    origin?: string;
+    select?: RollTaskSelected;
     target?: number;
 };
 

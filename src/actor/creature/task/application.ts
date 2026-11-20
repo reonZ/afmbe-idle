@@ -21,7 +21,7 @@ import {
     RollTaskType,
     TaskModifier,
 } from ".";
-import { Creature, CREATURE_ATTRIBUTES, CREATURE_MODIFIER_TYPES, CreatureAttributes, CreatureModifier } from "..";
+import { Creature, CREATURE_ATTRIBUTES, CREATURE_MODIFIER_TYPES, CreatureAttributes } from "..";
 
 const TEST_DIFFICULTIES = ["simple", "difficult"] as const;
 const UNTRAINED_RANGE = { max: -2, min: -10 };
@@ -32,11 +32,9 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
     #modifiers: Collection<string, TaskModifier>;
     #origin: string | undefined;
     #private: boolean;
-    #selected: RollTaskSelected = { attribute: CREATURE_ATTRIBUTES[0], difficulty: TEST_DIFFICULTIES[0], skill: "" };
+    #selected: RollTaskSelected;
     #target: number | undefined;
     #untrained: number = -2;
-
-    static TEMPLATE: string = "systems/afmbe-idle/templates/actor/creature/task.hbs";
 
     static DEFAULT_OPTIONS: DeepPartial<RollTaskApplicationConfiguration> = {
         classes: ["task"],
@@ -55,7 +53,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
             Omit<RollTaskApplicationConfiguration, keyof ApplicationConfigurationAFMBE>,
     ) {
         const actor = options.actor;
-        const { disable, mode, select = {}, target } = options.data;
+        const { disable, mode, origin, select = {}, target } = options.data;
 
         super(options);
 
@@ -67,19 +65,13 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
                 return [modifier.id, modifier] as const;
             }),
         );
+        this.#origin = origin;
         this.#private = mode === "private";
+        this.#selected = foundry.utils.mergeObject(
+            { attribute: CREATURE_ATTRIBUTES[0], difficulty: TEST_DIFFICULTIES[0], skill: "" },
+            R.isObjectType(select) ? foundry.utils.deepClone(select) : {},
+        );
         this.#target = target;
-
-        if (select.type === "skill" && R.isString(select.value)) {
-            const item = actor.items.get(select.value);
-            if (item?.isOfType("skill")) {
-                this.#origin = item.system.label;
-                this.#selected.skill = select.value;
-            }
-        } else if (select.type === "attribute" && R.isIncludedIn(select.value, CREATURE_ATTRIBUTES)) {
-            this.#origin = CreatureAttributes.getLabel(select.value);
-            this.#selected.attribute = select.value;
-        }
     }
 
     static addModifier(this: RollTaskApplication, _event: PointerEvent, target: HTMLElement) {
@@ -157,6 +149,10 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
 
     get rollType(): RollTaskType {
         return this.#selected.skill === "" ? "test" : "task";
+    }
+
+    get template(): string {
+        return "systems/afmbe-idle/templates/actor/creature/task.hbs";
     }
 
     _initializeApplicationOptions(options: RollTaskApplicationConfiguration): RollTaskApplicationConfiguration {
