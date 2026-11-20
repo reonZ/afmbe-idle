@@ -101,14 +101,11 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
     }
 
     static async rollTask(this: RollTaskApplication) {
-        const modifiers = this.modifierInstances;
-        const formula = modifiers.total !== 0 ? `1d10${signedNumber(modifiers.total)}` : "1d10";
-
         const data: PreCreateTaskMessageSource = {
-            rolls: [await new Roll(formula).evaluate()],
+            speaker: ChatMessage.implementation.getSpeaker({ actor: this.actor }),
             system: {
                 category: this.rollType,
-                modifiers,
+                modifiers: this.modifierInstances,
                 origin: this.#origin,
                 target: this.#target,
             },

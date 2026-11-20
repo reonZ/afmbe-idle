@@ -5,12 +5,13 @@ import type {
     SchemaField,
     StringField,
 } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
-import type { Rolled } from "@7h3laughingman/foundry-types/client/dice/roll.mjs";
 import type { CreatureModifierSchema, CreatureTaskCategory } from "actor";
-import type { ChatMessageDataShema, ChatMessageSourceAFMBE } from "chat";
+import type { ChatMessageAFMBE, ChatMessageDataShema, ChatMessageSourceAFMBE, TaskMessageDataModel } from "chat";
+import type { PositiveIntegerField } from "fields";
 
 type TaskMessageDataSchema = ChatMessageDataShema & {
     category: StringField<CreatureTaskCategory, CreatureTaskCategory, true, false, false>;
+    die: PositiveIntegerField;
     modifiers: ArrayField<SchemaField<CreatureModifierSchema>>;
     origin: StringField<string, string, false, true, false>;
     target: NumberField<number, number, false, true, false>;
@@ -24,9 +25,20 @@ type TaskMessageContext = {
     header: string;
 };
 
-type PreCreateTaskMessageSource = DeepPartial<Omit<TaskMessageSource, "rolls" | "system" | "type">> &
-    Pick<TaskMessageSource, "system" | "type"> & {
-        rolls: [string | Rolled<Roll>];
-    };
+type PreCreateTaskMessageSource = DeepPartial<Omit<TaskMessageSource, "rolls" | "system" | "type">> & {
+    system: WithPartial<TaskMessageDataSource, "die">;
+    type: "task";
+};
 
-export type { PreCreateTaskMessageSource, TaskMessageContext, TaskMessageDataSchema, TaskMessageDataSource };
+declare class TaskChatMessage extends ChatMessageAFMBE {
+    system: TaskMessageDataModel;
+}
+
+export type {
+    PreCreateTaskMessageSource,
+    TaskChatMessage,
+    TaskMessageContext,
+    TaskMessageDataSchema,
+    TaskMessageDataSource,
+    TaskMessageSource,
+};
