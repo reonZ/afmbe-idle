@@ -20,9 +20,13 @@ type TaskMessageDataSource = ModelPropsFromSchema<TaskMessageDataSchema>;
 
 type TaskMessageSource = ChatMessageSourceAFMBE<"task", TaskMessageDataSource>;
 
+type TaskMessageContext = {
+    header: string;
+};
+
 type PreCreateTaskMessageSource = DeepPartial<Omit<TaskMessageSource, "rolls" | "system" | "type">> &
     Pick<TaskMessageSource, "system" | "type"> & {
         rolls: [string | Rolled<Roll>];
     };
 
-export type { PreCreateTaskMessageSource, TaskMessageDataSchema, TaskMessageDataSource };
+export type { PreCreateTaskMessageSource, TaskMessageContext, TaskMessageDataSchema, TaskMessageDataSource };

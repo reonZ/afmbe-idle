@@ -8,6 +8,10 @@ class CreatureAttributes<TParent extends Creature = Creature> extends ActorModul
         return localize("afmbe.actor.creature.attributes", key, "label");
     }
 
+    static isAttributeType(key: Maybe<string>): key is CreatureAttributeType {
+        return R.isIncludedIn(key, CREATURE_ATTRIBUTES);
+    }
+
     _initialize(): void {
         for (const key of CREATURE_ATTRIBUTES) {
             this[key] = 0;

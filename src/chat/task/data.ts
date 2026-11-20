@@ -1,7 +1,7 @@
 import { CREATURE_MODIFIER_TYPES, CREATURE_TASK_CATEGORIES, CreatureAttributes } from "actor";
 import { ChatMessageDataModel } from "chat";
 import { localize } from "utils";
-import { TaskMessageDataSchema, TaskMessageDataSource } from ".";
+import { TaskMessageContext, TaskMessageDataSchema, TaskMessageDataSource } from ".";
 import fields = foundry.data.fields;
 
 class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
@@ -55,19 +55,16 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
         };
     }
 
-    async getHTML(html: HTMLElement): Promise<HTMLElement> {
+    get template(): string {
+        return "systems/afmbe-idle/templates/message/task.hbs";
+    }
+
+    async prepareContext(): Promise<TaskMessageContext> {
         const header = CreatureAttributes.isAttributeType(this.origin)
             ? CreatureAttributes.getLabel(this.origin)
             : localize("afmbe.actor.creature.task.roll", this.category, { name: this.origin });
 
-        const content = html.querySelector(".message-content") as HTMLElement;
-        const template = await foundry.applications.handlebars.renderTemplate(
-            "systems/afmbe-idle/templates/message/task.hbs",
-            { header },
-        );
-
-        content.insertAdjacentHTML("afterbegin", template);
-        return html;
+        return { header };
     }
 }
 
