@@ -1,4 +1,4 @@
-import { CREATURE_MODIFIER_TYPES, CREATURE_TASK_CATEGORIES } from "actor";
+import { CREATURE_MODIFIER_TYPES, CREATURE_TASK_CATEGORIES, CreatureAttributes } from "actor";
 import { ChatMessageDataModel } from "chat";
 import { localize } from "utils";
 import { TaskMessageDataSchema, TaskMessageDataSource } from ".";
@@ -56,7 +56,10 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
     }
 
     async getHTML(html: HTMLElement): Promise<HTMLElement> {
-        const header = localize("afmbe.actor.creature.task.roll", this.category, { name: this.origin });
+        const header = CreatureAttributes.isAttributeType(this.origin)
+            ? CreatureAttributes.getLabel(this.origin)
+            : localize("afmbe.actor.creature.task.roll", this.category, { name: this.origin });
+
         const content = html.querySelector(".message-content") as HTMLElement;
         const template = await foundry.applications.handlebars.renderTemplate(
             "systems/afmbe-idle/templates/message/task.hbs",

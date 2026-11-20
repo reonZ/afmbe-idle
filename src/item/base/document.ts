@@ -162,30 +162,9 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
         return super.deleteDocuments(ids, operation as DatabaseDeleteOperation<ActorAFMBE | null>);
     }
 
-    /** the ids of all the parents and this items' */
+    /** the id chain for actor.items.get */
     get chainId(): string {
-        const ids: string[] = [];
-        let cursor: Maybe<ItemAFMBE> = this;
-
-        while ((cursor = cursor.parentItem)) {
-            ids.push(cursor.id);
-        }
-
-        ids.push(this.id);
-
-        return R.join(ids, ".");
-    }
-
-    /** the depth index of this sub item, 0 if not a sub item */
-    get chainDepth(): number {
-        let depth = 0;
-        let cursor: Maybe<ItemAFMBE> = this;
-
-        while ((cursor = cursor.parentItem)) {
-            depth++;
-        }
-
-        return depth;
+        return this.parentItem ? `${this.parentItem.chainId}.${this.id}` : this.id;
     }
 
     get defaultArtwork(): { img: ImageFilePath } {
