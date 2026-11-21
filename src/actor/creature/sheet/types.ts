@@ -33,7 +33,6 @@ type CreatureSheetRenderContext = ActorSheetRenderContext & {
 
 type RollTaskTargetData = RollTaskSelected & {
     disable?: string;
-    origin?: string;
     target?: string;
 };
 

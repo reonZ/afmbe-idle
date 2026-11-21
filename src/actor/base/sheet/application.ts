@@ -11,11 +11,11 @@ abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends 
         classes: ["actor"],
         position: { height: 500, width: 550 },
         actions: {
-            "add-item": this.addItem,
+            "add-item": this.#addItem,
         },
     };
 
-    static async addItem(this: ActorSheetAFMBE, _event: PointerEvent, target: HTMLElement) {
+    static async #addItem(this: ActorSheetAFMBE, _event: PointerEvent, target: HTMLElement) {
         const type = target.dataset.itemType;
         if (!ItemAFMBE.isItemType(type)) return;
 

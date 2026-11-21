@@ -7,13 +7,12 @@ import type {
 } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
 import type { CreatureModifierSchema, CreatureTaskCategory } from "actor";
 import type { ChatMessageAFMBE, ChatMessageDataShema, ChatMessageSourceAFMBE, TaskMessageDataModel } from "chat";
-import type { PositiveIntegerField } from "fields";
+
+type TaskMessageModifierSchema = Pick<CreatureModifierSchema, "label" | "origin" | "value">;
 
 type TaskMessageDataSchema = ChatMessageDataShema & {
     category: StringField<CreatureTaskCategory, CreatureTaskCategory, true, false, false>;
-    die: PositiveIntegerField;
-    modifiers: ArrayField<SchemaField<CreatureModifierSchema>>;
-    origin: StringField<string, string, false, true, false>;
+    modifiers: ArrayField<SchemaField<TaskMessageModifierSchema>>;
     target: NumberField<number, number, false, true, false>;
 };
 
@@ -26,7 +25,7 @@ type TaskMessageContext = {
 };
 
 type PreCreateTaskMessageSource = DeepPartial<Omit<TaskMessageSource, "rolls" | "system" | "type">> & {
-    system: WithPartial<TaskMessageDataSource, "die">;
+    system: TaskMessageDataSource;
     type: "task";
 };
 

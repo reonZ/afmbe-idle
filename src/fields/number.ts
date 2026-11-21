@@ -1,11 +1,12 @@
 import fields = foundry.data.fields;
 
-class PositiveIntegerField extends fields.NumberField<number, number, true, false, true> {
-    constructor({ min = 0 }: { min?: number } = {}) {
+class PositiveIntegerField<T extends number = number> extends fields.NumberField<T, T, true, false, true> {
+    constructor({ max, min = 0 as T }: { max?: T; min?: T } = {}) {
         super({
             required: true,
             nullable: false,
             integer: true,
+            max,
             min,
             initial: min,
         });

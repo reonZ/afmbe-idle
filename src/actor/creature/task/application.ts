@@ -2,7 +2,7 @@ import {
     ApplicationClosingOptions,
     ApplicationRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
-import { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
+import { Rolled } from "@7h3laughingman/foundry-types/client/dice/roll.mjs";
 import { PreCreateTaskMessageSource } from "chat";
 import { ApplicationAFMBE, ApplicationConfigurationAFMBE } from "handlebar-application";
 import * as R from "remeda";
@@ -13,15 +13,13 @@ import {
     BaseSkillTaskSelect,
     RollTaskApplicationConfiguration,
     RollTaskData,
-    RollTaskModifiers,
     RollTaskRenderContext,
     RollTaskSelected,
     RollTaskSelectKey,
     RollTaskSelects,
     RollTaskType,
-    TaskModifier,
 } from ".";
-import { Creature, CREATURE_ATTRIBUTES, CREATURE_MODIFIER_TYPES, CreatureAttributes } from "..";
+import { Creature, CREATURE_ATTRIBUTES, CREATURE_MODIFIER_TYPES, CreatureAttributes, CreatureModifier } from "..";
 
 const TEST_DIFFICULTIES = ["simple", "difficult"] as const;
 const UNTRAINED_RANGE = { max: -2, min: -10 };
@@ -29,8 +27,7 @@ const UNTRAINED_RANGE = { max: -2, min: -10 };
 class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfiguration> {
     #actor: Creature;
     #disable: RollTaskSelectKey[];
-    #modifiers: Collection<string, TaskModifier>;
-    #origin: string | undefined;
+    #modifiers: CreatureModifier[];
     #private: boolean;
     #selected: RollTaskSelected;
     #target: number | undefined;
@@ -40,10 +37,10 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         classes: ["task"],
         position: { height: 450, width: 600 },
         actions: {
-            "add-modifier": this.addModifier,
-            "cancel-roll": this.cancelRoll,
-            "roll-task": this.rollTask,
-            "toggle-modifier": this.toggleModifier,
+            "add-modifier": this.#addModifier,
+            "cancel-roll": this.#cancelRoll,
+            "roll-task": this.#rollTask,
+            "toggle-modifier": this.#toggleModifier,
         },
         scrollable: [".panel.right"],
     };
@@ -53,36 +50,32 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
             Omit<RollTaskApplicationConfiguration, keyof ApplicationConfigurationAFMBE>,
     ) {
         const actor = options.actor;
-        const { disable, mode, origin, select = {}, target } = options.data;
+        const { disable, mode, select = {}, target } = options.data;
 
         super(options);
 
         this.#actor = actor;
         this.#disable = R.isArray(disable) ? disable.slice() : [];
-        this.#modifiers = new Collection(
-            R.map(actor.system.modifiers, (modifier) => {
-                modifier.type = R.isIncludedIn(modifier.type, CREATURE_MODIFIER_TYPES) ? modifier.type : "all";
-                return [modifier.id, modifier] as const;
-            }),
-        );
-        this.#origin = origin;
+        this.#modifiers = R.map(actor.system.modifiers, (modifier) => {
+            const type = R.isIncludedIn(modifier.type, CREATURE_MODIFIER_TYPES) ? modifier.type : "all";
+            return { ...modifier, type };
+        });
         this.#private = mode === "private";
         this.#selected = foundry.utils.mergeObject(
-            { attribute: CREATURE_ATTRIBUTES[0], difficulty: TEST_DIFFICULTIES[0], skill: "" },
+            { attribute: CREATURE_ATTRIBUTES[0], difficulty: TEST_DIFFICULTIES[0], skill: "" } as const,
             R.isObjectType(select) ? foundry.utils.deepClone(select) : {},
         );
         this.#target = target;
     }
 
-    static addModifier(this: RollTaskApplication, _event: PointerEvent, target: HTMLElement) {
-        const id = foundry.utils.randomID();
+    static #addModifier(this: RollTaskApplication, _event: PointerEvent, target: HTMLElement) {
         const value = target.previousElementSibling as HTMLInputElement;
         const label = value.previousElementSibling as HTMLInputElement;
 
-        this.#modifiers.set(id, {
+        this.#modifiers.push({
             active: true,
-            id,
             label: label.value.trim() || localize("afmbe.actor.creature.task.modifier.name"),
+            origin: null,
             type: "all",
             value: value.valueAsNumber || 1,
         });
@@ -90,7 +83,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         this.render();
     }
 
-    static cancelRoll(this: RollTaskApplication) {
+    static #cancelRoll(this: RollTaskApplication) {
         this.close();
     }
 
@@ -100,13 +93,62 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         return app;
     }
 
-    static async rollTask(this: RollTaskApplication) {
+    static async rollTaskDie(): Promise<Rolled<Roll>> {
+        return new Roll("1d10").evaluate();
+    }
+
+    static async rollTaskDice(): Promise<Rolled<Roll>[]> {
+        const roll = await this.rollTaskDie();
+
+        if (roll.total === 1) {
+            return this.ruleOfOne([roll]);
+        }
+
+        if (roll.total === 10) {
+            return this.ruleOfTen([roll]);
+        }
+
+        return [roll];
+    }
+
+    static async ruleOfOne(rolls: Rolled<Roll>[]): Promise<Rolled<Roll>[]> {
+        const roll = await this.rollTaskDie();
+
+        rolls.push(roll);
+
+        if (roll.total >= 5) {
+            return rolls;
+        }
+
+        if (roll.total === 1) {
+            return this.ruleOfOne(rolls);
+        }
+
+        return rolls;
+    }
+
+    static async ruleOfTen(rolls: Rolled<Roll>[]): Promise<Rolled<Roll>[]> {
+        const roll = await this.rollTaskDie();
+
+        rolls.push(roll);
+
+        if (roll.total <= 5) {
+            return rolls;
+        }
+
+        if (roll.total === 10) {
+            return this.ruleOfTen(rolls);
+        }
+
+        return rolls;
+    }
+
+    static async #rollTask(this: RollTaskApplication) {
         const data: PreCreateTaskMessageSource = {
             speaker: ChatMessage.implementation.getSpeaker({ actor: this.actor }),
             system: {
                 category: this.rollType,
                 modifiers: this.modifierInstances,
-                origin: this.#origin,
                 target: this.#target,
             },
             type: "task",
@@ -116,11 +158,11 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         this.close();
     }
 
-    static toggleModifier(this: RollTaskApplication, _event: PointerEvent, target: HTMLElement) {
-        const id = target.closest<HTMLElement>("[data-id]")?.dataset.id;
-        if (!id) return;
+    static #toggleModifier(this: RollTaskApplication, _event: PointerEvent, target: HTMLElement) {
+        const index = Number(target.dataset.index);
+        if (isNaN(index)) return;
 
-        const modifier = this.#modifiers.find((modifier) => modifier.id === id);
+        const modifier = this.#modifiers[index];
 
         if (modifier) {
             modifier.active = !modifier.active;
@@ -192,7 +234,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
                 const specialties = skill.system.deepSpecialties;
                 const group = specialties.length ? skill.name : undefined;
 
-                return R.map([skill, ...specialties], ({ chainId, name, system }): FormSelectOption => {
+                return R.map([skill, ...specialties], ({ chainId, name, system }) => {
                     return { group, label: `${name} (${system.modifier})`, value: chainId };
                 });
             }),
@@ -210,23 +252,25 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         };
     }
 
-    get modifierInstances(): RollTaskModifiers {
+    get modifierInstances(): CreatureModifier[] {
         const rollType = this.rollType;
         const { attribute, difficulty, skill } = this.#selected;
 
-        const modifiers = [
+        const modifiers: CreatureModifier[] = [
             {
-                id: "attribute",
+                active: true,
                 label: CreatureAttributes.getLabel(attribute),
+                origin: null,
                 type: "all",
                 value: this.actor.system.attributes[attribute] * (this.isTask ? 1 : difficulty === "simple" ? 2 : 1),
             },
-        ] as RollTaskModifiers;
+        ];
 
         if (skill === "untrained") {
             modifiers.push({
-                id: "skill",
+                active: true,
                 label: localize("afmbe.item.skill.untrained.label"),
+                origin: null,
                 type: "task",
                 value: this.#untrained,
             });
@@ -235,8 +279,9 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
 
             if (actorSkill?.isOfType("skill")) {
                 modifiers.push({
-                    id: "skill",
+                    active: true,
                     label: actorSkill.system.label,
+                    origin: actorSkill.uuid,
                     type: "task",
                     value: actorSkill.system.bonus,
                 });
@@ -247,8 +292,6 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
             if (!modifier.active || (modifier.type !== "all" && modifier.type !== rollType)) continue;
             modifiers.push(modifier);
         }
-
-        modifiers.total = R.sumBy(modifiers, R.prop("value"));
 
         return modifiers;
     }
@@ -273,7 +316,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
             selects,
             private: this.#private,
             rollType: this.rollType,
-            total: signedNumber(this.modifierInstances.total),
+            total: signedNumber(R.sumBy(this.modifierInstances, R.prop("value"))),
             untrained: this.isUntrained ? { ...UNTRAINED_RANGE, value: this.#untrained } : null,
         };
     }

@@ -1,11 +1,12 @@
 import type {
+    DocumentUUIDField,
     ModelPropsFromSchema,
     NumberField,
     SourceFromSchema,
     StringField,
 } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
 import type { ActorAFMBE, ActorDataSchema, CharacterSource, ZombieSource } from "actor";
-import type { PositiveIntergerValueField } from "fields";
+import type { BooleanField, PositiveIntergerValueField } from "fields";
 import type { TokenDocumentAFMBE } from "misc";
 import type {
     CREATURE_ATTRIBUTES,
@@ -14,13 +15,15 @@ import type {
     CREATURE_TASK_CATEGORIES,
     CreatureDataModel,
 } from ".";
+import { ItemUUID } from "@7h3laughingman/foundry-types/common/documents/_module.mjs";
 
 type CreatureTaskCategory = (typeof CREATURE_TASK_CATEGORIES)[number];
 type CreatureModifierType = (typeof CREATURE_MODIFIER_TYPES)[number];
 
 type CreatureModifierSchema = {
-    id: StringField<string, string, true, false, false>;
+    active: BooleanField;
     label: StringField<string, string, true, false, false>;
+    origin: DocumentUUIDField<ItemUUID>;
     value: NumberField<number, number, true, false, false>;
     type: StringField<CreatureModifierType, CreatureModifierType, true, false, true>;
 };

@@ -37,7 +37,7 @@
                 {{modifier.label}}
             </div>
             <input type="text" class="modifier" value="{{signedNumber modifier.value}}" disabled />
-            <a data-action="toggle-modifier" data-id="{{modifier.id}}" data-tooltip="afmbe.actor.creature.task.modifier.toggle">
+            <a data-action="toggle-modifier" data-index="{{@index}}" data-tooltip="afmbe.actor.creature.task.modifier.toggle">
                 <i class="fa-solid fa-toggle-{{ifThen modifier.active 'large-on' 'off'}}"></i>
             </a>
             {{/each}}
