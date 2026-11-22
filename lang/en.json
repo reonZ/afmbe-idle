@@ -125,6 +125,18 @@
                     "label": "Untrained"
                 }
             }
+        },
+        "message": {
+            "task": {
+                "header": {
+                    "default": "Roll Task/Test",
+                    "task": "Roll Task",
+                    "test": {
+                        "difficult": "Roll Difficult Test",
+                        "simple": "Roll Simple Test"
+                    }
+                }
+            }
         }
     }
 }

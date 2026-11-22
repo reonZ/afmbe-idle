@@ -8,4 +8,6 @@ type TaskDieResult = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 type EvaluatedTaskRolls = TupleOf<Rolled<TaskRoll>>;
 
-export type { EvaluatedTaskRolls, TaskDieResult, TaskRollType };
+type ResolvedTaskRolls = { strikeLast: boolean; value: number };
+
+export type { EvaluatedTaskRolls, ResolvedTaskRolls, TaskDieResult, TaskRollType };

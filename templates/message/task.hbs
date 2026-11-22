@@ -1,3 +1,21 @@
-<div>
+<div class="header">
     {{header}}
+</div>
+<div class="task-dice">
+    {{#each rolls as |roll|}}
+    <div class="task-die">
+        <i class="fa-thin fa-dice-d10 die"></i>
+        <div class="die-value">
+            {{roll.total}}
+        </div>
+        {{#if (and @last ../resolved.strikeLast)}}
+        <i class="fa-solid fa-slash strike"></i>
+        {{/if}}
+    </div>
+    {{/each}}
+    <div class="modifier">
+        <div class="modifier-value">
+            {{signedNumber resolved.value}}
+        </div>
+    </div>
 </div>

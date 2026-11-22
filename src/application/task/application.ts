@@ -17,11 +17,10 @@ import {
     TaskApplicationSelected,
     TaskApplicationSelectKey,
     TaskApplicationSelects,
+    TEST_DIFFICULTIES,
+    UNTRAINED_RANGE,
 } from ".";
 import { ApplicationAFMBE, ApplicationConfigurationAFMBE } from "..";
-
-const TEST_DIFFICULTIES = ["simple", "difficult"] as const;
-const UNTRAINED_RANGE = { max: -2, min: -10 };
 
 class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
     #actor: Creature;

@@ -1,0 +1,48 @@
+.chat-message.message.afmbe.task .message-content {
+    --die-strike-color: #c91717;
+
+    .task-dice {
+        display: flex;
+        align-items: center;
+        font-size: 1.2em;
+
+        .task-die {
+            display: grid;
+            justify-items: center;
+            align-items: center;
+
+            > * {
+                grid-column: 1;
+                grid-row: 1;
+            }
+
+            .die {
+                font-size: 1.25em;
+                opacity: 0.4;
+            }
+
+            .die-value {
+                font-weight: bold;
+            }
+
+            .strike {
+                color: var(--die-strike-color);
+            }
+        }
+
+        .modifier {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+
+            .modifier-value {
+                padding: 1px 0.3rem;
+                width: fit-content;
+                background: rgba(0, 0, 0, 0.1);
+                border: 1px solid #999;
+                border-radius: 3px;
+                box-shadow: 0 0 2px #fff inset;
+            }
+        }
+    }
+}

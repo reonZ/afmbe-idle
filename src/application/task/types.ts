@@ -2,7 +2,7 @@ import type { ApplicationRenderContext } from "@7h3laughingman/foundry-types/cli
 import type { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 import type { Creature, CreatureAttributeType, CreatureModifier } from "actor";
 import type { TaskRollType } from "roll";
-import type { ApplicationConfigurationAFMBE } from "..";
+import type { ApplicationConfigurationAFMBE, TEST_DIFFICULTIES } from "..";
 
 type TaskApplicationRenderContext = ApplicationRenderContext & {
     modifiers: CreatureModifier[];
@@ -13,9 +13,11 @@ type TaskApplicationRenderContext = ApplicationRenderContext & {
     untrained: { max: number; min: number; value: number } | null;
 };
 
+type TestDifficulty = (typeof TEST_DIFFICULTIES)[number];
+
 type TaskApplicationSelects = [
     TaskApplicationSelect<"attribute", CreatureAttributeType>,
-    TaskApplicationSelect<"difficulty", "difficult" | "simple" | "standard">,
+    TaskApplicationSelect<"difficulty", TestDifficulty | "standard">,
     TaskApplicationSelect<"skill", "" | "untrained" | (string & {})>,
 ];
 
@@ -62,4 +64,5 @@ export type {
     TaskApplicationSelected,
     TaskApplicationSelectKey,
     TaskApplicationSelects,
+    TestDifficulty,
 };

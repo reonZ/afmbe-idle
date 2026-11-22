@@ -8,6 +8,10 @@ abstract class ChatMessageDataModel<TSchema extends ChatMessageDataShema> extend
         return {};
     }
 
+    get classes(): string[] {
+        return [];
+    }
+
     abstract get template(): string;
 
     abstract prepareContext(): Promise<Record<string, any>>;

@@ -1,8 +1,9 @@
 import { Rolled } from "@7h3laughingman/foundry-types/client/dice/roll.mjs";
 import { DatabaseCreateCallbackOptions } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
 import { CREATURE_TASK_CATEGORIES } from "actor";
+import { TEST_DIFFICULTIES } from "application";
 import { UserAFMBE } from "misc";
-import { EvaluatedTaskRolls, TaskDieResult, TaskRoll } from "roll";
+import { EvaluatedTaskRolls, ResolvedTaskRolls, TaskRoll } from "roll";
 import { localize } from "utils";
 import {
     TaskChatMessage,
@@ -19,10 +20,18 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
         return {
             ...super.defineSchema(),
             category: new fields.StringField({
-                required: true,
-                nullable: false,
+                required: false,
+                nullable: true,
                 blank: false,
+                initial: undefined,
                 choices: CREATURE_TASK_CATEGORIES,
+            }),
+            difficulty: new fields.StringField({
+                required: false,
+                nullable: true,
+                blank: false,
+                initial: undefined,
+                choices: TEST_DIFFICULTIES,
             }),
             modifiers: new fields.ArrayField(
                 new fields.SchemaField({
@@ -56,6 +65,18 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
         return this.rolls[0];
     }
 
+    get classes(): string[] {
+        return ["task"];
+    }
+
+    get isTask(): boolean {
+        return this.category === "task";
+    }
+
+    get isTest(): boolean {
+        return this.category === "test";
+    }
+
     get rolls(): EvaluatedTaskRolls {
         return this.parent.rolls as EvaluatedTaskRolls;
     }
@@ -65,18 +86,19 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
     }
 
     async prepareContext(): Promise<TaskMessageContext> {
-        const header = localize("afmbe.actor.creature.task.roll", this.category);
-        return { header };
+        const header = this.isTest
+            ? localize("afmbe.message.task.header.test", this.difficulty ?? "")
+            : localize("afmbe.message.task.header", this.category ?? "default");
+
+        return {
+            header,
+            resolved: this.resolveRolls(),
+            rolls: this.rolls,
+        };
     }
 
-    evaluateRolls(): TaskDieResult {
-        if (this.baseRoll.isOne) {
-        }
-
-        if (this.baseRoll.isTen) {
-        }
-
-        return this.baseRoll.total;
+    resolveRolls(): ResolvedTaskRolls {
+        return TaskRoll.resolveRolls(this.rolls);
     }
 
     async _preCreate(
