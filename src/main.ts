@@ -1,8 +1,9 @@
 import { ACTOR_CONFIG, ActorAFMBE } from "actor";
-import { CHAT_MESSAGE_CONFIG, ChatMessageAFMBE } from "chat";
+import { ChatMessageAFMBE, TaskMessageDataModel } from "chat-message";
 import handlebarsHelpers from "handlebars-helpers";
 import { ITEM_CONFIG, ItemAFMBE } from "item";
 import * as R from "remeda";
+import { TaskRoll } from "roll";
 import { registerSettings } from "settings";
 import config from "system-config";
 
@@ -28,12 +29,13 @@ Hooks.once("init", () => {
     }
 
     CONFIG.ChatMessage.documentClass = ChatMessageAFMBE;
-    for (const { data, type } of CHAT_MESSAGE_CONFIG) {
-        CONFIG.ChatMessage.dataModels[type] = data;
-    }
+    CONFIG.ChatMessage.dataModels.task = TaskMessageDataModel;
+
+    CONFIG.Dice.rolls.push(TaskRoll);
 
     game.afmbe = {
         settings: {} as typeof game.afmbe.settings,
+        TaskRoll: TaskRoll,
     };
 
     Handlebars.registerHelper(handlebarsHelpers);

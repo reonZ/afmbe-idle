@@ -1,9 +1,10 @@
 import type Config from "@7h3laughingman/foundry-types/client/config.mjs";
 import type { ActorAFMBE } from "actor";
-import type { ChatMessageAFMBE } from "chat";
+import type { ChatMessageAFMBE } from "chat-message";
 import type { ItemAFMBE } from "item";
 import type { SceneAFMBE, TokenAFMBE, TokenDocumentAFMBE, UserAFMBE } from "misc";
 import type config from "./system-config";
+import type { TaskRoll } from "task";
 
 type ConfiguredConfig = Config<
     AmbientLightDocument<SceneAFMBE | null>,
@@ -43,6 +44,7 @@ type GameAFMBE = foundry.Game<
         settings: {
             metric: boolean;
         };
+        TaskRoll: typeof TaskRoll;
     };
 };
 

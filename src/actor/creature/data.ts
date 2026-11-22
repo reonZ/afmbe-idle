@@ -10,9 +10,8 @@ import {
     CreatureLife,
     CreatureModifier,
     CreatureSpeed,
-    RollTaskApplication,
-    RollTaskData,
 } from ".";
+import { TaskApplication, TaskApplicationData } from "application";
 
 class CreatureDataModel<
     TParent extends Creature = Creature,
@@ -39,8 +38,8 @@ class CreatureDataModel<
         this.speed = new CreatureSpeed(this.parent);
     }
 
-    rollTask(options?: RollTaskData): RollTaskApplication {
-        return RollTaskApplication.create(this.parent, options);
+    rollTask(options?: TaskApplicationData): TaskApplication {
+        return TaskApplication.create(this.parent, options);
     }
 }
 

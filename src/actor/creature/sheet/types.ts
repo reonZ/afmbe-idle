@@ -6,8 +6,8 @@ import type {
     CreatureAttributeType,
     CreatureSecondaryType,
     CreatureSpeed,
-    RollTaskSelected,
 } from "actor";
+import { TaskApplicationSelected } from "application";
 
 type CreatureSheetPart = ActorSheetPart | "attributes";
 
@@ -31,7 +31,7 @@ type CreatureSheetRenderContext = ActorSheetRenderContext & {
     name?: string;
 };
 
-type RollTaskTargetData = RollTaskSelected & {
+type RollTaskTargetData = TaskApplicationSelected & {
     disable?: string;
     target?: string;
 };

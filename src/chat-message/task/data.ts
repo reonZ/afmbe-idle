@@ -1,6 +1,6 @@
 import { DatabaseCreateCallbackOptions } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
-import { CREATURE_TASK_CATEGORIES, RollTaskApplication } from "actor";
-import { ChatMessageDataModel } from "chat";
+import { CREATURE_TASK_CATEGORIES } from "actor";
+import { ChatMessageDataModel } from "chat-message";
 import { UserAFMBE } from "misc";
 import { localize } from "utils";
 import {
@@ -11,6 +11,7 @@ import {
     TaskMessageSource,
 } from ".";
 import fields = foundry.data.fields;
+import { TaskApplication } from "application";
 
 class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
     static defineSchema(): TaskMessageDataSchema {
@@ -71,7 +72,7 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
         }
 
         if (!data.rolls?.length) {
-            updates.rolls = await RollTaskApplication.rollTaskDice();
+            updates.rolls = await TaskApplication.rollTaskDice();
         }
 
         this.parent.updateSource(updates);

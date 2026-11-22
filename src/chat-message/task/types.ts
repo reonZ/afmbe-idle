@@ -6,7 +6,8 @@ import type {
     StringField,
 } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
 import type { CreatureModifierSchema, CreatureTaskCategory } from "actor";
-import type { ChatMessageAFMBE, ChatMessageDataShema, ChatMessageSourceAFMBE, TaskMessageDataModel } from "chat";
+import type { ChatMessageAFMBE, ChatMessageDataShema, ChatMessageSourceAFMBE } from "chat-message";
+import type { TaskMessageDataModel } from ".";
 
 type TaskMessageModifierSchema = Pick<CreatureModifierSchema, "label" | "origin" | "value">;
 

@@ -3,37 +3,37 @@ import {
     ApplicationRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
 import { Rolled } from "@7h3laughingman/foundry-types/client/dice/roll.mjs";
-import { PreCreateTaskMessageSource } from "chat";
-import { ApplicationAFMBE, ApplicationConfigurationAFMBE } from "handlebar-application";
+import { Creature, CREATURE_ATTRIBUTES, CREATURE_MODIFIER_TYPES, CreatureAttributes, CreatureModifier } from "actor";
+import { ApplicationAFMBE, ApplicationConfigurationAFMBE } from "handlebars-application";
 import * as R from "remeda";
 import { localize, signedNumber } from "utils";
 import {
-    BaseAttributesTaskSelect,
-    BaseDifficultyTaskSelect,
-    BaseSkillTaskSelect,
-    RollTaskApplicationConfiguration,
-    RollTaskData,
-    RollTaskRenderContext,
-    RollTaskSelected,
-    RollTaskSelectKey,
-    RollTaskSelects,
-    RollTaskType,
+    BaseTaskApplicationAttributesSelect,
+    BaseTaskApplicationDifficultySelect,
+    BaseTaskApplicationSkillSelect,
+    TaskApplicationConfiguration,
+    TaskApplicationData,
+    TaskApplicationRenderContext,
+    TaskApplicationSelected,
+    TaskApplicationSelectKey,
+    TaskApplicationSelects,
 } from ".";
-import { Creature, CREATURE_ATTRIBUTES, CREATURE_MODIFIER_TYPES, CreatureAttributes, CreatureModifier } from "..";
+import { PreCreateTaskMessageSource } from "chat-message";
+import { TaskRollType } from "roll";
 
 const TEST_DIFFICULTIES = ["simple", "difficult"] as const;
 const UNTRAINED_RANGE = { max: -2, min: -10 };
 
-class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfiguration> {
+class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
     #actor: Creature;
-    #disable: RollTaskSelectKey[];
+    #disable: TaskApplicationSelectKey[];
     #modifiers: CreatureModifier[];
     #private: boolean;
-    #selected: RollTaskSelected;
+    #selected: TaskApplicationSelected;
     #target: number | undefined;
     #untrained: number = -2;
 
-    static DEFAULT_OPTIONS: DeepPartial<RollTaskApplicationConfiguration> = {
+    static DEFAULT_OPTIONS: DeepPartial<TaskApplicationConfiguration> = {
         classes: ["task"],
         position: { height: 450, width: 600 },
         actions: {
@@ -47,7 +47,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
 
     constructor(
         options: DeepPartial<ApplicationConfigurationAFMBE> &
-            Omit<RollTaskApplicationConfiguration, keyof ApplicationConfigurationAFMBE>,
+            Omit<TaskApplicationConfiguration, keyof ApplicationConfigurationAFMBE>,
     ) {
         const actor = options.actor;
         const { disable, mode, select = {}, target } = options.data;
@@ -68,7 +68,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         this.#target = target;
     }
 
-    static #addModifier(this: RollTaskApplication, _event: PointerEvent, target: HTMLElement) {
+    static #addModifier(this: TaskApplication, _event: PointerEvent, target: HTMLElement) {
         const value = target.previousElementSibling as HTMLInputElement;
         const label = value.previousElementSibling as HTMLInputElement;
 
@@ -83,11 +83,11 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         this.render();
     }
 
-    static #cancelRoll(this: RollTaskApplication) {
+    static #cancelRoll(this: TaskApplication) {
         this.close();
     }
 
-    static create(actor: Creature, data: RollTaskData = {}): RollTaskApplication {
+    static create(actor: Creature, data: TaskApplicationData = {}): TaskApplication {
         const app = new this({ actor, data });
         app.render(true);
         return app;
@@ -143,7 +143,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         return rolls;
     }
 
-    static async #rollTask(this: RollTaskApplication) {
+    static async #rollTask(this: TaskApplication) {
         const data: PreCreateTaskMessageSource = {
             speaker: ChatMessage.implementation.getSpeaker({ actor: this.actor }),
             system: {
@@ -158,7 +158,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         this.close();
     }
 
-    static #toggleModifier(this: RollTaskApplication, _event: PointerEvent, target: HTMLElement) {
+    static #toggleModifier(this: TaskApplication, _event: PointerEvent, target: HTMLElement) {
         const index = Number(target.dataset.index);
         if (isNaN(index)) return;
 
@@ -186,7 +186,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         return this.#selected.skill === "untrained";
     }
 
-    get rollType(): RollTaskType {
+    get rollType(): TaskRollType {
         return this.#selected.skill === "" ? "test" : "task";
     }
 
@@ -194,16 +194,16 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         return "systems/afmbe-idle/templates/actor/creature/task.hbs";
     }
 
-    _initializeApplicationOptions(options: RollTaskApplicationConfiguration): RollTaskApplicationConfiguration {
+    _initializeApplicationOptions(options: TaskApplicationConfiguration): TaskApplicationConfiguration {
         const { actor } = options;
-        options = super._initializeApplicationOptions(options) as RollTaskApplicationConfiguration;
+        options = super._initializeApplicationOptions(options) as TaskApplicationConfiguration;
         options.id = "{id}";
         options.uniqueId = `RollTask-${actor.uuid.replaceAll(".", "-")}`;
         options.window.title = `${localize("afmbe.actor.creature.task.title")} - ${actor.name}`;
         return options;
     }
 
-    get attributeSelect(): BaseAttributesTaskSelect {
+    get attributeSelect(): BaseTaskApplicationAttributesSelect {
         return {
             key: "attribute",
             label: localize("afmbe.actor.creature.task.attribute"),
@@ -215,7 +215,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         };
     }
 
-    get difficultySelect(): BaseDifficultyTaskSelect {
+    get difficultySelect(): BaseTaskApplicationDifficultySelect {
         return {
             key: "difficulty",
             label: localize("afmbe.actor.creature.task.difficulty.title"),
@@ -226,8 +226,8 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         };
     }
 
-    get skillSelect(): BaseSkillTaskSelect {
-        const options: BaseSkillTaskSelect["options"] = R.pipe(
+    get skillSelect(): BaseTaskApplicationSkillSelect {
+        const options: BaseTaskApplicationSkillSelect["options"] = R.pipe(
             this.actor.itemTypes.skill,
             R.filter((skill) => !skill.system.isSpecialty),
             R.flatMap((skill) => {
@@ -296,7 +296,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
         return modifiers;
     }
 
-    async _prepareContext(): Promise<RollTaskRenderContext> {
+    async _prepareContext(): Promise<TaskApplicationRenderContext> {
         const rollType = this.rollType;
         const selects = R.map(
             [this.attributeSelect, this.difficultySelect, this.skillSelect] as const,
@@ -309,7 +309,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
                     selected: this.#selected[key],
                 };
             },
-        ) as RollTaskSelects;
+        ) as TaskApplicationSelects;
 
         return {
             modifiers: this.#modifiers.filter(({ type }) => type === "all" || type === rollType),
@@ -334,7 +334,7 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
     _activateListeners(html: HTMLElement) {
         for (const el of html.querySelectorAll<HTMLSelectElement>("select")) {
             el.addEventListener("change", () => {
-                const category = el.name as RollTaskSelectKey;
+                const category = el.name as TaskApplicationSelectKey;
                 this.#selected[category] = el.value as never;
                 this.render();
             });
@@ -358,4 +358,4 @@ class RollTaskApplication extends ApplicationAFMBE<RollTaskApplicationConfigurat
     }
 }
 
-export { RollTaskApplication };
+export { TaskApplication };
