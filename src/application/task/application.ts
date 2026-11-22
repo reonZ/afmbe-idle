@@ -2,7 +2,6 @@ import {
     ApplicationClosingOptions,
     ApplicationRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
-import { Rolled } from "@7h3laughingman/foundry-types/client/dice/roll.mjs";
 import { Creature, CREATURE_ATTRIBUTES, CREATURE_MODIFIER_TYPES, CreatureAttributes, CreatureModifier } from "actor";
 import { PreCreateTaskMessageSource } from "chat-message";
 import * as R from "remeda";
@@ -91,56 +90,6 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
         const app = new this({ actor, data });
         app.render(true);
         return app;
-    }
-
-    static async rollTaskDie(): Promise<Rolled<Roll>> {
-        return new Roll("1d10").evaluate();
-    }
-
-    static async rollTaskDice(): Promise<Rolled<Roll>[]> {
-        const roll = await this.rollTaskDie();
-
-        if (roll.total === 1) {
-            return this.ruleOfOne([roll]);
-        }
-
-        if (roll.total === 10) {
-            return this.ruleOfTen([roll]);
-        }
-
-        return [roll];
-    }
-
-    static async ruleOfOne(rolls: Rolled<Roll>[]): Promise<Rolled<Roll>[]> {
-        const roll = await this.rollTaskDie();
-
-        rolls.push(roll);
-
-        if (roll.total >= 5) {
-            return rolls;
-        }
-
-        if (roll.total === 1) {
-            return this.ruleOfOne(rolls);
-        }
-
-        return rolls;
-    }
-
-    static async ruleOfTen(rolls: Rolled<Roll>[]): Promise<Rolled<Roll>[]> {
-        const roll = await this.rollTaskDie();
-
-        rolls.push(roll);
-
-        if (roll.total <= 5) {
-            return rolls;
-        }
-
-        if (roll.total === 10) {
-            return this.ruleOfTen(rolls);
-        }
-
-        return rolls;
     }
 
     static async #rollTask(this: TaskApplication) {

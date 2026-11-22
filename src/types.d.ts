@@ -4,7 +4,7 @@ import type { ChatMessageAFMBE } from "chat-message";
 import type { ItemAFMBE } from "item";
 import type { SceneAFMBE, TokenAFMBE, TokenDocumentAFMBE, UserAFMBE } from "misc";
 import type config from "./system-config";
-import type { TaskRoll } from "task";
+import type { TaskDie, TaskRoll } from "roll";
 
 type ConfiguredConfig = Config<
     AmbientLightDocument<SceneAFMBE | null>,

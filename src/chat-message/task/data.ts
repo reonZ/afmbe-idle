@@ -1,7 +1,8 @@
+import { Rolled } from "@7h3laughingman/foundry-types/client/dice/roll.mjs";
 import { DatabaseCreateCallbackOptions } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
 import { CREATURE_TASK_CATEGORIES } from "actor";
-import { ChatMessageDataModel } from "chat-message";
 import { UserAFMBE } from "misc";
+import { EvaluatedTaskRolls, TaskDieResult, TaskRoll } from "roll";
 import { localize } from "utils";
 import {
     TaskChatMessage,
@@ -10,8 +11,8 @@ import {
     TaskMessageDataSource,
     TaskMessageSource,
 } from ".";
+import { ChatMessageDataModel } from "..";
 import fields = foundry.data.fields;
-import { TaskApplication } from "application";
 
 class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
     static defineSchema(): TaskMessageDataSchema {
@@ -51,6 +52,14 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
         };
     }
 
+    get baseRoll(): Rolled<TaskRoll> {
+        return this.rolls[0];
+    }
+
+    get rolls(): EvaluatedTaskRolls {
+        return this.parent.rolls as EvaluatedTaskRolls;
+    }
+
     get template(): string {
         return "systems/afmbe-idle/templates/message/task.hbs";
     }
@@ -60,22 +69,25 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
         return { header };
     }
 
+    evaluateRolls(): TaskDieResult {
+        if (this.baseRoll.isOne) {
+        }
+
+        if (this.baseRoll.isTen) {
+        }
+
+        return this.baseRoll.total;
+    }
+
     async _preCreate(
         data: DeepPartial<TaskMessageSource>,
         _options: DatabaseCreateCallbackOptions,
         _user: UserAFMBE,
     ): Promise<boolean | void> {
-        const updates: Record<string, any> = {};
-
-        if (!data.sound) {
-            updates.sound = CONFIG.sounds.dice;
-        }
-
         if (!data.rolls?.length) {
-            updates.rolls = await TaskApplication.rollTaskDice();
+            const rolls = await TaskRoll.evaluate();
+            this.parent.updateSource({ rolls });
         }
-
-        this.parent.updateSource(updates);
     }
 }
 
