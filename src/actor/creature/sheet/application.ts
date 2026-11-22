@@ -1,5 +1,5 @@
 import { ActorSheetAFMBE } from "actor";
-import { DocumentSheetPartAFME } from "handlebars-sheet";
+import { DocumentSheetPartAFME } from "document-sheet";
 import * as R from "remeda";
 import { splitString } from "utils";
 import { CreatureSheetConfiguration, CreatureSheetPart, CreatureSheetRenderContext, RollTaskTargetData } from ".";

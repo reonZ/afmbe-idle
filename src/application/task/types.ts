@@ -1,8 +1,8 @@
 import type { ApplicationRenderContext } from "@7h3laughingman/foundry-types/client/applications/_module.mjs";
 import type { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 import type { Creature, CreatureAttributeType, CreatureModifier } from "actor";
-import type { ApplicationConfigurationAFMBE } from "handlebars-application";
 import type { TaskRollType } from "roll";
+import type { ApplicationConfigurationAFMBE } from "..";
 
 type TaskApplicationRenderContext = ApplicationRenderContext & {
     modifiers: CreatureModifier[];

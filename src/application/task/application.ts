@@ -4,8 +4,9 @@ import {
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
 import { Rolled } from "@7h3laughingman/foundry-types/client/dice/roll.mjs";
 import { Creature, CREATURE_ATTRIBUTES, CREATURE_MODIFIER_TYPES, CreatureAttributes, CreatureModifier } from "actor";
-import { ApplicationAFMBE, ApplicationConfigurationAFMBE } from "handlebars-application";
+import { PreCreateTaskMessageSource } from "chat-message";
 import * as R from "remeda";
+import { TaskRollType } from "roll";
 import { localize, signedNumber } from "utils";
 import {
     BaseTaskApplicationAttributesSelect,
@@ -18,8 +19,7 @@ import {
     TaskApplicationSelectKey,
     TaskApplicationSelects,
 } from ".";
-import { PreCreateTaskMessageSource } from "chat-message";
-import { TaskRollType } from "roll";
+import { ApplicationAFMBE, ApplicationConfigurationAFMBE } from "..";
 
 const TEST_DIFFICULTIES = ["simple", "difficult"] as const;
 const UNTRAINED_RANGE = { max: -2, min: -10 };

@@ -1,4 +1,4 @@
-import { documentSheetMixinAFMBE } from "handlebars-sheet";
+import { documentSheetMixinAFMBE } from "document-sheet";
 import { ItemAFMBE } from "item";
 import * as R from "remeda";
 import { localize } from "utils";

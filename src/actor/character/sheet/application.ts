@@ -1,5 +1,5 @@
 import { Character, CreatureSheet } from "actor";
-import { DocumentSheetPartAFME } from "handlebars-sheet";
+import { DocumentSheetPartAFME } from "document-sheet";
 import * as R from "remeda";
 import { CharacterSheetConfiguration, CharacterSheetPart, CharacterSheetRenderContext } from ".";
 

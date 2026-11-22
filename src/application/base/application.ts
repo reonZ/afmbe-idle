@@ -4,6 +4,7 @@ import {
     ApplicationRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
 import { render } from "utils";
+import { ApplicationConfigurationAFMBE } from ".";
 
 abstract class ApplicationAFMBE<
     TConfig extends ApplicationConfigurationAFMBE = ApplicationConfigurationAFMBE,
@@ -42,9 +43,4 @@ abstract class ApplicationAFMBE<
     _activateListeners(html: HTMLElement): void {}
 }
 
-type ApplicationConfigurationAFMBE = ApplicationConfiguration & {
-    scrollable?: string[];
-};
-
 export { ApplicationAFMBE };
-export type { ApplicationConfigurationAFMBE };

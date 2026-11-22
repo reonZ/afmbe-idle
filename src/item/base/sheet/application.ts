@@ -4,7 +4,7 @@ import {
     DatabaseUpdateOperation,
 } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
 import { ActorAFMBE } from "actor";
-import { documentSheetMixinAFMBE, DocumentSheetPartAFME } from "handlebars-sheet";
+import { documentSheetMixinAFMBE, DocumentSheetPartAFME } from "document-sheet";
 import { ItemAFMBE } from "item";
 import * as R from "remeda";
 import { enrichHTML, localize } from "utils";

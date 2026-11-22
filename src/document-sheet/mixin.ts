@@ -1,14 +1,11 @@
-import {
+import DocumentSheetV2, {
     DocumentSheetConfiguration,
     DocumentSheetRenderContext,
-    DocumentSheetV2,
-    HandlebarsApplication,
-    HandlebarsApplicationStatic,
-    HandlebarsRenderOptions,
-    HandlebarsTemplatePart,
-} from "@7h3laughingman/foundry-types/client/applications/api/_module.mjs";
+} from "@7h3laughingman/foundry-types/client/applications/api/document-sheet.mjs";
+import { HandlebarsRenderOptions } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 import { ContextMenuEntry } from "@7h3laughingman/foundry-types/client/applications/ux/context-menu.mjs";
 import { ItemAFMBE } from "item";
+import { DocumentSheetStaticAFMBE } from ".";
 
 function documentSheetMixinAFMBE<TBase extends AbstractConstructorOf<DocumentSheetV2<any>>>(
     BaseApplication: TBase,
@@ -127,23 +124,4 @@ function documentSheetMixinAFMBE<TBase extends AbstractConstructorOf<DocumentShe
     return HandlebarsApplicationAFMBE as unknown as DocumentSheetStaticAFMBE & TBase;
 }
 
-interface DocumentSheetAFMBE extends HandlebarsApplication {
-    _attachListeners(html: HTMLElement): void | Promise<void>;
-    getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
-}
-
-interface DocumentSheetStaticAFMBE extends ConstructorOf<DocumentSheetAFMBE>, HandlebarsApplicationStatic {
-    PARTS: DocumentSheetPartAFME<string, DocumentSheetRenderContext>;
-    getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
-}
-
-type DocumentSheetPartAFME<TPart extends string, TContext extends DocumentSheetRenderContext> = Record<
-    TPart,
-    HandlebarsTemplatePart & {
-        activateListeners?: (html: HTMLElement, options: HandlebarsRenderOptions) => void | Promise<void>;
-        prepareContext?: (context: TContext, options: HandlebarsRenderOptions) => Promise<void> | void;
-    }
->;
-
 export { documentSheetMixinAFMBE };
-export type { DocumentSheetPartAFME };

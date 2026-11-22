@@ -1,7 +1,7 @@
 import { ApplicationClosingOptions } from "@7h3laughingman/foundry-types/client/applications/_module.mjs";
 import { HandlebarsRenderOptions } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 import { Creature } from "actor";
-import { DocumentSheetPartAFME } from "handlebars-sheet";
+import { DocumentSheetPartAFME } from "document-sheet";
 import { ItemSheetAFMBE } from "item";
 import { localize } from "utils";
 import { Skill, SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext, SkillSheetRenderOptions } from "..";
