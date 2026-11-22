@@ -1,7 +1,7 @@
 import {
-    ApplicationV2,
     DocumentSheetConfiguration,
     DocumentSheetRenderContext,
+    DocumentSheetV2,
     HandlebarsApplication,
     HandlebarsApplicationStatic,
     HandlebarsRenderOptions,
@@ -10,11 +10,9 @@ import {
 import { ContextMenuEntry } from "@7h3laughingman/foundry-types/client/applications/ux/context-menu.mjs";
 import { ItemAFMBE } from "item";
 
-function documentSheetMixinAFMBE<
-    TBase extends AbstractConstructorOf<ApplicationV2<any>>,
-    TPart extends "header" | (string & {}),
-    TContext extends DocumentSheetRenderContext,
->(BaseApplication: TBase): DocumentSheetStaticAFMBE<TPart, TContext> & TBase {
+function documentSheetMixinAFMBE<TBase extends AbstractConstructorOf<DocumentSheetV2<any>>>(
+    BaseApplication: TBase,
+): DocumentSheetStaticAFMBE & TBase {
     abstract class HandlebarsApplicationAFMBE extends foundry.applications.api.HandlebarsApplicationMixin(
         BaseApplication,
     ) {
@@ -44,27 +42,21 @@ function documentSheetMixinAFMBE<
         }
 
         async _preparePartContext(
-            this: HandlebarsApplication,
-            partId: TPart,
-            context: TContext,
+            partId: string,
+            context: DocumentSheetRenderContext,
             options: HandlebarsRenderOptions,
-        ): Promise<TContext> {
+        ): Promise<DocumentSheetRenderContext> {
             super._preparePartContext(partId, context, options);
-            const cls = this.constructor as DocumentSheetStaticAFMBE<TPart, TContext>;
+            const cls = this.constructor as DocumentSheetStaticAFMBE;
             const part = cls.PARTS[partId];
 
             await part?.prepareContext?.call(this, context, options);
             return context;
         }
 
-        _attachPartListeners(
-            this: HandlebarsApplication,
-            partId: TPart,
-            html: HTMLElement,
-            options: HandlebarsRenderOptions,
-        ) {
+        _attachPartListeners(partId: string, html: HTMLElement, options: HandlebarsRenderOptions) {
             super._attachPartListeners(partId, html, options);
-            const cls = this.constructor as DocumentSheetStaticAFMBE<TPart, TContext>;
+            const cls = this.constructor as DocumentSheetStaticAFMBE;
             const part = cls.PARTS[partId];
             part?.activateListeners?.call(this, html, options);
         }
@@ -132,7 +124,7 @@ function documentSheetMixinAFMBE<
         }
     }
 
-    return HandlebarsApplicationAFMBE as unknown as DocumentSheetStaticAFMBE<TPart, TContext> & TBase;
+    return HandlebarsApplicationAFMBE as unknown as DocumentSheetStaticAFMBE & TBase;
 }
 
 interface DocumentSheetAFMBE extends HandlebarsApplication {
@@ -140,9 +132,8 @@ interface DocumentSheetAFMBE extends HandlebarsApplication {
     getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
 }
 
-interface DocumentSheetStaticAFMBE<TPart extends string, TContext extends DocumentSheetRenderContext>
-    extends ConstructorOf<DocumentSheetAFMBE>, HandlebarsApplicationStatic {
-    PARTS: DocumentSheetPartAFME<TPart, TContext>;
+interface DocumentSheetStaticAFMBE extends ConstructorOf<DocumentSheetAFMBE>, HandlebarsApplicationStatic {
+    PARTS: DocumentSheetPartAFME<string, DocumentSheetRenderContext>;
     getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
 }
 

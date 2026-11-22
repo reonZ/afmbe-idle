@@ -19,7 +19,7 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
         position: { height: 500, width: 650 },
     };
 
-    static PARTS = {
+    static PARTS: DocumentSheetPartAFME<ItemSheetPart, ItemSheetRenderContext> = {
         header: {
             template: "systems/afmbe-idle/templates/item/sheet-header.hbs",
             prepareContext: this.prepareHeaderContext,
@@ -28,7 +28,7 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
             template: "systems/afmbe-idle/templates/item/description.hbs",
             prepareContext: this.prepareDescriptionContext,
         },
-    } satisfies DocumentSheetPartAFME<ItemSheetPart, ItemSheetRenderContext>;
+    };
 
     static prepareHeaderContext(
         this: ItemSheetAFMBE,

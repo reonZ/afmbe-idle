@@ -14,7 +14,7 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         },
     };
 
-    static PARTS = {
+    static PARTS: DocumentSheetPartAFME<SkillSheetPart, SkillSheetRenderContext> = {
         ...super.PARTS,
         header: {
             template: "systems/afmbe-idle/templates/item/skill/header.hbs",
@@ -23,7 +23,7 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         sidebar: {
             template: "systems/afmbe-idle/templates/item/skill/sidebar.hbs",
         },
-    } satisfies DocumentSheetPartAFME<SkillSheetPart, SkillSheetRenderContext>;
+    };
 
     static async prepareHeaderContext(
         this: SkillSheet,

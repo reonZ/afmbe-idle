@@ -14,7 +14,7 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
         },
     };
 
-    static PARTS = {
+    static PARTS: DocumentSheetPartAFME<CreatureSheetPart, CreatureSheetRenderContext> = {
         header: {
             template: "systems/afmbe-idle/templates/actor/creature/sheet-header.hbs",
             prepareContext: this.prepareHeaderContext,
@@ -23,7 +23,7 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
             template: "systems/afmbe-idle/templates/actor/creature/attributes.hbs",
             prepareContext: this.prepareAttributesContext,
         },
-    } satisfies DocumentSheetPartAFME<CreatureSheetPart, CreatureSheetRenderContext>;
+    };
 
     static prepareHeaderContext(this: CreatureSheet, context: CreatureSheetRenderContext) {
         context.name = this.actor.name;

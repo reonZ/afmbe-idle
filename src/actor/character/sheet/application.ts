@@ -9,13 +9,13 @@ abstract class CharacterSheet<TParent extends Character = Character> extends Cre
         position: { width: 750 },
     };
 
-    static PARTS = {
+    static PARTS: DocumentSheetPartAFME<CharacterSheetPart, CharacterSheetRenderContext> = {
         ...super.PARTS,
         skills: {
             template: "systems/afmbe-idle/templates/actor/character/skills.hbs",
             prepareContext: this.prepareSkillsContext,
         },
-    } satisfies DocumentSheetPartAFME<CharacterSheetPart, CharacterSheetRenderContext>;
+    };
 
     static prepareSkillsContext(this: CharacterSheet, context: CharacterSheetRenderContext) {
         context.skills = R.flatMap(this.actor.itemTypes.skill, (skill) => [skill, ...skill.system.deepSpecialties]);
