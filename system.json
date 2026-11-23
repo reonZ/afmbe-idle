@@ -51,6 +51,9 @@
             "task": {}
         },
         "Item": {
+            "quality": {
+                "htmlFields": ["description"]
+            },
             "skill": {
                 "htmlFields": ["description"]
             }
