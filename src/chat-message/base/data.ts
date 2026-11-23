@@ -12,9 +12,9 @@ abstract class ChatMessageDataModel<TSchema extends ChatMessageDataShema> extend
         return [];
     }
 
-    abstract get template(): string;
+    abstract getContent(): Promise<string>;
 
-    abstract prepareContext(): Promise<Record<string, any>>;
+    attachListeners(html: HTMLElement) {}
 }
 
 interface ChatMessageDataModel<TSchema extends ChatMessageDataShema> {

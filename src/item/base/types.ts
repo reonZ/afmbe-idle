@@ -9,7 +9,7 @@ import type {
 import type { ItemSchema } from "@7h3laughingman/foundry-types/common/documents/item.mjs";
 import type { ActorAFMBE } from "actor";
 import type { RequiredHTMLField } from "fields";
-import type { Armor, Physical, PhysicalSource, Quality, QualitySource, Skill, SkillSource, Weapon } from "item";
+import type { Armor, PhysicalItem, PhysicalSource, Quality, QualitySource, Skill, SkillSource, Weapon } from "item";
 import type { ITEM_TYPES, ItemAFMBE } from ".";
 
 type ItemType = (typeof ITEM_TYPES)[number];
@@ -17,7 +17,7 @@ type ItemType = (typeof ITEM_TYPES)[number];
 type ItemInstances<TParent extends ActorAFMBE | null = ActorAFMBE | null> = {
     armor: Armor<TParent>;
     weapon: Weapon<TParent>;
-    physical: Physical<TParent>;
+    physical: PhysicalItem<TParent>;
     quality: Quality<TParent>;
     skill: Skill<TParent>;
 };

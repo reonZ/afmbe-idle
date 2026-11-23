@@ -1,7 +1,7 @@
-import { ItemDataModel, ItemDataSource, Physical, PhysicalDataSchema, PhysicalDataSource } from "item";
+import { ItemDataModel, ItemDataSource, PhysicalItem, PhysicalDataSchema, PhysicalDataSource } from "item";
 
 class PhysicalDataModel<
-    TParent extends Physical = Physical,
+    TParent extends PhysicalItem = PhysicalItem,
     TSchema extends PhysicalDataSchema = PhysicalDataSchema,
 > extends ItemDataModel<TParent, TSchema> {
     static defineSchema(): PhysicalDataSchema {
@@ -16,7 +16,7 @@ class PhysicalDataModel<
 }
 
 interface PhysicalDataModel<
-    TParent extends Physical = Physical,
+    TParent extends PhysicalItem = PhysicalItem,
     TSchema extends PhysicalDataSchema = PhysicalDataSchema,
 > extends Omit<PhysicalDataSource, keyof ItemDataSource> {}
 

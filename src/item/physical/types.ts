@@ -7,10 +7,10 @@ type PhysicalDataSchema = ItemDataSchema & {};
 
 type PhysicalDataSource = ModelPropsFromSchema<PhysicalDataSchema>;
 
-declare abstract class Physical<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
+declare abstract class PhysicalItem<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
     system: PhysicalDataModel;
 }
 
 type PhysicalSource = ArmorSource | WeaponSource;
 
-export type { Physical, PhysicalDataSchema, PhysicalDataSource, PhysicalSource };
+export type { PhysicalItem, PhysicalDataSchema, PhysicalDataSource, PhysicalSource };

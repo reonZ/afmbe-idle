@@ -1,5 +1,4 @@
 import type { UserAFMBE } from "misc";
-import { render } from "utils";
 import { ChatMessageDataModel, ChatMessageSourceAFMBE } from ".";
 
 class ChatMessageAFMBE<TUser extends UserAFMBE | null = UserAFMBE | null> extends foundry.documents.ChatMessage<TUser> {
@@ -8,19 +7,19 @@ class ChatMessageAFMBE<TUser extends UserAFMBE | null = UserAFMBE | null> extend
             return super.renderHTML(options);
         }
 
-        // little trickery so foundry doesn't render rolls for nothing
+        // little trickery so foundry doesn't render rolls
         const rolls = this.rolls;
         this.rolls = [];
-
         const html = await super.renderHTML(options);
         this.rolls = rolls;
 
-        const context = await this.system.prepareContext();
-        const template = await render(this.system.template, context);
-        const content = html.querySelector(".message-content") as HTMLElement;
-
-        content.insertAdjacentHTML("beforeend", template);
         html.classList.add("afmbe", ...this.system.classes);
+
+        const messageContent = html.querySelector(".message-content") as HTMLElement;
+        const template = await this.system.getContent();
+
+        messageContent.insertAdjacentHTML("beforeend", template);
+        this.system.attachListeners(messageContent);
 
         return html;
     }

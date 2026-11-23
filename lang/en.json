@@ -128,8 +128,13 @@
         },
         "message": {
             "task": {
+                "die": {
+                    "single": "Die",
+                    "plural": "Dice"
+                },
                 "header": {
                     "default": "Roll Task/Test",
+                    "item": "Use {name}",
                     "task": "Roll Task",
                     "test": {
                         "difficult": "Roll Difficult Test",

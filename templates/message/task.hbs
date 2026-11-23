@@ -1,21 +1,39 @@
-<div class="header">
+<div class="task-header">
     {{header}}
 </div>
 <div class="task-dice">
-    {{#each rolls as |roll|}}
+    <div class="modifier-name">
+        {{localize 'afmbe.message.task.die' (ifThen (gt dice.rolls.length 1) 'plural' 'single')}}:
+    </div>
+    {{#each dice.rolls as |roll|}}
     <div class="task-die">
-        <i class="fa-thin fa-dice-d10 die"></i>
-        <div class="die-value">
+        <div class="die"></div>
+        <div class="value">
             {{roll.total}}
         </div>
-        {{#if (and @last ../resolved.strikeLast)}}
+        {{#if (and @last ../dice.strikeLast)}}
         <i class="fa-solid fa-slash strike"></i>
         {{/if}}
     </div>
     {{/each}}
-    <div class="modifier">
-        <div class="modifier-value">
-            {{signedNumber resolved.value}}
+    <div class="value-container">
+        <div class="value">
+            {{signedNumber dice.value}}
         </div>
     </div>
+</div>
+{{#each modifiers as |modifier|}}
+<div class="task-modifier">
+    <div class="modifier-name">
+        {{modifier.label}}
+    </div>
+    <div class="value-container">
+        <div class="value">
+            {{signedNumber modifier.value}}
+        </div>
+    </div>
+</div>
+{{/each}}
+<div class="task-result">
+    {{result}}
 </div>

@@ -1,10 +1,11 @@
-import { Rolled } from "@7h3laughingman/foundry-types/client/dice/roll.mjs";
 import { DatabaseCreateCallbackOptions } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
-import { CREATURE_TASK_CATEGORIES } from "actor";
+import { ActorAFMBE } from "actor";
 import { TEST_DIFFICULTIES } from "application";
+import { PhysicalItem } from "item";
 import { UserAFMBE } from "misc";
-import { EvaluatedTaskRolls, ResolvedTaskRolls, TaskRoll } from "roll";
-import { localize } from "utils";
+import * as R from "remeda";
+import { ResolvedTaskRolls, TaskRoll } from "roll";
+import { localize, render } from "utils";
 import {
     TaskChatMessage,
     TaskMessageContext,
@@ -24,14 +25,11 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
                 nullable: true,
                 blank: false,
                 initial: undefined,
-                choices: CREATURE_TASK_CATEGORIES,
+                choices: [...TEST_DIFFICULTIES, "task"],
             }),
-            difficulty: new fields.StringField({
-                required: false,
-                nullable: true,
-                blank: false,
-                initial: undefined,
-                choices: TEST_DIFFICULTIES,
+            origin: new fields.DocumentUUIDField({
+                embedded: true,
+                type: "Item",
             }),
             modifiers: new fields.ArrayField(
                 new fields.SchemaField({
@@ -61,10 +59,6 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
         };
     }
 
-    get baseRoll(): Rolled<TaskRoll> {
-        return this.rolls[0];
-    }
-
     get classes(): string[] {
         return ["task"];
     }
@@ -74,31 +68,35 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
     }
 
     get isTest(): boolean {
-        return this.category === "test";
+        return R.isIncludedIn(this.category, TEST_DIFFICULTIES);
     }
 
-    get rolls(): EvaluatedTaskRolls {
-        return this.parent.rolls as EvaluatedTaskRolls;
+    get item(): PhysicalItem<ActorAFMBE> | null {
+        const item = this.origin && fromUuidSync<PhysicalItem<ActorAFMBE>>(this.origin);
+        return item?.isOfType("physical") ? item : null;
     }
 
-    get template(): string {
-        return "systems/afmbe-idle/templates/message/task.hbs";
-    }
-
-    async prepareContext(): Promise<TaskMessageContext> {
+    prepareContext(): TaskMessageContext {
+        const resolved = this.resolveRolls();
         const header = this.isTest
-            ? localize("afmbe.message.task.header.test", this.difficulty ?? "")
+            ? localize("afmbe.message.task.header.test", this.category ?? "")
             : localize("afmbe.message.task.header", this.category ?? "default");
 
         return {
+            dice: { ...resolved, rolls: this.parent.rolls },
             header,
-            resolved: this.resolveRolls(),
-            rolls: this.rolls,
+            modifiers: this.modifiers,
+            result: resolved.value + R.sumBy(this.modifiers, R.prop("value")),
         };
     }
 
+    async getContent(): Promise<string> {
+        const context = this.prepareContext();
+        return render("systems/afmbe-idle/templates/message/task.hbs", context);
+    }
+
     resolveRolls(): ResolvedTaskRolls {
-        return TaskRoll.resolveRolls(this.rolls);
+        return TaskRoll.resolveRolls(this.parent.rolls);
     }
 
     async _preCreate(

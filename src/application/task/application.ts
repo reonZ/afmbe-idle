@@ -18,6 +18,7 @@ import {
     TaskApplicationSelectKey,
     TaskApplicationSelects,
     TEST_DIFFICULTIES,
+    TestDifficulty,
     UNTRAINED_RANGE,
 } from ".";
 import { ApplicationAFMBE, ApplicationConfigurationAFMBE } from "..";
@@ -95,8 +96,9 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
         const data: PreCreateTaskMessageSource = {
             speaker: ChatMessage.implementation.getSpeaker({ actor: this.actor }),
             system: {
-                category: this.rollType,
+                category: this.rollType === "task" ? "task" : (this.#selected.difficulty as TestDifficulty),
                 modifiers: this.modifierInstances,
+                origin: null,
                 target: this.#target,
             },
             type: "task",
@@ -139,7 +141,7 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
     }
 
     get template(): string {
-        return "systems/afmbe-idle/templates/actor/creature/task.hbs";
+        return "systems/afmbe-idle/templates/application/task.hbs";
     }
 
     _initializeApplicationOptions(options: TaskApplicationConfiguration): TaskApplicationConfiguration {
