@@ -50,7 +50,6 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
             disable: splitString(data.disable ?? ""),
             mode: event.ctrlKey ? "private" : "public",
             select: R.pick(data, ["attribute", "difficulty", "skill"]),
-            target: Number(data.target) || undefined,
         });
     }
 }

@@ -31,9 +31,8 @@ type CreatureSheetRenderContext = ActorSheetRenderContext & {
     name?: string;
 };
 
-type RollTaskTargetData = TaskApplicationSelected & {
+type RollTaskTargetData = Partial<TaskApplicationSelected> & {
     disable?: string;
-    target?: string;
 };
 
 export type {

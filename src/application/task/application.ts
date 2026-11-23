@@ -2,10 +2,17 @@ import {
     ApplicationClosingOptions,
     ApplicationRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
-import { Creature, CREATURE_ATTRIBUTES, CREATURE_MODIFIER_TYPES, CreatureAttributes, CreatureModifier } from "actor";
+import {
+    Creature,
+    CREATURE_ATTRIBUTES,
+    CREATURE_MODIFIER_TYPES,
+    CreatureAttributes,
+    CreatureModifier,
+    CreatureModifierTargets,
+} from "actor";
 import { PreCreateTaskMessageSource } from "chat-message";
 import * as R from "remeda";
-import { TaskRollType } from "roll";
+import { TaskRollType, TaskTarget } from "roll";
 import { localize, signedNumber } from "utils";
 import {
     BaseTaskApplicationAttributesSelect,
@@ -29,7 +36,7 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
     #modifiers: CreatureModifier[];
     #private: boolean;
     #selected: TaskApplicationSelected;
-    #target: number | undefined;
+    #target: Partial<TaskTarget> | undefined;
     #untrained: number = -2;
 
     static DEFAULT_OPTIONS: DeepPartial<TaskApplicationConfiguration> = {
@@ -75,6 +82,7 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
             active: true,
             label: label.value.trim() || localize("afmbe.actor.creature.task.modifier.name"),
             origin: null,
+            targets: null,
             type: "all",
             value: value.valueAsNumber || 1,
         });
@@ -99,7 +107,7 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
                 category: this.rollType === "task" ? "task" : (this.#selected.difficulty as TestDifficulty),
                 modifiers: this.modifierInstances,
                 origin: null,
-                target: this.#target,
+                target: this.#target ?? null,
             },
             type: "task",
         };
@@ -203,14 +211,13 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
     }
 
     get modifierInstances(): CreatureModifier[] {
-        const rollType = this.rollType;
         const { attribute, difficulty, skill } = this.#selected;
-
         const modifiers: CreatureModifier[] = [
             {
                 active: true,
                 label: CreatureAttributes.getLabel(attribute),
                 origin: null,
+                targets: null,
                 type: "all",
                 value: this.actor.system.attributes[attribute] * (this.isTask ? 1 : difficulty === "simple" ? 2 : 1),
             },
@@ -221,6 +228,7 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
                 active: true,
                 label: localize("afmbe.item.skill.untrained.label"),
                 origin: null,
+                targets: null,
                 type: "task",
                 value: this.#untrained,
             });
@@ -232,22 +240,32 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
                     active: true,
                     label: actorSkill.system.label,
                     origin: actorSkill.uuid,
+                    targets: null,
                     type: "task",
                     value: actorSkill.system.bonus,
                 });
             }
         }
 
-        for (const modifier of this.#modifiers) {
-            if (!modifier.active || (modifier.type !== "all" && modifier.type !== rollType)) continue;
-            modifiers.push(modifier);
-        }
+        modifiers.push(...this.validModifiers);
 
         return modifiers;
     }
 
-    async _prepareContext(): Promise<TaskApplicationRenderContext> {
+    get validModifiers() {
         const rollType = this.rollType;
+        const traits = this.#target?.traits ?? [];
+
+        return this.#modifiers.filter((modifier) => {
+            const targets: Partial<CreatureModifierTargets> = modifier.targets ?? {};
+            if (modifier.type !== "all" && modifier.type !== rollType) return false;
+            if (targets.attribute && targets.attribute !== this.#selected.attribute) return false;
+            if (!traits.length || !targets.traits?.length) return true;
+            return targets.traits.some((trait) => R.isIncludedIn(trait, traits));
+        });
+    }
+
+    async _prepareContext(): Promise<TaskApplicationRenderContext> {
         const selects = R.map(
             [this.attributeSelect, this.difficultySelect, this.skillSelect] as const,
             ({ key, label, options }) => {
@@ -262,7 +280,7 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
         ) as TaskApplicationSelects;
 
         return {
-            modifiers: this.#modifiers.filter(({ type }) => type === "all" || type === rollType),
+            modifiers: this.validModifiers,
             selects,
             private: this.#private,
             rollType: this.rollType,

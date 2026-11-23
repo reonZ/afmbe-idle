@@ -2,12 +2,15 @@ import type {
     DocumentUUIDField,
     ModelPropsFromSchema,
     NumberField,
+    SchemaField,
     SourceFromSchema,
     StringField,
 } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
+import { ItemUUID } from "@7h3laughingman/foundry-types/common/documents/_module.mjs";
 import type { ActorAFMBE, ActorDataSchema, CharacterSource, ZombieSource } from "actor";
 import type { BooleanField, PositiveIntergerValueField } from "fields";
 import type { TokenDocumentAFMBE } from "misc";
+import { TaskTargetSchema } from "roll";
 import type {
     CREATURE_ATTRIBUTES,
     CREATURE_MODIFIER_TYPES,
@@ -15,16 +18,27 @@ import type {
     CREATURE_TASK_CATEGORIES,
     CreatureDataModel,
 } from ".";
-import { ItemUUID } from "@7h3laughingman/foundry-types/common/documents/_module.mjs";
 
 type CreatureTaskCategory = (typeof CREATURE_TASK_CATEGORIES)[number];
 type CreatureModifierType = (typeof CREATURE_MODIFIER_TYPES)[number];
+
+type CreatureModifierTargetsSchema = Omit<TaskTargetSchema, "value">;
+
+type CreatureModifierTargets = ModelPropsFromSchema<CreatureModifierTargetsSchema>;
 
 type CreatureModifierSchema = {
     active: BooleanField;
     label: StringField<string, string, true, false, false>;
     origin: DocumentUUIDField<ItemUUID>;
     value: NumberField<number, number, true, false, false>;
+    targets: SchemaField<
+        CreatureModifierTargetsSchema,
+        SourceFromSchema<CreatureModifierTargetsSchema>,
+        CreatureModifierTargets,
+        false,
+        true,
+        true
+    >;
     type: StringField<CreatureModifierType, CreatureModifierType, true, false, true>;
 };
 
@@ -57,8 +71,10 @@ export type {
     CreatureDataSchema,
     CreatureDataSource,
     CreatureModifier,
-    CreatureModifierType,
     CreatureModifierSchema,
+    CreatureModifierTargets,
+    CreatureModifierTargetsSchema,
+    CreatureModifierType,
     CreatureSecondaryAttributes,
     CreatureSecondaryType,
     CreatureSource,

@@ -1,5 +1,5 @@
 import { DatabaseCreateCallbackOptions } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
-import { ActorAFMBE } from "actor";
+import { ActorAFMBE, CREATURE_ATTRIBUTES } from "actor";
 import { TEST_DIFFICULTIES } from "application";
 import { PhysicalItem } from "item";
 import { UserAFMBE } from "misc";
@@ -49,12 +49,28 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
                     }),
                 }),
             ),
-            target: new fields.NumberField({
-                required: false,
-                nullable: true,
-                integer: true,
-                positive: true,
-                initial: undefined,
+            target: new fields.SchemaField({
+                attribute: new fields.StringField({
+                    required: false,
+                    nullable: true,
+                    blank: false,
+                    initial: undefined,
+                    choices: CREATURE_ATTRIBUTES,
+                }),
+                traits: new fields.ArrayField(
+                    new fields.StringField({
+                        required: true,
+                        nullable: false,
+                        blank: false,
+                    }),
+                ),
+                value: new fields.NumberField({
+                    required: false,
+                    nullable: true,
+                    initial: undefined,
+                    integer: true,
+                    positive: true,
+                }),
             }),
         };
     }

@@ -1,7 +1,7 @@
 import type { ApplicationRenderContext } from "@7h3laughingman/foundry-types/client/applications/_module.mjs";
 import type { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 import type { Creature, CreatureAttributeType, CreatureModifier } from "actor";
-import type { TaskRollType } from "roll";
+import type { TaskRollType, TaskTarget } from "roll";
 import type { ApplicationConfigurationAFMBE, TEST_DIFFICULTIES } from "..";
 
 type TaskApplicationRenderContext = ApplicationRenderContext & {
@@ -38,8 +38,8 @@ type TaskApplicationSelect<K extends string, V extends string> = {
 type TaskApplicationData = {
     disable?: TaskApplicationSelectKey[];
     mode?: "private" | "public";
-    select?: TaskApplicationSelected;
-    target?: number;
+    select?: Partial<TaskApplicationSelected>;
+    target?: Partial<TaskTarget>;
 };
 
 type TaskApplicationConfiguration = ApplicationConfigurationAFMBE & {

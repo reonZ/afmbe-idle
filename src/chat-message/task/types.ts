@@ -2,14 +2,14 @@ import type {
     ArrayField,
     DocumentUUIDField,
     ModelPropsFromSchema,
-    NumberField,
     SchemaField,
+    SourceFromSchema,
     StringField,
 } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
 import type { CreatureModifierSchema } from "actor";
 import type { TestDifficulty } from "application";
 import type { ChatMessageAFMBE, ChatMessageDataShema, ChatMessageSourceAFMBE } from "chat-message";
-import type { EvaluatedTaskRolls, ResolvedTaskRolls } from "roll";
+import type { EvaluatedTaskRolls, ResolvedTaskRolls, TaskTarget, TaskTargetSchema } from "roll";
 import type { TaskMessageDataModel } from ".";
 
 type TaskMessageModifierSchema = Pick<CreatureModifierSchema, "label" | "origin" | "value">;
@@ -22,7 +22,7 @@ type TaskMessageDataSchema = ChatMessageDataShema & {
     category: StringField<TaskMessageCategory, TaskMessageCategory, false, true, true>;
     origin: DocumentUUIDField;
     modifiers: ArrayField<SchemaField<TaskMessageModifierSchema>>;
-    target: NumberField<number, number, false, true, false>;
+    target: SchemaField<TaskTargetSchema, SourceFromSchema<TaskTargetSchema>, Partial<TaskTarget>, false, true, true>;
 };
 
 type TaskMessageDataSource = ModelPropsFromSchema<TaskMessageDataSchema>;

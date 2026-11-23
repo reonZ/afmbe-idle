@@ -110,6 +110,19 @@
                 "content": "Are you sure you want to delete this item?",
                 "title": "Delete {type} - {name}"
             },
+            "quality": {
+                "category": {
+                    "mental": "Mental",
+                    "physical": "Physical",
+                    "social": "Social",
+                    "supernatural": "Supernatural"
+                },
+                "type": {
+                    "both": "Quality or Drawback",
+                    "drawback": "Drawback",
+                    "quality": "Quality"
+                }
+            },
             "skill": {
                 "level": "Level",
                 "specialty": {
