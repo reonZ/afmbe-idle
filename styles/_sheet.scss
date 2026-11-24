@@ -30,17 +30,16 @@
             padding: 2px 0;
             line-height: 1;
             height: fit-content;
+            text-align: end;
+            padding-inline: 0.25rem;
         }
 
         input[type="number"] {
             width: 4ch;
-            text-align: center;
         }
 
         input[type="text"].modifier {
             width: 4.5ch;
-            text-align: right;
-            padding-right: 4px;
         }
 
         a:hover {
@@ -52,8 +51,10 @@
 
         .title {
             position: relative;
-            padding-block: 0.5rem;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: var(--input-height);
             background: var(--table-row-color-even);
             margin-inline: -0.3rem;
 
