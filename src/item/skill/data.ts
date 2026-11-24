@@ -1,7 +1,7 @@
 import { PositiveIntergerValueField } from "fields";
 import { ItemDataModel, ItemDataSource, ItemType, SubItems } from "item";
 import * as R from "remeda";
-import { getNextIndexedName, signedNumber } from "utils";
+import { localize, signedNumber } from "utils";
 import { Skill, SkillDataSchema, SkillDataSource, SkillSource } from ".";
 
 class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParent, SkillDataSchema> {
@@ -56,7 +56,7 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
     > {
         const source: PreCreate<SkillSource> = {
             type: "skill",
-            name: name?.trim() || getNextIndexedName("afmbe.item.skill.specialty.name", this.specialties.contents),
+            name: name?.trim() || localize("afmbe.item.skill.specialty.name"),
             system: {
                 level: { value: level },
             },
