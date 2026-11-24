@@ -1,41 +1,7 @@
 .application.sheet.afmbe.item.skill .window-content {
-    grid-template-columns: 200px 1fr;
-    grid-template-rows: auto 1fr;
-
-    .sheet-header {
-        grid-template-columns: auto 1fr auto;
-
-        .parent {
-            grid-column: 2;
-            grid-row: 2;
-        }
-
-        .level {
-            grid-column: 3;
-            grid-row: 1 / -1;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-
-            input {
-                width: 4ch;
-                text-align: end;
-            }
-        }
-    }
-
     .sidebar {
-        grid-column: 1;
-        grid-row: 2;
-
         .list {
             grid-template-columns: 1fr auto;
-
-            .name {
-                i {
-                    font-size: 0.85em;
-                }
-            }
         }
     }
 }

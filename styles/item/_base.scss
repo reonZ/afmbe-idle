@@ -1,4 +1,6 @@
-.application.sheet.afmbe.item.skill .window-content {
+.application.sheet.afmbe.item .window-content {
+    grid-template-rows: auto 1fr;
+
     .sheet-header {
         grid-template-columns: auto 1fr;
 
@@ -13,11 +15,40 @@
             grid-column: 2;
             grid-row: 1;
         }
+
+        &:has(> .level) {
+            grid-template-columns: auto 1fr auto;
+
+            .level {
+                grid-column: 3;
+                grid-row: 1 / -1;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                input {
+                    width: 4ch;
+                    text-align: end;
+                }
+            }
+        }
     }
 
     .item-description {
         height: 100%;
-        grid-column: 2 / -1;
         grid-row: 2 / -1;
+    }
+
+    &:has(> .sidebar) {
+        grid-template-columns: 200px 1fr;
+
+        .sidebar {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .item-description {
+            grid-column: 2 / -1;
+        }
     }
 }
