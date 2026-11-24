@@ -28,6 +28,7 @@ type QualityDataSchema = ItemDataSchema & {
 type QualityDataSource = ModelPropsFromSchema<QualityDataSchema>;
 
 declare class Quality<TParent extends Character | null = Character | null> extends ItemAFMBE<TParent> {
+    _source: QualitySource;
     system: QualityDataModel;
 }
 
