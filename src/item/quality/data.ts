@@ -2,6 +2,7 @@ import { DataModelConstructionContext } from "@7h3laughingman/foundry-types/comm
 import { ItemDataModel, ItemDataSource } from "item";
 import { Quality, QUALITY_CATEGORIES, QualityDataSchema, QualityDataSource, QualityType } from ".";
 import fields = foundry.data.fields;
+import { ValueField } from "fields";
 
 class QualityDataModel<TParent extends Quality = Quality> extends ItemDataModel<TParent, QualityDataSchema> {
     static defineSchema(): QualityDataSchema {
@@ -13,11 +14,13 @@ class QualityDataModel<TParent extends Quality = Quality> extends ItemDataModel<
                 initial: "mental",
                 choices: QUALITY_CATEGORIES,
             }),
-            level: new fields.NumberField({
-                required: true,
-                nullable: false,
-                initial: 1,
-            }),
+            level: new ValueField(
+                new fields.NumberField({
+                    required: true,
+                    nullable: false,
+                    initial: 1,
+                }),
+            ),
             range: new fields.SchemaField({
                 max: new fields.NumberField({
                     required: true,
@@ -55,10 +58,10 @@ class QualityDataModel<TParent extends Quality = Quality> extends ItemDataModel<
             source.range.max = source.range.min > 0 ? 1 : -1;
         }
 
-        if (source.level === 0) {
-            source.level = source.range.max > 0 ? 1 : -1;
+        if (source.level.value === 0) {
+            source.level.value = source.range.max > 0 ? 1 : -1;
         } else {
-            source.level = Math.clamp(source.level, source.range.min, source.range.max);
+            source.level.value = Math.clamp(source.level.value, source.range.min, source.range.max);
         }
 
         return source;

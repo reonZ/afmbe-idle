@@ -8,6 +8,7 @@ import type {
 import type { Character } from "actor";
 import type { ItemAFMBE, ItemDataSchema } from "item";
 import type { QUALITY_CATEGORIES, QUALITY_TYPES, QualityDataModel } from ".";
+import { ValueField } from "fields";
 
 type QualityType = (typeof QUALITY_TYPES)[number];
 
@@ -20,7 +21,7 @@ type QualityRangeSchema = {
 
 type QualityDataSchema = ItemDataSchema & {
     category: StringField<QualityCategory, QualityCategory, true, false, true>;
-    level: NumberField<number, number, true, false, true>;
+    level: ValueField<NumberField<number, number, true, false, true>>;
     range: SchemaField<QualityRangeSchema>;
 };
 
