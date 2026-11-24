@@ -2,9 +2,16 @@ import { ApplicationClosingOptions } from "@7h3laughingman/foundry-types/client/
 import { HandlebarsRenderOptions } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 import { Creature } from "actor";
 import { DocumentSheetPartAFME } from "document-sheet";
-import { ItemSheetAFMBE } from "item";
+import { ItemSheetAFMBE, Skill } from "item";
+import * as R from "remeda";
 import { localize } from "utils";
-import { Skill, SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext, SkillSheetRenderOptions } from "..";
+import {
+    SkillParentEntry,
+    SkillSheetConfiguration,
+    SkillSheetPart,
+    SkillSheetRenderContext,
+    SkillSheetRenderOptions,
+} from ".";
 
 class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>> extends ItemSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<SkillSheetConfiguration> = {
@@ -36,7 +43,15 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
     }
 
     static async prepareSidebar(this: SkillSheet, context: SkillSheetRenderContext) {
-        context.parent = this.item.rootParentItem;
+        context.parents = R.pipe(
+            [
+                { skill: this.item.parentItem, title: "next" },
+                { skill: this.item.rootParentItem, title: "root" },
+            ] as const,
+            R.filter((entry): entry is SkillParentEntry => R.isNonNullish(entry.skill)),
+            R.uniqueBy(R.prop("skill")),
+            R.reverse(),
+        );
         context.specialties = this.item.system.deepSpecialties;
     }
 

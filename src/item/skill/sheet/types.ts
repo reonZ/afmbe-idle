@@ -14,8 +14,19 @@ type SkillSheetConfiguration = ItemSheetConfiguration;
 
 type SkillSheetRenderContext = ItemSheetRenderContext & {
     level?: number;
-    parent?: Skill | null;
+    parents?: SkillParentEntry[];
     specialties?: Skill[];
 };
 
-export type { SkillSheetConfiguration, SkillSheetPart, SkillSheetRenderContext, SkillSheetRenderOptions };
+type SkillParentEntry = {
+    skill: Skill;
+    title: "next" | "root";
+};
+
+export type {
+    SkillParentEntry,
+    SkillSheetConfiguration,
+    SkillSheetPart,
+    SkillSheetRenderContext,
+    SkillSheetRenderOptions,
+};
