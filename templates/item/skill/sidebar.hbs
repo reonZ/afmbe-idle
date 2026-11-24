@@ -4,10 +4,10 @@
         {{localize 'afmbe.item.skill.parent' parent.title}}
     </div>
     <div class="list">
-        <a data-action="open-item-sheet" data-item-id="{{parent.skill.chainId}}">
-            {{parent.skill.name}}
+        <a data-action="open-item-sheet" data-item-id="{{parent.id}}">
+            {{parent.name}}
         </a>
-        <input type="number" value="{{parent.skill.system.level.value}}" disabled />
+        <input type="number" value="{{parent.level}}" disabled />
     </div>
     {{/each}}
     <div class="title">
@@ -18,10 +18,10 @@
     </div>
     <div class="list">
         {{#each specialties as |specialty|}}
-        <a class="name" data-action="open-item-sheet" data-item-id="{{specialty.chainId}}">
+        <a class="name" data-action="open-item-sheet" data-item-id="{{specialty.id}}">
             {{specialty.name}}
         </a>
-        <input type="number" value="{{specialty.system.level.value}}" disabled />
+        <input type="number" value="{{specialty.level}}" disabled />
         {{/each}}
     </div>
 </div>

@@ -4,7 +4,6 @@ import type {
     CreatureSheetRenderContext,
     CreatureSheetRenderOptions,
 } from "actor";
-import type { Skill } from "item";
 
 type CharacterSheetPart = CreatureSheetPart | "skills";
 
@@ -13,7 +12,14 @@ type CharacterSheetRenderOptions = CreatureSheetRenderOptions;
 type CharacterSheetConfiguration = CreatureSheetConfiguration;
 
 type CharacterSheetRenderContext = CreatureSheetRenderContext & {
-    skills?: Skill[];
+    skills?: CharacterSheetSkill[];
+};
+
+type CharacterSheetSkill = {
+    id: string;
+    modifier: string;
+    name: string;
+    specialty: boolean;
 };
 
 export type {
@@ -21,4 +27,5 @@ export type {
     CharacterSheetPart,
     CharacterSheetRenderContext,
     CharacterSheetRenderOptions,
+    CharacterSheetSkill,
 };

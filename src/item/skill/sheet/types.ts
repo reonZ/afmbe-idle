@@ -1,10 +1,4 @@
-import type {
-    ItemSheetConfiguration,
-    ItemSheetPart,
-    ItemSheetRenderContext,
-    ItemSheetRenderOptions,
-    Skill,
-} from "item";
+import type { ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions } from "item";
 
 type SkillSheetPart = ItemSheetPart | "sidebar";
 
@@ -14,19 +8,25 @@ type SkillSheetConfiguration = ItemSheetConfiguration;
 
 type SkillSheetRenderContext = ItemSheetRenderContext & {
     level?: number;
-    parents?: SkillParentEntry[];
-    specialties?: Skill[];
+    parents?: SkillSheetParentEntry[];
+    specialties?: SkillSheetSkillEntry[];
 };
 
-type SkillParentEntry = {
-    skill: Skill;
+type SkillSheetSkillEntry = {
+    id: string;
+    level: number;
+    name: string;
+};
+
+type SkillSheetParentEntry = SkillSheetSkillEntry & {
     title: "next" | "root";
 };
 
 export type {
-    SkillParentEntry,
     SkillSheetConfiguration,
+    SkillSheetParentEntry,
     SkillSheetPart,
     SkillSheetRenderContext,
     SkillSheetRenderOptions,
+    SkillSheetSkillEntry,
 };

@@ -7,19 +7,19 @@
     </div>
     <div class="list">
         {{#each skills as |skill|}}
-        <a class="name" data-action="open-item-sheet" data-item-id="{{skill.chainId}}">
-            {{#if skill.system.isSpecialty}}
+        <a class="name" data-action="open-item-sheet" data-item-id="{{skill.id}}">
+            {{#if skill.specialty}}
             <i class="fa-regular fa-arrow-turn-down-right"></i>
             {{/if}}
             {{skill.name}}
         </a>
         <a
             data-action="roll-task"
-            data-skill="{{skill.chainId}}"
+            data-skill="{{skill.id}}"
             data-disable="skill"
             data-tooltip="{{localize 'afmbe.actor.creature.task.roll.task' name=skill.name}}"
         >
-            <input type="text" class="modifier disabled" value="{{skill.system.modifier}}" readonly />
+            <input type="text" class="modifier disabled" value="{{skill.modifier}}" readonly />
         </a>
         {{/each}}
     </div>

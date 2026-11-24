@@ -6,11 +6,12 @@ import { ItemSheetAFMBE, Skill } from "item";
 import * as R from "remeda";
 import { localize } from "utils";
 import {
-    SkillParentEntry,
+    SkillSheetParentEntry,
     SkillSheetConfiguration,
     SkillSheetPart,
     SkillSheetRenderContext,
     SkillSheetRenderOptions,
+    SkillSheetSkillEntry,
 } from ".";
 
 class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>> extends ItemSheetAFMBE<TParent> {
@@ -48,11 +49,25 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
                 { skill: this.item.parentItem, title: "next" },
                 { skill: this.item.rootParentItem, title: "root" },
             ] as const,
-            R.filter((entry): entry is SkillParentEntry => R.isNonNullish(entry.skill)),
+            R.filter((entry): entry is { skill: Skill; title: "next" | "root" } => R.isNonNullish(entry.skill)),
             R.uniqueBy(R.prop("skill")),
             R.reverse(),
+            R.map(({ skill, title }): SkillSheetParentEntry => {
+                return {
+                    id: skill.chainId,
+                    level: skill.system.level.value,
+                    name: skill.name,
+                    title,
+                };
+            }),
         );
-        context.specialties = this.item.system.deepSpecialties;
+        context.specialties = R.map(this.item.system.deepSpecialties, (skill): SkillSheetSkillEntry => {
+            return {
+                id: skill.chainId,
+                level: skill.system.level.value,
+                name: skill.name,
+            };
+        });
     }
 
     static async #addSpecialty(this: SkillSheet) {
@@ -67,10 +82,6 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         const { system, id, name } = this.item;
         const prefix = localize(system.isSpecialty ? "afmbe.item.skill.specialty.name" : "TYPES.Item.skill");
         return `${prefix}: ${name || id}`;
-    }
-
-    refreshParentSheet() {
-        this.item.system.parentSkill?.sheet.render();
     }
 
     async _onFirstRender(context: object, options: SkillSheetRenderOptions): Promise<void> {
