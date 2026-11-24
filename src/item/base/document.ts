@@ -59,20 +59,18 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
 
         // check if this actor allows that kind of items
         if (parent instanceof ActorAFMBE) {
-            const allowedItems = parent.system.allowedItems;
-            const validSources = R.filter(sources, (source) => R.isIncludedIn(source.type, allowedItems));
+            const isValidItem = parent.system.isValidItem;
+            const validSources = R.filter(sources, (source) => isValidItem(source));
             return super.createDocuments(validSources, operation as DatabaseCreateOperation<ActorAFMBE>);
         }
 
         // forward the creation to parent for subitems
         if (parent instanceof ItemAFMBE) {
-            const allowedItems = parent.system.allowedSubItems;
+            const isValidItem = parent.system.isValidSubItem;
             const subItems = parent._source.system.subItems.slice();
             const sources = R.pipe(
                 data,
-                R.filter((entry): entry is ItemAFMBE | ItemSourceAFMBE => {
-                    return "type" in entry && R.isIncludedIn(entry.type, allowedItems);
-                }),
+                R.filter((entry): entry is ItemAFMBE | ItemSourceAFMBE => isValidItem(entry)),
                 R.map((entry): WithNonNullable<SubItemDataSource, "_id"> => {
                     const source = entry instanceof Item ? entry.toObject() : entry;
                     source._id ??= foundry.utils.randomID();
@@ -245,10 +243,10 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
         super.prepareBaseData();
 
         const parent = this.actor;
-        const allowedSubItems = this.system.allowedSubItems;
+        const isValidItem = this.system.isValidSubItem;
 
         for (const source of this.system.subItems) {
-            if (!R.isIncludedIn(source.type, allowedSubItems)) continue;
+            if (!isValidItem(source)) continue;
 
             const previous = this.subItems.get(source._id ?? "");
 

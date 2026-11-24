@@ -1,6 +1,5 @@
 import { documentSheetMixinAFMBE } from "document-sheet";
 import { ItemAFMBE } from "item";
-import * as R from "remeda";
 import { localize } from "utils";
 import { ActorAFMBE, ActorSheetConfiguration, ActorSheetRenderContext, ActorSheetRenderOptions } from "..";
 
@@ -31,7 +30,7 @@ abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends 
     }
 
     async _onDropItem(event: DragEvent, item: ItemAFMBE): Promise<Maybe<ItemAFMBE>> {
-        if (!R.isIncludedIn(item.type, this.actor.system.allowedItems)) {
+        if (!this.actor.system.isValidItem(item)) {
             ui.notifications.error("afmbe.actor.allowedItems.error", {
                 format: { type: localize("TYPES.Item", item.type) },
             });

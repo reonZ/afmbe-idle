@@ -45,6 +45,7 @@ class ActorAFMBE<TParent extends TokenDocumentAFMBE | null = TokenDocumentAFMBE 
         const getDescriptor = Reflect.getOwnPropertyDescriptor(this.items, "get");
         if (getDescriptor && !getDescriptor.writable) return; // we already overridden it
 
+        // we override the items collection get method to accept chain id of subitems
         const getItem = this.items.get.bind(this.items);
         Object.defineProperty(this.items, "get", {
             value: function (key: string, options?: EmbeddedCollectionGetOptions) {

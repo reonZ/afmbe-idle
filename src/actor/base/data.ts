@@ -1,4 +1,5 @@
-import { ItemType } from "item";
+import { ItemAFMBE, ItemSourceAFMBE, ItemType } from "item";
+import * as R from "remeda";
 import { ActorAFMBE, ActorDataSchema } from ".";
 
 class ActorDataModel<TParent extends ActorAFMBE, TSchema extends ActorDataSchema> extends foundry.abstract
@@ -9,6 +10,10 @@ class ActorDataModel<TParent extends ActorAFMBE, TSchema extends ActorDataSchema
 
     get allowedItems(): ItemType[] {
         return [];
+    }
+
+    isValidItem(item: ItemAFMBE | DeepPartial<ItemSourceAFMBE>): boolean {
+        return R.isIncludedIn(item.type, this.allowedItems);
     }
 }
 

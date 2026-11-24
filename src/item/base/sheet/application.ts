@@ -6,7 +6,6 @@ import {
 import { ActorAFMBE } from "actor";
 import { documentSheetMixinAFMBE, DocumentSheetPartAFME } from "document-sheet";
 import { ItemAFMBE } from "item";
-import * as R from "remeda";
 import { enrichHTML, localize } from "utils";
 import { ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions } from ".";
 
@@ -59,7 +58,7 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
     async _onDropItem<T extends ItemAFMBE<null>>(_event: DragEvent, item: T): Promise<T | undefined> {
         if (!this.item.isOwner) return;
 
-        if (!R.isIncludedIn(item.type, this.item.system.allowedSubItems)) {
+        if (!this.item.system.isValidSubItem(item)) {
             ui.notifications.error("afmbe.item.allowedSubItems.error", {
                 format: { type: localize("TYPES.Item", item.type) },
             });

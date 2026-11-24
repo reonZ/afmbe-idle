@@ -1,5 +1,5 @@
 import * as R from "remeda";
-import { ItemAFMBE, ItemDataSchema, ItemDataSource, ItemType, SubItemDataSchema } from ".";
+import { ItemAFMBE, ItemDataSchema, ItemDataSource, ItemSourceAFMBE, ItemType, SubItemDataSchema } from ".";
 import fields = foundry.data.fields;
 import { RequiredHTMLField } from "fields";
 
@@ -39,8 +39,17 @@ class ItemDataModel<
     get item(): TParent {
         return this.parent;
     }
+
+    isValidSubItem(item: ItemAFMBE | DeepPartial<ItemSourceAFMBE>): boolean {
+        return R.isIncludedIn(item.type, this.allowedSubItems);
+    }
 }
 
-interface ItemDataModel<TParent extends ItemAFMBE, TSchema extends ItemDataSchema> extends ItemDataSource {}
+interface ItemDataModel<TParent extends ItemAFMBE, TSchema extends ItemDataSchema> extends Omit<
+    ItemDataSource,
+    "subItems"
+> {
+    subItems: ItemSourceAFMBE[];
+}
 
 export { ItemDataModel };
