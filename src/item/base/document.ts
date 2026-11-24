@@ -20,15 +20,19 @@ import {
     SubItemDataSource,
     SubItems,
 } from ".";
+import { id } from "../../../system.json";
 import Document = foundry.abstract.Document;
 
 class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends Item<TParent> {
     declare parentItem: ItemAFMBE<TParent> | null;
     declare subItems: SubItems<ItemAFMBE<TParent>>;
 
-    static DEFAULT_ICONS: Partial<Record<ItemType, ImageFilePath>> = {
-        skill: "icons/svg/book.svg",
-    };
+    static DEFAULT_ICONS: Record<ItemType | "drawback", ImageFilePath> = R.fromKeys(
+        ["armor", "drawback", "quality", "skill", "weapon"] as const,
+        (name): ImageFilePath => {
+            return `systems/${id}/images/item/${name}.svg`;
+        },
+    );
 
     constructor(data: PreCreate<ItemSourceAFMBE>, context: ItemConstructionContext<TParent> = {}) {
         super(data, context);
@@ -36,7 +40,7 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
     }
 
     static getDefaultArtwork(itemData: ItemSourceAFMBE): { img: ImageFilePath } {
-        return { img: this.DEFAULT_ICONS[itemData.type] ?? this.DEFAULT_ICON };
+        return { img: this.DEFAULT_ICONS[itemData.type] };
     }
 
     static isItemType(type: Maybe<string>): type is ItemType {
