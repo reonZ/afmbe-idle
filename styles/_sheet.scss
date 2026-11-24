@@ -21,6 +21,10 @@
     }
 
     .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
         input[type="number"],
         input[type="text"].modifier {
             padding: 2px 0;
@@ -48,7 +52,6 @@
 
         .title {
             position: relative;
-            margin-bottom: 0.3rem;
             padding-block: 0.5rem;
             text-align: center;
             background: var(--table-row-color-even);
@@ -69,6 +72,12 @@
             display: grid;
             align-items: center;
             gap: 0.3rem 0.5rem;
+
+            > * {
+                min-height: 1.438rem;
+                display: flex;
+                align-items: center;
+            }
         }
     }
 }

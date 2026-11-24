@@ -1,4 +1,14 @@
 <div class="sidebar">
+    {{#if parent}}
+    <div class="title">
+        {{localize 'afmbe.item.skill.parent'}}
+    </div>
+    <div class="list">
+        <a data-action="open-item-sheet" data-item-uuid="{{parent.uuid}}">
+            {{parent.name}}
+        </a>
+    </div>
+    {{/if}}
     <div class="title">
         {{localize 'afmbe.item.skill.specialties.title'}}
         <a data-action="add-specialty" data-tooltip="afmbe.item.skill.specialties.add">
@@ -6,11 +16,11 @@
         </a>
     </div>
     <div class="list">
-    {{#each item.system.deepSpecialties as |skill|}}
-    <a class="name" data-action="open-item-sheet" data-item-uuid="{{skill.uuid}}">
-        {{skill.name}}
-    </a>
-    <input type="number" value="{{skill.system.level.value}}" disabled />
-    {{/each}}
+        {{#each specialties as |specialty|}}
+        <a class="name" data-action="open-item-sheet" data-item-uuid="{{specialty.uuid}}">
+            {{specialty.name}}
+        </a>
+        <input type="number" value="{{specialty.system.level.value}}" disabled />
+        {{/each}}
     </div>
 </div>

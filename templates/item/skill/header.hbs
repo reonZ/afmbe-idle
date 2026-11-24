@@ -1,11 +1,6 @@
 <div class="sheet-header">
     <img src="{{img}}" data-action="editImage" data-edit="img" />
     <input type="text" name="name" value="{{name}}" placeholder="{{name}}" />
-    {{#if parent}}
-    <div class="parent">
-        Parent
-    </div>
-    {{/if}}
     <div class="level">
         <label for="{{rootId}}-level">{{localize 'afmbe.item.skill.level'}}</label>
         <input

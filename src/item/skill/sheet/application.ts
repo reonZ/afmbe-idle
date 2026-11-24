@@ -22,6 +22,7 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         },
         sidebar: {
             template: "systems/afmbe-idle/templates/item/skill/sidebar.hbs",
+            prepareContext: this.prepareSidebar,
         },
     };
 
@@ -32,6 +33,11 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
     ) {
         super.prepareHeaderContext(context, options);
         context.level = this.item.system.level.value;
+    }
+
+    static async prepareSidebar(this: SkillSheet, context: SkillSheetRenderContext) {
+        context.parent = this.item.rootParentItem;
+        context.specialties = this.item.system.deepSpecialties;
     }
 
     static async #addSpecialty(this: SkillSheet) {

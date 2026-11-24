@@ -1,4 +1,3 @@
-import { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 import type {
     ItemSheetConfiguration,
     ItemSheetPart,
@@ -15,10 +14,7 @@ type SkillSheetConfiguration = ItemSheetConfiguration;
 
 type SkillSheetRenderContext = ItemSheetRenderContext & {
     level?: number;
-    parent?: {
-        available: FormSelectOption[];
-        selected: string | undefined;
-    };
+    parent?: Skill | null;
     specialties?: Skill[];
 };
 
