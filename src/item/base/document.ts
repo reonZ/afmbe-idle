@@ -59,14 +59,14 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
 
         // check if this actor allows that kind of items
         if (parent instanceof ActorAFMBE) {
-            const isValidItem = parent.system.isValidItem;
+            const isValidItem = parent.system.isValidItem.bind(parent.system);
             const validSources = R.filter(sources, (source) => isValidItem(source));
             return super.createDocuments(validSources, operation as DatabaseCreateOperation<ActorAFMBE>);
         }
 
         // forward the creation to parent for subitems
         if (parent instanceof ItemAFMBE) {
-            const isValidItem = parent.system.isValidSubItem;
+            const isValidItem = parent.system.isValidSubItem.bind(parent.system);
             const subItems = parent._source.system.subItems.slice();
             const sources = R.pipe(
                 data,
@@ -243,7 +243,7 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
         super.prepareBaseData();
 
         const parent = this.actor;
-        const isValidItem = this.system.isValidSubItem;
+        const isValidItem = this.system.isValidSubItem.bind(this.system);
 
         for (const source of this.system.subItems) {
             if (!isValidItem(source)) continue;
