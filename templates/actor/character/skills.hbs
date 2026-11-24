@@ -7,7 +7,7 @@
     </div>
     <div class="list">
         {{#each skills as |skill|}}
-        <a class="name" data-action="open-item-sheet" data-item-uuid="{{skill.uuid}}">
+        <a class="name" data-action="open-item-sheet" data-item-id="{{skill.chainId}}">
             {{#if skill.system.isSpecialty}}
             <i class="fa-regular fa-arrow-turn-down-right"></i>
             {{/if}}

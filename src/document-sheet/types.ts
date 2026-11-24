@@ -5,10 +5,12 @@ import type {
     HandlebarsRenderOptions,
     HandlebarsTemplatePart,
 } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
+import type { ActorAFMBE } from "actor";
 import type { ItemAFMBE } from "item";
 
 interface DocumentSheetAFMBE extends HandlebarsApplication {
     _attachListeners(html: HTMLElement): void | Promise<void>;
+    document: ActorAFMBE | ItemAFMBE;
     getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null>;
 }
 

@@ -4,6 +4,7 @@ import DocumentSheetV2, {
 } from "@7h3laughingman/foundry-types/client/applications/api/document-sheet.mjs";
 import { HandlebarsRenderOptions } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 import { ContextMenuEntry } from "@7h3laughingman/foundry-types/client/applications/ux/context-menu.mjs";
+import { ActorAFMBE } from "actor";
 import { ItemAFMBE } from "item";
 import { DocumentSheetStaticAFMBE } from ".";
 
@@ -22,19 +23,13 @@ function documentSheetMixinAFMBE<TBase extends AbstractConstructorOf<DocumentShe
             },
         };
 
-        static async getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null> {
-            const uuid = target.closest<HTMLElement>("[data-item-uuid]")?.dataset.itemUuid;
-            const item = await fromUuid(uuid ?? "");
-            return item instanceof ItemAFMBE ? item : null;
-        }
-
-        static async #deleteItem(_event: PointerEvent, target: HTMLElement) {
-            const item = await HandlebarsApplicationAFMBE.getItemFromTargetElement(target);
+        static async #deleteItem(this: HandlebarsApplicationAFMBE, _event: PointerEvent, target: HTMLElement) {
+            const item = await this.getItemFromTargetElement(target);
             item?.confirmDelete();
         }
 
-        static async #openItemSheet(_event: PointerEvent, target: HTMLElement) {
-            const item = await HandlebarsApplicationAFMBE.getItemFromTargetElement(target);
+        static async #openItemSheet(this: HandlebarsApplicationAFMBE, _event: PointerEvent, target: HTMLElement) {
+            const item = await this.getItemFromTargetElement(target);
             item?.sheet.render(true);
         }
 
@@ -86,7 +81,7 @@ function documentSheetMixinAFMBE<TBase extends AbstractConstructorOf<DocumentShe
         async _onFirstRender(context: object, options: HandlebarsRenderOptions): Promise<void> {
             await super._onFirstRender(context, options);
 
-            this._createContextMenu(this.getItemContextOptions, "[data-item-uuid]", {
+            this._createContextMenu(this.getItemContextOptions, "[data-item-id]", {
                 hookName: "get{}ItemContextOptions",
                 parentClassHooks: false,
             });
@@ -116,8 +111,16 @@ function documentSheetMixinAFMBE<TBase extends AbstractConstructorOf<DocumentShe
             ];
         }
 
-        getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null> {
-            return (this.constructor as typeof HandlebarsApplicationAFMBE).getItemFromTargetElement(target);
+        get rootParent(): ActorAFMBE | ItemAFMBE {
+            return (this.document instanceof ItemAFMBE && this.document.actor) || this.document;
+        }
+
+        async getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null> {
+            const parent = this.rootParent;
+            const id = target.closest<HTMLElement>("[data-item-id]")?.dataset.itemId ?? "";
+            const item = parent instanceof ActorAFMBE ? parent.items.get(id) : parent.subItems.get(id);
+
+            return item instanceof ItemAFMBE ? item : null;
         }
     }
 

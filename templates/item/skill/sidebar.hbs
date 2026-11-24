@@ -4,7 +4,7 @@
         {{localize 'afmbe.item.skill.parent'}}
     </div>
     <div class="list">
-        <a data-action="open-item-sheet" data-item-uuid="{{parent.uuid}}">
+        <a data-action="open-item-sheet" data-item-id="{{parent.chainId}}">
             {{parent.name}}
         </a>
     </div>
@@ -17,7 +17,7 @@
     </div>
     <div class="list">
         {{#each specialties as |specialty|}}
-        <a class="name" data-action="open-item-sheet" data-item-uuid="{{specialty.uuid}}">
+        <a class="name" data-action="open-item-sheet" data-item-id="{{specialty.chainId}}">
             {{specialty.name}}
         </a>
         <input type="number" value="{{specialty.system.level.value}}" disabled />
