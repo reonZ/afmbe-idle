@@ -112,7 +112,8 @@ function documentSheetMixinAFMBE<TBase extends AbstractConstructorOf<DocumentShe
         }
 
         get rootParent(): ActorAFMBE | ItemAFMBE {
-            return (this.document instanceof ItemAFMBE && this.document.actor) || this.document;
+            const document = this.document as ActorAFMBE | ItemAFMBE;
+            return document instanceof ActorAFMBE ? document : (document.actor ?? document.rootParentItem ?? document);
         }
 
         async getItemFromTargetElement(target: HTMLElement): Promise<ItemAFMBE | null> {

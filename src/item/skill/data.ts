@@ -1,5 +1,5 @@
 import { PositiveIntergerValueField } from "fields";
-import { ItemDataModel, ItemDataSource, ItemType } from "item";
+import { ItemDataModel, ItemDataSource, ItemType, SubItems } from "item";
 import * as R from "remeda";
 import { getNextIndexedName, signedNumber } from "utils";
 import { Skill, SkillDataSchema, SkillDataSource, SkillSource } from ".";
@@ -41,7 +41,7 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
         return this.item.parentItem;
     }
 
-    get specialties(): Collection<string, Skill<TParent["actor"]>> {
+    get specialties(): SubItems<Skill<TParent["actor"]>, Skill<TParent["actor"]>> {
         return this.item.subItems;
     }
 

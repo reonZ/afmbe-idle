@@ -160,7 +160,7 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
         return super.deleteDocuments(ids, operation as DatabaseDeleteOperation<ActorAFMBE | null>);
     }
 
-    /** the id chain for actor.items.get */
+    /** the id chain up to the root parent */
     get chainId(): string {
         return this.parentItem ? `${this.parentItem.chainId}.${this.id}` : this.id;
     }
@@ -179,7 +179,7 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
     }
 
     _initialize(options?: Record<string, unknown>): void {
-        this.subItems ??= new SubItems();
+        this.subItems ??= new SubItems(this);
         super._initialize(options);
     }
 
