@@ -7,7 +7,6 @@ type SkillSheetRenderOptions = ItemSheetRenderOptions;
 type SkillSheetConfiguration = ItemSheetConfiguration;
 
 type SkillSheetRenderContext = ItemSheetRenderContext & {
-    level?: number;
     parents?: SkillSheetParentEntry[];
     specialties?: SkillSheetSkillEntry[];
 };

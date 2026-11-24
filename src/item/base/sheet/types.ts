@@ -17,9 +17,18 @@ type ItemSheetRenderContext = DocumentSheetRenderContext & {
     isOwned?: boolean;
     img?: ImageFilePath;
     item?: ItemAFMBE;
+    level?: ItemSheetLevel;
     name?: string;
+};
+
+type ItemSheetLevel = {
+    label: string;
+    max: number | "any";
+    min: number | "any";
+    name: string;
+    value: number;
 };
 
 type ItemSheetConfiguration = DocumentSheetConfiguration;
 
-export type { ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions };
+export type { ItemSheetConfiguration, ItemSheetLevel, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions };

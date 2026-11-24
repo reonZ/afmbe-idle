@@ -1,13 +1,12 @@
 import { ApplicationClosingOptions } from "@7h3laughingman/foundry-types/client/applications/_module.mjs";
-import { HandlebarsRenderOptions } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 import { Creature } from "actor";
 import { DocumentSheetPartAFME } from "document-sheet";
 import { ItemSheetAFMBE, Skill } from "item";
 import * as R from "remeda";
 import { localize } from "utils";
 import {
-    SkillSheetParentEntry,
     SkillSheetConfiguration,
+    SkillSheetParentEntry,
     SkillSheetPart,
     SkillSheetRenderContext,
     SkillSheetRenderOptions,
@@ -24,24 +23,11 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
 
     static PARTS: DocumentSheetPartAFME<SkillSheetPart, SkillSheetRenderContext> = {
         ...super.PARTS,
-        header: {
-            template: "systems/afmbe-idle/templates/item/skill/header.hbs",
-            prepareContext: this.prepareHeaderContext,
-        },
         sidebar: {
             template: "systems/afmbe-idle/templates/item/skill/sidebar.hbs",
             prepareContext: this.prepareSidebar,
         },
     };
-
-    static async prepareHeaderContext(
-        this: SkillSheet,
-        context: SkillSheetRenderContext,
-        options: HandlebarsRenderOptions,
-    ) {
-        super.prepareHeaderContext(context, options);
-        context.level = this.item.system.level.value;
-    }
 
     static async prepareSidebar(this: SkillSheet, context: SkillSheetRenderContext) {
         context.parents = R.pipe(
@@ -82,6 +68,17 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         const { system, id, name } = this.item;
         const prefix = localize(system.isSpecialty ? "afmbe.item.skill.specialty.name" : "TYPES.Item.skill");
         return `${prefix}: ${name || id}`;
+    }
+
+    _prepareHeaderContext(context: SkillSheetRenderContext) {
+        super._prepareHeaderContext(context);
+        context.level = {
+            label: localize("afmbe.item.skill.level"),
+            max: "any",
+            min: 1,
+            name: "system.level.value",
+            value: this.item.system.level.value,
+        };
     }
 
     async _onFirstRender(context: object, options: SkillSheetRenderOptions): Promise<void> {

@@ -1,4 +1,3 @@
-import { HandlebarsRenderOptions } from "@7h3laughingman/foundry-types/client/applications/api/handlebars-application.mjs";
 import {
     DatabaseCreateOperation,
     DatabaseUpdateOperation,
@@ -29,13 +28,8 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
         },
     };
 
-    static prepareHeaderContext(
-        this: ItemSheetAFMBE,
-        context: ItemSheetRenderContext,
-        _options: HandlebarsRenderOptions,
-    ) {
-        context.name = this.item.name;
-        context.img = this.item.img ?? this.item.defaultArtwork.img;
+    static prepareHeaderContext(this: ItemSheetAFMBE, context: ItemSheetRenderContext) {
+        this._prepareHeaderContext(context);
     }
 
     static async prepareDescriptionContext(this: ItemSheetAFMBE, context: ItemSheetRenderContext) {
@@ -43,6 +37,11 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
             enriched: await enrichHTML(this.item.system.description),
             value: this.item.system.description,
         };
+    }
+
+    _prepareHeaderContext(context: ItemSheetRenderContext): Promise<void> | void {
+        context.name = this.item.name;
+        context.img = this.item.img ?? this.item.defaultArtwork.img;
     }
 
     async _onDropDocument<TDocument extends foundry.abstract.Document>(
