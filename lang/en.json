@@ -112,14 +112,23 @@
             },
             "quality": {
                 "category": {
+                    "label": "Category",
                     "mental": "Mental",
                     "physical": "Physical",
                     "social": "Social",
                     "supernatural": "Supernatural"
                 },
+                "level": {
+                    "cost": {
+                        "single": "Buy Cost",
+                        "plural": "Cost Per Level"
+                    },
+                    "label": "Level Options",
+                    "range": "Range"
+                },
                 "type": {
-                    "both": "Quality or Drawback",
                     "drawback": "Drawback",
+                    "label": "Type",
                     "quality": "Quality"
                 }
             },

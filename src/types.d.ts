@@ -4,7 +4,8 @@ import type { ChatMessageAFMBE } from "chat-message";
 import type { ItemAFMBE } from "item";
 import type { SceneAFMBE, TokenAFMBE, TokenDocumentAFMBE, UserAFMBE } from "misc";
 import type config from "./system-config";
-import type { TaskDie, TaskRoll } from "roll";
+import type { TaskRoll } from "roll";
+import type { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 
 type ConfiguredConfig = Config<
     AmbientLightDocument<SceneAFMBE | null>,
@@ -78,4 +79,6 @@ declare global {
     type WithNonNullable<T extends Record<string, unknown>, K extends keyof T> = Omit<T, K> & {
         [k in K]: Exclude<T[K], null | undefined>;
     };
+
+    type SelectOption<T extends string = string> = Omit<FormSelectOption, "value"> & { value: T };
 }

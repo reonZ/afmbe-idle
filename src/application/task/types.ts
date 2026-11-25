@@ -1,5 +1,4 @@
 import type { ApplicationRenderContext } from "@7h3laughingman/foundry-types/client/applications/_module.mjs";
-import type { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 import type { Creature, CreatureAttributeType, CreatureModifier } from "actor";
 import type { TaskRollType, TaskTarget } from "roll";
 import type { ApplicationConfigurationAFMBE, TEST_DIFFICULTIES } from "..";
@@ -31,7 +30,7 @@ type TaskApplicationSelect<K extends string, V extends string> = {
     disable: boolean;
     key: K;
     label: string;
-    options: (Omit<FormSelectOption, "value"> & { value: V })[];
+    options: SelectOption<V>[];
     selected: V | undefined;
 };
 

@@ -22,7 +22,7 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
             template: "systems/afmbe-idle/templates/item/sheet-header.hbs",
         },
         description: {
-            template: "systems/afmbe-idle/templates/item/description.hbs",
+            template: "systems/afmbe-idle/templates/item/sheet-description.hbs",
             prepareContext: this.prepareDescriptionContext,
         },
     };

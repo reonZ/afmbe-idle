@@ -1,5 +1,5 @@
 import { CharacterDataModel, CharacterDataSource, CREATURE_ATTRIBUTES } from "actor";
-import { BooleanField, PositiveIntegerField, RequiredHTMLField, ValueAndTotalField } from "fields";
+import { BooleanField, PositiveIntegerField, RequiredHTMLField } from "fields";
 import * as R from "remeda";
 import { Member, MEMBER_CATEGORY, MemberAttributes, MemberDataSchema, MemberDataSource, MemberExperience } from ".";
 import fields = foundry.data.fields;
@@ -22,7 +22,10 @@ class MemberDataModel<TParent extends Member = Member> extends CharacterDataMode
                 personality: new RequiredHTMLField(),
                 quote: new RequiredHTMLField(),
             }),
-            experience: new ValueAndTotalField(),
+            experience: new fields.SchemaField({
+                total: new PositiveIntegerField(),
+                value: new PositiveIntegerField(),
+            }),
             category: new fields.StringField({
                 required: true,
                 nullable: false,

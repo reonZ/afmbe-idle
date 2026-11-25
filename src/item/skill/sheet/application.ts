@@ -27,7 +27,7 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
             prepareContext: this.prepareHeader,
         },
         sidebar: {
-            template: "systems/afmbe-idle/templates/item/skill/sidebar.hbs",
+            template: "systems/afmbe-idle/templates/item/skill/sheet-sidebar.hbs",
             prepareContext: this.prepareSidebar,
         },
     };

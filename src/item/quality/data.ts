@@ -1,8 +1,8 @@
-import { ValueField } from "fields";
 import { ItemAFMBE, ItemDataModel, ItemDataSource } from "item";
-import * as R from "remeda";
-import { Quality, QUALITY_CATEGORIES, QualityDataSchema, QualityDataSource, QualitySource, QualityType } from ".";
+import { Quality, QUALITY_CATEGORIES, QUALITY_TYPES, QualityDataSchema, QualityDataSource, QualitySource } from ".";
 import fields = foundry.data.fields;
+import * as R from "remeda";
+import { PositiveIntegerField } from "fields";
 
 class QualityDataModel<TParent extends Quality = Quality> extends ItemDataModel<TParent, QualityDataSchema> {
     static defineSchema(): QualityDataSchema {
@@ -14,94 +14,58 @@ class QualityDataModel<TParent extends Quality = Quality> extends ItemDataModel<
                 initial: "mental",
                 choices: QUALITY_CATEGORIES,
             }),
-            level: new ValueField(
-                new fields.NumberField({
-                    required: true,
-                    nullable: false,
-                    initial: 1,
-                }),
-            ),
-            range: new fields.SchemaField({
-                max: new fields.NumberField({
-                    required: true,
-                    nullable: false,
-                    initial: 1,
-                }),
-                min: new fields.NumberField({
-                    required: true,
-                    nullable: false,
-                    initial: 1,
-                }),
+            level: new fields.SchemaField({
+                cost: new PositiveIntegerField({ min: 1 }),
+                max: new PositiveIntegerField({ min: 1 }),
+                value: new PositiveIntegerField({ min: 1 }),
+            }),
+            type: new fields.StringField({
+                required: true,
+                nullable: false,
+                initial: "quality",
+                choices: QUALITY_TYPES,
             }),
         };
     }
 
-    get isDrawback(): boolean {
-        return this.level.value < 0;
-    }
-
-    get isQuality() {
-        return this.level.value > 0;
-    }
-
-    get type(): QualityType {
-        const { max, min } = this.range;
-        return max > 0 && min > 0 ? "quality" : max < 0 && min < 0 ? "drawback" : "both";
+    get cost(): number {
+        return this.level.value * this.level.cost;
     }
 
     async _preCreate(data: DeepPartial<QualitySource>): Promise<boolean | void> {
-        const updates = this.#createSourceUpdates(this.item, data);
+        const updates: Record<string, any> = {};
 
-        if (updates) {
-            this.item.updateSource(updates);
+        if (this.level.value > this.level.max) {
+            updates["level.value"] = this.level.max;
+        }
+
+        if (this.type === "drawback" && this.item.img === ItemAFMBE.DEFAULT_ICONS.quality) {
+            updates.img = ItemAFMBE.DEFAULT_ICONS.drawback;
+        } else if (this.type === "quality" && this.item.img === ItemAFMBE.DEFAULT_ICONS.drawback) {
+            updates.img = ItemAFMBE.DEFAULT_ICONS.quality;
+        }
+
+        if (R.keys(updates).length) {
+            this.updateSource(updates);
         }
     }
 
     async _preUpdate(changes: DeepPartial<QualitySource>): Promise<boolean | void> {
-        const updates = this.#createSourceUpdates(this.item, changes);
+        if (R.isNumber(changes.system?.level?.value)) {
+            const total = changes.system?.level?.max ?? this.level.max;
 
-        if (updates) {
-            foundry.utils.mergeObject(changes, updates);
-        }
-    }
-
-    #createSourceUpdates(item: Quality, data: DeepPartial<QualitySource>): Record<string, any> | null {
-        const updates: Record<string, any> = {};
-
-        if (R.isNumber(data.system?.range?.min) && (data.system.range.min === 0 || data.system.range.min > 1)) {
-            updates["system.range.min"] = 1;
-        }
-
-        const min: number = updates["system.range.min"] ?? item.system.range.min;
-
-        if (R.isNumber(data.system?.range?.max)) {
-            if (data.system.range.max === 0) {
-                updates["system.range.max"] = 1;
-            } else if (data.system.range.max < -1) {
-                updates["system.range.max"] = min > 0 ? 1 : -1;
+            if (changes.system.level.value > total) {
+                changes.system.level.value = total;
             }
         }
 
-        const max: number = updates["system.range.max"] ?? item.system.range.max;
-
-        if (R.isNumber(data.system?.level?.value)) {
-            if (data.system.level.value === 0) {
-                updates["system.level.value"] = max > 0 ? 1 : -1;
-            } else {
-                updates["system.level.value"] = Math.clamp(data.system.level.value, min, max);
+        if (R.isString(changes.system?.type)) {
+            if (changes.system.type === "drawback" && this.item.img === ItemAFMBE.DEFAULT_ICONS.quality) {
+                changes.img = ItemAFMBE.DEFAULT_ICONS.drawback;
+            } else if (changes.system.type === "quality" && this.item.img === ItemAFMBE.DEFAULT_ICONS.drawback) {
+                changes.img = ItemAFMBE.DEFAULT_ICONS.quality;
             }
         }
-
-        const level = updates["system.level.value"] ?? item.system.level.value;
-        const img = data.img ?? item.img;
-
-        if (level < 0 && img === ItemAFMBE.DEFAULT_ICONS.quality) {
-            updates.img = ItemAFMBE.DEFAULT_ICONS.drawback;
-        } else if (level > 0 && img === ItemAFMBE.DEFAULT_ICONS.drawback) {
-            updates.img = ItemAFMBE.DEFAULT_ICONS.quality;
-        }
-
-        return R.keys(updates).length ? updates : null;
     }
 }
 

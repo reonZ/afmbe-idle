@@ -6,7 +6,7 @@ import type {
 } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
 import type { ActorSource } from "@7h3laughingman/foundry-types/common/documents/actor.mjs";
 import type { Character, CharacterDataSchema, CreatureAttributeType } from "actor";
-import type { BooleanField, PositiveIntegerField, RequiredHTMLField, ValueAndTotalField } from "fields";
+import type { BooleanField, PositiveIntegerField, RequiredHTMLField } from "fields";
 import type { TokenDocumentAFMBE } from "misc";
 import type { MEMBER_CATEGORY, MemberDataModel } from ".";
 
@@ -26,11 +26,16 @@ type MemberAttributesSchema = Record<CreatureAttributeType, SchemaField<MemberAt
 
 type MemberCategory = (typeof MEMBER_CATEGORY)[number];
 
+type MemberExperienceSchema = {
+    total: PositiveIntegerField;
+    value: PositiveIntegerField;
+};
+
 type MemberDataSchema = Omit<CharacterDataSchema, "attributes"> & {
     attributes: SchemaField<MemberAttributesSchema>;
     category: StringField<MemberCategory, MemberCategory, true, false, true>;
     details: SchemaField<MemberDetailsSchema>;
-    experience: ValueAndTotalField;
+    experience: SchemaField<MemberExperienceSchema>;
 };
 
 type MemberAttributeSource = SourceFromSchema<MemberAttributeSchema>;

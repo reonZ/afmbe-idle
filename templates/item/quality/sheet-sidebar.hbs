@@ -1,0 +1,35 @@
+<div class="sidebar">
+    {{> 'select-fieldset' type}}
+    {{> 'select-fieldset' category}}
+    <fieldset class="level">
+        <legend>
+            {{localize 'afmbe.item.quality.level.label'}}
+        </legend>
+        <div class="range">
+            <div class="label">
+                {{localize 'afmbe.item.quality.level.range'}}
+            </div>
+            <input type="number" value="1" disabled>
+            -
+            <input type="number" name="system.level.max" value="{{level.max}}" placeholder="{{level.max}}" min="1">
+        </div>
+        <div class="cost">
+            <div class="label">
+                {{localize 'afmbe.item.quality.level.cost' (ifThen (eq level.max 1) 'single' 'plural')}}
+            </div>
+            <input type="number" name="system.level.cost" value="{{level.cost}}" placeholder="{{level.cost}}" min="1">
+        </div>
+    </fieldset>
+</div>
+
+
+{{#*inline 'select-fieldset'}}
+<fieldset>
+    <legend>
+        {{label}}
+    </legend>
+    <select name="{{name}}">
+        {{selectOptions options selected=selected}}
+    </select>
+</fieldset>
+{{/inline}}

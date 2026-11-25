@@ -13,10 +13,4 @@ class PositiveIntergerValueField extends ValueField<PositiveIntegerField> {
     }
 }
 
-class ValueAndTotalField extends fields.SchemaField<{ total: PositiveIntegerField; value: PositiveIntegerField }> {
-    constructor() {
-        super({ total: new PositiveIntegerField(), value: new PositiveIntegerField() });
-    }
-}
-
-export { PositiveIntergerValueField, ValueAndTotalField, ValueField };
+export { PositiveIntergerValueField, ValueField };

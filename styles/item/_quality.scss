@@ -1,0 +1,31 @@
+.application.sheet.afmbe.item.quality .window-content {
+    .sheet-header {
+        &:has(input + label) {
+            grid-template-columns: auto 1fr auto 4ch;
+
+            input[type="number"] {
+                text-align: end;
+            }
+        }
+    }
+
+    .sidebar {
+        fieldset {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+
+            &.level {
+                > * {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.3rem;
+
+                    .label {
+                        flex: 1;
+                    }
+                }
+            }
+        }
+    }
+}
