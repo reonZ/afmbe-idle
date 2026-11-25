@@ -6,6 +6,7 @@ import { HandlebarsRenderOptions } from "@7h3laughingman/foundry-types/client/ap
 import { ContextMenuEntry } from "@7h3laughingman/foundry-types/client/applications/ux/context-menu.mjs";
 import { ActorAFMBE } from "actor";
 import { ItemAFMBE } from "item";
+import { logObject } from "utils";
 import { DocumentSheetStaticAFMBE } from ".";
 
 function documentSheetMixinAFMBE<TBase extends AbstractConstructorOf<DocumentSheetV2<any>>>(
@@ -19,13 +20,38 @@ function documentSheetMixinAFMBE<TBase extends AbstractConstructorOf<DocumentShe
             form: { submitOnChange: true },
             actions: {
                 "delete-item": this.#deleteItem,
+                "log-document": this.#logDocument,
+                "log-instance": this.#logInstance,
                 "open-item-sheet": this.#openItemSheet,
+            },
+            window: {
+                controls: [
+                    {
+                        action: "log-instance",
+                        icon: "fa-solid fa-terminal",
+                        label: "afmbe.application.controls.log-instance",
+                    },
+                    {
+                        action: "log-document",
+                        icon: "fa-solid fa-terminal",
+                        label: "afmbe.application.controls.log-document",
+                    },
+                ],
             },
         };
 
         static async #deleteItem(this: HandlebarsApplicationAFMBE, _event: PointerEvent, target: HTMLElement) {
             const item = await this.getItemFromTargetElement(target);
             item?.confirmDelete();
+        }
+
+        static async #logDocument(this: HandlebarsApplicationAFMBE) {
+            logObject(this.document.type, this.document);
+        }
+
+        static async #logInstance(this: HandlebarsApplicationAFMBE) {
+            const name = `${this.document.type}Sheet`;
+            logObject(name, this);
         }
 
         static async #openItemSheet(this: HandlebarsApplicationAFMBE, _event: PointerEvent, target: HTMLElement) {

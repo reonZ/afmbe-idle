@@ -102,6 +102,12 @@
                 }
             }
         },
+        "application": {
+            "controls": {
+                "log-document": "Log Document",
+                "log-instance": "Log Instance"
+            }
+        },
         "item": {
             "allowedSubItems": {
                 "error": "Item of type <b>{type}</b> cannot be added to this item."

@@ -3,7 +3,8 @@ import {
     ApplicationRenderContext,
     ApplicationRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
-import { render } from "utils";
+import * as R from "remeda";
+import { logObject, render } from "utils";
 import { ApplicationConfigurationAFMBE } from ".";
 
 abstract class ApplicationAFMBE<
@@ -11,7 +12,24 @@ abstract class ApplicationAFMBE<
 > extends foundry.applications.api.ApplicationV2<TConfig> {
     static DEFAULT_OPTIONS: DeepPartial<ApplicationConfiguration> = {
         classes: ["afmbe"],
+        actions: {
+            "log-instance": this.#logInstance,
+        },
+        window: {
+            controls: [
+                {
+                    action: "log-instance",
+                    icon: "fa-solid fa-terminal",
+                    label: "afmbe.application.controls.log-instance",
+                },
+            ],
+        },
     };
+
+    static async #logInstance(this: ApplicationAFMBE) {
+        const name = R.uncapitalize(this.constructor.name);
+        logObject(name, this);
+    }
 
     abstract get template(): string;
 
