@@ -70,6 +70,7 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
 
         // forward the creation to parent for subitems
         if (parent instanceof ItemAFMBE) {
+            const keepId = operation.keepId ?? false;
             const isValidItem = parent.system.isValidSubItem.bind(parent.system);
             const subItems = parent._source.system.subItems.slice();
             const sources = R.pipe(
@@ -77,7 +78,7 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
                 R.filter((entry): entry is ItemAFMBE | ItemSourceAFMBE => isValidItem(entry)),
                 R.map((entry): WithNonNullable<SubItemDataSource, "_id"> => {
                     const source = entry instanceof Item ? entry.toObject() : entry;
-                    source._id ??= foundry.utils.randomID();
+                    source._id = (keepId && source._id) || foundry.utils.randomID();
                     const item = new ItemAFMBE(source);
                     return item.toObject() as WithNonNullable<SubItemDataSource, "_id">;
                 }),
