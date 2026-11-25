@@ -58,7 +58,7 @@
             }
         }
 
-        .title {
+        > .title {
             position: relative;
             display: flex;
             align-items: center;
@@ -78,7 +78,7 @@
             }
         }
 
-        .list {
+        > .list {
             display: grid;
             align-items: center;
             gap: 0.3rem 0.5rem;
@@ -93,6 +93,13 @@
         > * + .title,
         > * + fieldset {
             margin-top: 0.5rem;
+        }
+
+        > .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 1.438rem;
         }
 
         a:hover {

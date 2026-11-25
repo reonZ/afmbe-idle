@@ -72,11 +72,5 @@
         grid-column: 2;
         grid-row: 2;
         gap: 1rem;
-
-        .sidebar {
-            .list {
-                grid-template-columns: 1fr auto;
-            }
-        }
     }
 }

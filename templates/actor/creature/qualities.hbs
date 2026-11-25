@@ -2,12 +2,18 @@
     <div class="sidebar">
         <div class="title">
             {{localize 'afmbe.actor.creature.qualities.title'}}
+            <a data-action="add-item" data-item-type="quality">
+                <i class="fa-solid fa-plus"></i>
+            </a>
         </div>
         {{> 'list' qualities}}
     </div>
     <div class="sidebar">
         <div class="title">
             {{localize 'afmbe.actor.creature.drawbacks.title'}}
+            <a data-action="add-item" data-item-type="quality" data-system-type="drawback">
+                <i class="fa-solid fa-plus"></i>
+            </a>
         </div>
         {{> 'list' drawbacks}}
     </div>
@@ -15,14 +21,14 @@
 
 
 {{#* inline 'list'}}
-<div class="list">
-    {{#each this as |quality|}}
+{{#each this as |quality|}}
+<div class="row">
     <a class="name" data-action="open-item-sheet" data-item-id="{{quality.id}}">
         {{quality.name}}
     </a>
     {{#if (gt quality.level.max 1)}}
     <input type="number" value="{{quality.level.value}}" disabled />
     {{/if}}
-    {{/each}}
 </div>
+{{/each}}
 {{/inline}}

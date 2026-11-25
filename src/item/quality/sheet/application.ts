@@ -1,9 +1,9 @@
 import { Creature } from "actor";
 import { DocumentSheetPartAFME } from "document-sheet";
-import { ItemSheetAFMBE, Quality, QUALITY_CATEGORIES, QUALITY_TYPES } from "item";
+import { ItemSheetAFMBE, Quality, QUALITY_CATEGORIES, QUALITY_TYPES, QualityCategory, QualityType } from "item";
 import * as R from "remeda";
 import { localize } from "utils";
-import { QualitySheetConfiguration, QualitySheetPart, QualitySheetRenderContext, QualitySheetSelect } from ".";
+import { QualitySheetConfiguration, QualitySheetPart, QualitySheetRenderContext } from ".";
 
 class QualitySheet<
     TParent extends Quality<Creature | null> = Quality<Creature | null>,
@@ -29,22 +29,24 @@ class QualitySheet<
     }
 
     static async prepareSidebarContext(this: QualitySheet, context: QualitySheetRenderContext) {
-        context.category = this.#createSidebarSelect("category", QUALITY_CATEGORIES);
-        context.level = this.item.system.level;
-        context.type = this.#createSidebarSelect("type", QUALITY_TYPES);
-    }
-
-    #createSidebarSelect<N extends "category" | "type", T extends string = this["item"]["system"][N]>(
-        name: N,
-        list: ReadonlyArray<T>,
-    ): QualitySheetSelect<T> {
-        return {
-            label: localize("afmbe.item.quality", name, "label"),
-            name: `system.${name}`,
-            options: R.map(list, (value): SelectOption<T> => {
-                return { value, label: localize("afmbe.item.quality", name, value) };
+        context.category = {
+            label: localize("afmbe.item.quality.category.label"),
+            name: "system.category",
+            options: R.map(QUALITY_CATEGORIES, (value): SelectOption<QualityCategory> => {
+                return { value, label: localize("afmbe.item.quality.category", value) };
             }),
-            selected: this.item.system[name] as any,
+            selected: this.item.system.category,
+        };
+
+        context.level = this.item.system.level;
+
+        context.type = {
+            label: localize("afmbe.item.quality.type.label"),
+            name: "system.type",
+            options: R.map(QUALITY_TYPES, (value): SelectOption<QualityType> => {
+                return { value, label: localize("afmbe.item.quality.type", value) };
+            }),
+            selected: this.item.system.type,
         };
     }
 }
