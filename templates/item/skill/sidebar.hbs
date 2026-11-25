@@ -1,7 +1,7 @@
 <div class="sidebar">
-    {{#each parents as |parent|}}
+    {{#if parent}}
     <div class="title">
-        {{localize 'afmbe.item.skill.parent' parent.title}}
+        {{localize 'afmbe.item.skill.parent'}}
     </div>
     <div class="list">
         <a data-action="open-item-sheet" data-item-id="{{parent.id}}">
@@ -9,7 +9,7 @@
         </a>
         <input type="number" value="{{parent.level}}" disabled />
     </div>
-    {{/each}}
+    {{/if}}
     <div class="title">
         {{localize 'afmbe.item.skill.specialties.title'}}
         <a data-action="add-specialty" data-tooltip="afmbe.item.skill.specialties.add">

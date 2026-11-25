@@ -1,0 +1,13 @@
+<div class="sheet-header">
+    <img src="{{item.img}}" data-action="editImage" data-edit="img" />
+    <input type="text" name="name" value="{{item.name}}" placeholder="{{item.name}}" />
+    <label for="{{rootId}}-sheet-header-level">{{localize 'afmbe.item.skill.level'}}</label>
+    <input
+        type="number"
+        id="{{rootId}}-sheet-header-level"
+        name="system.level.value"
+        value="{{level}}"
+        placeholder="{{level}}"
+        min="1"
+    />
+</div>

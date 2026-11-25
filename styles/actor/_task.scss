@@ -21,11 +21,11 @@
         }
 
         &.left {
-            padding-left: var(--application-padding-column);
+            padding-left: 1rem;
         }
 
         &.right {
-            padding-right: var(--application-padding-column);
+            padding-right: 1rem;
             overflow-y: auto;
         }
     }
@@ -77,7 +77,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 0.5rem;
-        padding-inline: var(--application-padding-column);
+        padding-inline: 1rem;
 
         button {
             --button-size: 2.4em;

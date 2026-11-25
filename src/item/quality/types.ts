@@ -8,7 +8,7 @@ import type {
 import type { Character } from "actor";
 import type { ItemAFMBE, ItemDataSchema } from "item";
 import type { QUALITY_CATEGORIES, QUALITY_TYPES, QualityDataModel } from ".";
-import { ValueField } from "fields";
+import type { ValueField } from "fields";
 
 type QualityType = (typeof QUALITY_TYPES)[number];
 

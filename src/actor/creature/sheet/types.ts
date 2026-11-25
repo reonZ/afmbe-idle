@@ -1,3 +1,4 @@
+import { ImageFilePath } from "@7h3laughingman/foundry-types/common/constants.mjs";
 import type {
     ActorSheetConfiguration,
     ActorSheetPart,
@@ -7,7 +8,7 @@ import type {
     CreatureSecondaryType,
     CreatureSpeed,
 } from "actor";
-import { TaskApplicationSelected } from "application";
+import type { TaskApplicationSelected } from "application";
 
 type CreatureSheetPart = ActorSheetPart | "attributes";
 
@@ -16,6 +17,7 @@ type CreatureSheetRenderOptions = ActorSheetRenderOptions;
 type CreatureSheetConfiguration = ActorSheetConfiguration;
 
 type CreatureSheetRenderContext = ActorSheetRenderContext & {
+    img?: ImageFilePath;
     primary?: {
         key: CreatureAttributeType;
         label: string;
@@ -28,7 +30,6 @@ type CreatureSheetRenderContext = ActorSheetRenderContext & {
         max: number | null;
     }[];
     speed?: CreatureSpeed;
-    name?: string;
 };
 
 type RollTaskTargetData = Partial<TaskApplicationSelected> & {

@@ -7,7 +7,8 @@ type SkillSheetRenderOptions = ItemSheetRenderOptions;
 type SkillSheetConfiguration = ItemSheetConfiguration;
 
 type SkillSheetRenderContext = ItemSheetRenderContext & {
-    parents?: SkillSheetParentEntry[];
+    level?: number;
+    parent?: SkillSheetSkillEntry;
     specialties?: SkillSheetSkillEntry[];
 };
 
@@ -17,13 +18,8 @@ type SkillSheetSkillEntry = {
     name: string;
 };
 
-type SkillSheetParentEntry = SkillSheetSkillEntry & {
-    title: "next" | "root";
-};
-
 export type {
     SkillSheetConfiguration,
-    SkillSheetParentEntry,
     SkillSheetPart,
     SkillSheetRenderContext,
     SkillSheetRenderOptions,

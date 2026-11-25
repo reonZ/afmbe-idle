@@ -17,7 +17,6 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
     static PARTS: DocumentSheetPartAFME<CreatureSheetPart, CreatureSheetRenderContext> = {
         header: {
             template: "systems/afmbe-idle/templates/actor/creature/sheet-header.hbs",
-            prepareContext: this.prepareHeaderContext,
         },
         attributes: {
             template: "systems/afmbe-idle/templates/actor/creature/attributes.hbs",
@@ -25,21 +24,20 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
         },
     };
 
-    static prepareHeaderContext(this: CreatureSheet, context: CreatureSheetRenderContext) {
-        context.name = this.actor.name;
-    }
-
     static prepareAttributesContext(this: CreatureSheet, context: CreatureSheetRenderContext) {
         context.img = this.actor.img;
+
         context.primary = R.map(CREATURE_ATTRIBUTES, (key) => {
             const label = CreatureAttributes.getLabel(key);
             const value = this.actor.system.attributes[key];
             return { key, label, value };
         });
+
         context.secondary = R.map(CREATURE_SECONDARIES, (key) => {
             const { value, label, max } = this.actor.system[key];
             return { key, label, max: max === Infinity ? null : max, value };
         });
+
         context.speed = this.actor.system.speed;
     }
 

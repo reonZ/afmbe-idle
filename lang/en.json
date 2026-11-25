@@ -125,10 +125,7 @@
             },
             "skill": {
                 "level": "Level",
-                "parent": {
-                    "next": "Parent Skill",
-                    "root": "Root Parent Skill"
-                },
+                "parent": "Parent Skill",
                 "specialty": {
                     "delete": "Delete Specialty",
                     "name": "Specialty"

@@ -20,7 +20,6 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
     static PARTS: DocumentSheetPartAFME<ItemSheetPart, ItemSheetRenderContext> = {
         header: {
             template: "systems/afmbe-idle/templates/item/sheet-header.hbs",
-            prepareContext: this.prepareHeaderContext,
         },
         description: {
             template: "systems/afmbe-idle/templates/item/description.hbs",
@@ -28,20 +27,11 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
         },
     };
 
-    static prepareHeaderContext(this: ItemSheetAFMBE, context: ItemSheetRenderContext) {
-        this._prepareHeaderContext(context);
-    }
-
     static async prepareDescriptionContext(this: ItemSheetAFMBE, context: ItemSheetRenderContext) {
         context.description = {
             enriched: await enrichHTML(this.item.system.description),
             value: this.item.system.description,
         };
-    }
-
-    _prepareHeaderContext(context: ItemSheetRenderContext): Promise<void> | void {
-        context.name = this.item.name;
-        context.img = this.item.img ?? this.item.defaultArtwork.img;
     }
 
     async _onDropDocument<TDocument extends foundry.abstract.Document>(

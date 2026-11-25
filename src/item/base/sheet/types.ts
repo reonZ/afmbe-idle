@@ -3,7 +3,6 @@ import type {
     DocumentSheetRenderContext,
     DocumentSheetRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/api/document-sheet.mjs";
-import type { ImageFilePath } from "@7h3laughingman/foundry-types/common/constants.mjs";
 import type { ActorAFMBE } from "actor";
 import type { ItemAFMBE } from "..";
 
@@ -15,10 +14,7 @@ type ItemSheetRenderContext = DocumentSheetRenderContext & {
     actor?: ActorAFMBE | null;
     description?: { enriched: string; value: string };
     isOwned?: boolean;
-    img?: ImageFilePath;
     item?: ItemAFMBE;
-    level?: ItemSheetLevel;
-    name?: string;
 };
 
 type ItemSheetLevel = {
