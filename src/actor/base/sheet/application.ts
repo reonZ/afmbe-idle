@@ -8,7 +8,7 @@ abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends 
 ) {
     static DEFAULT_OPTIONS: DeepPartial<ActorSheetConfiguration> = {
         classes: ["actor"],
-        position: { height: 500, width: 550 },
+        position: { height: 680, width: 650 },
         actions: {
             "add-item": this.#addItem,
         },

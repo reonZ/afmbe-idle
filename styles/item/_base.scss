@@ -1,4 +1,9 @@
 .application.sheet.afmbe.item .window-content {
+    --description-border-color-dark: #020202;
+    --description-border-color-ligth: #292929;
+
+    --description-border-one: 1px solid var(--description-border-color-dark);
+    --description-border-two: 1px solid var(--description-border-color-ligth);
     --sidebar-width: 200px;
 
     grid-template-columns: var(--sidebar-width) 1fr;
@@ -22,5 +27,25 @@
         height: 100%;
         grid-column: 2 / -1;
         grid-row: 2 / -1;
+        padding-inline: 0.5rem;
+        border-left: var(--description-border-one);
+        border-top: var(--description-border-one);
+        border-bottom: var(--description-border-two);
+        border-right: var(--description-border-two);
+        box-shadow: inset 0 0 4px black;
+
+        prose-mirror {
+            button.toggle {
+                top: 0.3rem;
+            }
+        }
+    }
+}
+
+body.theme-light .application.sheet.afmbe.item,
+.application.sheet.afmbe.item.theme-light {
+    .window-content {
+        --description-border-color-dark: #6b6b6b;
+        --description-border-color-ligth: #c1c1c1;
     }
 }

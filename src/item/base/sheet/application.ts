@@ -14,7 +14,7 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
     static DEFAULT_OPTIONS: DeepPartial<ItemSheetConfiguration> = {
         canCreate: false,
         classes: ["item"],
-        position: { height: 500, width: 650 },
+        position: { height: 460, width: 700 },
     };
 
     static PARTS: DocumentSheetPartAFME<ItemSheetPart, ItemSheetRenderContext> = {

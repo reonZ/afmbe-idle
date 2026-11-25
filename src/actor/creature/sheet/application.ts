@@ -8,7 +8,6 @@ import { Creature, CREATURE_ATTRIBUTES, CREATURE_SECONDARIES, CreatureAttributes
 abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<CreatureSheetConfiguration> = {
         classes: ["creature"],
-        position: { height: 650 },
         actions: {
             "roll-task": this.#rollTask,
         },
