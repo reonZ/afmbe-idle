@@ -1,4 +1,6 @@
 .application.sheet.afmbe .window-content {
+    --sidebar-fieldset-bg-color: #ffffff0a;
+
     display: grid;
     gap: 0.5rem 1rem;
 
@@ -42,10 +44,16 @@
             width: 4.5ch;
         }
 
-        a:hover {
-            input[type="text"].modifier {
-                text-shadow: 0 0 8px var(--color-shadow-primary);
-                box-shadow: 0 0 3px var(--color-shadow-primary);
+        fieldset {
+            margin: 0 -0.3rem;
+            padding: 0.4rem 0.5rem;
+            border-radius: 5px;
+            background: var(--sidebar-fieldset-bg-color);
+            border: none;
+
+            legend {
+                padding-left: 0.3rem;
+                font-weight: bold;
             }
         }
 
@@ -80,5 +88,24 @@
                 align-items: center;
             }
         }
+
+        > * + .title,
+        > * + fieldset {
+            margin-top: 0.5rem;
+        }
+
+        a:hover {
+            input[type="text"].modifier {
+                text-shadow: 0 0 8px var(--color-shadow-primary);
+                box-shadow: 0 0 3px var(--color-shadow-primary);
+            }
+        }
+    }
+}
+
+body.theme-light .application.sheet.afmbe,
+.application.sheet.afmbe.theme-light {
+    .window-content {
+        --sidebar-fieldset-bg-color: #00000014;
     }
 }

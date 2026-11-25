@@ -15,7 +15,7 @@
         </div>
         <div class="cost">
             <div class="label">
-                {{localize 'afmbe.item.quality.level.cost' (ifThen (eq level.max 1) 'single' 'plural')}}
+                {{localize 'afmbe.item.quality.level.cost' type.selected (ifThen (eq level.max 1) 'single' 'plural')}}
             </div>
             <input type="number" name="system.level.cost" value="{{level.cost}}" placeholder="{{level.cost}}" min="1">
         </div>

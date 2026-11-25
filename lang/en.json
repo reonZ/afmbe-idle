@@ -120,8 +120,14 @@
                 },
                 "level": {
                     "cost": {
-                        "single": "Buy Cost",
-                        "plural": "Cost Per Level"
+                        "drawback": {
+                            "single": "Points Gained",
+                            "plural": "Points Gained / Level"
+                        },
+                        "quality": {
+                            "single": "Points Cost",
+                            "plural": "Points Cost / Level"
+                        }
                     },
                     "label": "Level Options",
                     "range": "Range"
