@@ -65,4 +65,18 @@
             padding-right: 0.1rem;
         }
     }
+
+    .qualities {
+        display: grid;
+        grid-template-columns: repeat(2, var(--sidebar-width));
+        grid-column: 2;
+        grid-row: 2;
+        gap: 1rem;
+
+        .sidebar {
+            .list {
+                grid-template-columns: 1fr auto;
+            }
+        }
+    }
 }

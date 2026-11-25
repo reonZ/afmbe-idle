@@ -49,6 +49,9 @@
                     "primary": "Primary Attributes",
                     "secondary": "Secondary Attributes"
                 },
+                "drawbacks": {
+                    "title": "Drawbacks"
+                },
                 "endurance": {
                     "label": "Endurance"
                 },
@@ -57,6 +60,9 @@
                 },
                 "life": {
                     "label": "Life"
+                },
+                "qualities": {
+                    "title": "Qualities"
                 },
                 "speed": {
                     "label": "Speed",

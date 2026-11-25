@@ -10,19 +10,27 @@ import type {
 } from "actor";
 import type { TaskApplicationSelected } from "application";
 
-type CreatureSheetPart = ActorSheetPart | "attributes";
+type CreatureSheetPart = ActorSheetPart | "attributes" | "qualities";
 
 type CreatureSheetRenderOptions = ActorSheetRenderOptions;
 
 type CreatureSheetConfiguration = ActorSheetConfiguration;
 
+type CreatureSheetQuality = {
+    id: string;
+    level: ValueAndMax;
+    name: string;
+};
+
 type CreatureSheetRenderContext = ActorSheetRenderContext & {
+    drawbacks?: CreatureSheetQuality[];
     img?: ImageFilePath;
     primary?: {
         key: CreatureAttributeType;
         label: string;
         value: number;
     }[];
+    qualities?: CreatureSheetQuality[];
     secondary?: {
         key: CreatureSecondaryType;
         label: string;
@@ -39,6 +47,7 @@ type RollTaskTargetData = Partial<TaskApplicationSelected> & {
 export type {
     CreatureSheetConfiguration,
     CreatureSheetPart,
+    CreatureSheetQuality,
     CreatureSheetRenderContext,
     CreatureSheetRenderOptions,
     RollTaskTargetData,

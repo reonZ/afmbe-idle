@@ -2,8 +2,15 @@ import { ActorSheetAFMBE } from "actor";
 import { DocumentSheetPartAFME } from "document-sheet";
 import * as R from "remeda";
 import { splitString } from "utils";
-import { CreatureSheetConfiguration, CreatureSheetPart, CreatureSheetRenderContext, RollTaskTargetData } from ".";
+import {
+    CreatureSheetConfiguration,
+    CreatureSheetPart,
+    CreatureSheetQuality,
+    CreatureSheetRenderContext,
+    RollTaskTargetData,
+} from ".";
 import { Creature, CREATURE_ATTRIBUTES, CREATURE_SECONDARIES, CreatureAttributes } from "..";
+import { QualityType } from "item";
 
 abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<CreatureSheetConfiguration> = {
@@ -20,6 +27,10 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
         attributes: {
             template: "systems/afmbe-idle/templates/actor/creature/attributes.hbs",
             prepareContext: this.prepareAttributesContext,
+        },
+        qualities: {
+            template: "systems/afmbe-idle/templates/actor/creature/qualities.hbs",
+            prepareContext: this.prepareQualitiesContext,
         },
     };
 
@@ -38,6 +49,19 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
         });
 
         context.speed = this.actor.system.speed;
+    }
+
+    static prepareQualitiesContext(this: CreatureSheet, context: CreatureSheetRenderContext) {
+        const [drawbacks, qualities] = R.pipe(
+            this.actor.itemTypes.quality,
+            R.map((item): CreatureSheetQuality & { type: QualityType } => {
+                return { id: item.chainId, level: item.system.level, name: item.name, type: item.system.type };
+            }),
+            R.partition(({ type }) => type === "drawback"),
+        );
+
+        context.drawbacks = drawbacks;
+        context.qualities = qualities;
     }
 
     static #rollTask(this: CreatureSheet, event: PointerEvent, target: HTMLElement) {

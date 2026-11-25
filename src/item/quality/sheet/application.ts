@@ -16,19 +16,19 @@ class QualitySheet<
         ...super.PARTS,
         header: {
             template: "systems/afmbe-idle/templates/item/quality/sheet-header.hbs",
-            prepareContext: this.prepareHeader,
+            prepareContext: this.prepareHeaderContext,
         },
         sidebar: {
             template: "systems/afmbe-idle/templates/item/quality/sheet-sidebar.hbs",
-            prepareContext: this.prepareSidebar,
+            prepareContext: this.prepareSidebarContext,
         },
     };
 
-    static async prepareHeader(this: QualitySheet, context: QualitySheetRenderContext) {
+    static async prepareHeaderContext(this: QualitySheet, context: QualitySheetRenderContext) {
         context.level = this.item.system.level;
     }
 
-    static async prepareSidebar(this: QualitySheet, context: QualitySheetRenderContext) {
+    static async prepareSidebarContext(this: QualitySheet, context: QualitySheetRenderContext) {
         context.category = this.#createSidebarSelect("category", QUALITY_CATEGORIES);
         context.level = this.item.system.level;
         context.type = this.#createSidebarSelect("type", QUALITY_TYPES);

@@ -1,0 +1,28 @@
+<div class="qualities">
+    <div class="sidebar">
+        <div class="title">
+            {{localize 'afmbe.actor.creature.qualities.title'}}
+        </div>
+        {{> 'list' qualities}}
+    </div>
+    <div class="sidebar">
+        <div class="title">
+            {{localize 'afmbe.actor.creature.drawbacks.title'}}
+        </div>
+        {{> 'list' drawbacks}}
+    </div>
+</div>
+
+
+{{#* inline 'list'}}
+<div class="list">
+    {{#each this as |quality|}}
+    <a class="name" data-action="open-item-sheet" data-item-id="{{quality.id}}">
+        {{quality.name}}
+    </a>
+    {{#if (gt quality.level.max 1)}}
+    <input type="number" value="{{quality.level.value}}" disabled />
+    {{/if}}
+    {{/each}}
+</div>
+{{/inline}}

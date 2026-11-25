@@ -24,19 +24,19 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         ...super.PARTS,
         header: {
             template: "systems/afmbe-idle/templates/item/skill/sheet-header.hbs",
-            prepareContext: this.prepareHeader,
+            prepareContext: this.prepareHeaderContext,
         },
         sidebar: {
             template: "systems/afmbe-idle/templates/item/skill/sheet-sidebar.hbs",
-            prepareContext: this.prepareSidebar,
+            prepareContext: this.prepareSidebarContext,
         },
     };
 
-    static async prepareHeader(this: SkillSheet, context: SkillSheetRenderContext) {
+    static async prepareHeaderContext(this: SkillSheet, context: SkillSheetRenderContext) {
         context.level = this.item.system.level.value;
     }
 
-    static async prepareSidebar(this: SkillSheet, context: SkillSheetRenderContext) {
+    static async prepareSidebarContext(this: SkillSheet, context: SkillSheetRenderContext) {
         const parent = this.item.rootParentItem;
 
         if (parent) {
