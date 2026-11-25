@@ -1,7 +1,8 @@
+import { RequiredHTMLField } from "fields";
 import * as R from "remeda";
 import { ItemAFMBE, ItemDataSchema, ItemDataSource, ItemSourceAFMBE, ItemType, SubItemDataSchema } from ".";
 import fields = foundry.data.fields;
-import { RequiredHTMLField } from "fields";
+import { localize } from "utils";
 
 class ItemDataModel<
     TParent extends ItemAFMBE = ItemAFMBE,
@@ -38,6 +39,12 @@ class ItemDataModel<
 
     get item(): TParent {
         return this.parent;
+    }
+
+    static prepareSourceFromElement(el: HTMLElement): PreCreate<ItemSourceAFMBE> {
+        const type = el.dataset.itemType as ItemType;
+        const name = localize("TYPES.Item", type);
+        return { name, type };
     }
 
     isValidSubItem(item: ItemAFMBE | DeepPartial<ItemSourceAFMBE>): boolean {

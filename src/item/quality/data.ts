@@ -1,8 +1,9 @@
+import { PositiveIntegerField } from "fields";
 import { ItemAFMBE, ItemDataModel, ItemDataSource } from "item";
+import * as R from "remeda";
+import { localize } from "utils";
 import { Quality, QUALITY_CATEGORIES, QUALITY_TYPES, QualityDataSchema, QualityDataSource, QualitySource } from ".";
 import fields = foundry.data.fields;
-import * as R from "remeda";
-import { PositiveIntegerField } from "fields";
 
 class QualityDataModel<TParent extends Quality = Quality> extends ItemDataModel<TParent, QualityDataSchema> {
     static defineSchema(): QualityDataSchema {
@@ -32,6 +33,20 @@ class QualityDataModel<TParent extends Quality = Quality> extends ItemDataModel<
         return this.level.value * this.level.cost;
     }
 
+    static prepareSourceFromElement(el: HTMLElement): PreCreate<QualitySource> {
+        const { systemType = "quality" } = el.dataset;
+        const source = super.prepareSourceFromElement(el) as PreCreate<QualitySource>;
+
+        source.name = localize("afmbe.item.quality.type", systemType);
+
+        if (systemType === "drawback") {
+            source.system ??= {};
+            source.system.type = "drawback";
+        }
+
+        return source;
+    }
+
     async _preCreate(data: DeepPartial<QualitySource>): Promise<boolean | void> {
         const updates: Record<string, any> = {};
 
@@ -46,7 +61,7 @@ class QualityDataModel<TParent extends Quality = Quality> extends ItemDataModel<
         }
 
         if (R.keys(updates).length) {
-            this.updateSource(updates);
+            this.item.updateSource(updates);
         }
     }
 

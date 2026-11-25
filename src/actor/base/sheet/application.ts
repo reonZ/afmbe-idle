@@ -1,5 +1,5 @@
 import { documentSheetMixinAFMBE } from "document-sheet";
-import { ItemAFMBE } from "item";
+import { ItemAFMBE, ItemDataModel } from "item";
 import { localize } from "utils";
 import { ActorAFMBE, ActorSheetConfiguration, ActorSheetRenderContext, ActorSheetRenderOptions } from "..";
 
@@ -18,8 +18,10 @@ abstract class ActorSheetAFMBE<TParent extends ActorAFMBE = ActorAFMBE> extends 
         const type = target.dataset.itemType;
         if (!ItemAFMBE.isItemType(type)) return;
 
-        const name = localize("TYPES.Item", type);
-        const [item] = await this.actor.createEmbeddedDocuments("Item", [{ name, type }]);
+        const SystemModel = CONFIG.Item.dataModels[type] as typeof ItemDataModel;
+        const source = SystemModel.prepareSourceFromElement(target);
+
+        const [item] = await this.actor.createEmbeddedDocuments("Item", [source]);
         item?.sheet.render(true);
     }
 
