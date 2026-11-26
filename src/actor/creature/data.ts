@@ -1,10 +1,8 @@
 import { ActorDataModel, ActorDataSource } from "actor";
 import { TaskApplication, TaskApplicationData } from "application";
 import { PositiveIntergerValueField } from "fields";
-import * as R from "remeda";
 import {
     Creature,
-    CREATURE_MODIFIER_TYPES,
     CreatureAttributes,
     CreatureDataSchema,
     CreatureDataSource,
@@ -28,18 +26,6 @@ class CreatureDataModel<
             essence: new PositiveIntergerValueField(),
             life: new PositiveIntergerValueField(),
         };
-    }
-
-    /** because modifiers can be added via ActiveEffect */
-    get validModifiers(): CreatureModifier[] {
-        return R.pipe(
-            this.modifiers,
-            R.filter((modifier) => R.isString(modifier.label)),
-            R.map((modifier) => {
-                const type = R.isIncludedIn(modifier.type, CREATURE_MODIFIER_TYPES) ? modifier.type : "all";
-                return { ...modifier, type };
-            }),
-        );
     }
 
     // we prepare secondary attributes after primary attributes have been prepared AND modified by active effects

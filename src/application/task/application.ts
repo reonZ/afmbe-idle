@@ -55,7 +55,7 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
 
         this.#actor = actor;
         this.#disable = R.isArray(disable) ? disable.slice() : [];
-        this.#modifiers = actor.system.validModifiers;
+        this.#modifiers = actor.system.modifiers;
         this.#private = mode === "private";
         this.#selected = foundry.utils.mergeObject(
             { attribute: CREATURE_ATTRIBUTES[0], difficulty: TEST_DIFFICULTIES[0], skill: "" } as const,
@@ -237,7 +237,7 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
             }
         }
 
-        modifiers.push(...this.validModifiers);
+        modifiers.push(...R.filter(this.validModifiers, R.prop("active")));
 
         return modifiers;
     }

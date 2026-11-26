@@ -1,9 +1,12 @@
 import type { ActiveEffectChangeData } from "@7h3laughingman/foundry-types/client/documents/_types.mjs";
-import { ActorAFMBE, Creature, CreatureModifier } from "actor";
+import { ActorAFMBE, Creature, CREATURE_MODIFIER_TYPES, CreatureModifier } from "actor";
 import * as R from "remeda";
 
-function addModifierActiveEffectHandler(actor: unknown, change: ActiveEffectChangeData) {
+async function addModifierActiveEffectHandler(actor: unknown, change: ActiveEffectChangeData) {
     if (!isModifierActor(actor) || !isModifierData(change.value)) return;
+
+    change.value.label ??= change.effect?.item.name;
+    if (!R.isString(change.value.label)) return;
 
     if (R.isString(change.value.value)) {
         const field = new foundry.data.fields.NumberField();
@@ -15,6 +18,9 @@ function addModifierActiveEffectHandler(actor: unknown, change: ActiveEffectChan
         } catch {}
     }
 
+    change.value.origin ??= change.effect?.item.uuid;
+    change.value.type = R.isIncludedIn(change.value.type, CREATURE_MODIFIER_TYPES) ? change.value.type : "all";
+
     actor.system.modifiers.push(change.value);
 }
 
@@ -23,13 +29,7 @@ function isModifierActor(actor: unknown): actor is Creature {
 }
 
 function isModifierData(data: unknown): data is CreatureModifier {
-    return (
-        R.isObjectType(data) &&
-        "label" in data &&
-        "value" in data &&
-        R.isString(data.label) &&
-        R.isIncludedIn(typeof data.value, ["number", "string"])
-    );
+    return R.isObjectType(data) && "value" in data && R.isIncludedIn(typeof data.value, ["number", "string"]);
 }
 
 export { addModifierActiveEffectHandler };
