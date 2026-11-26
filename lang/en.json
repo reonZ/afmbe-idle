@@ -1,4 +1,11 @@
 {
+    "EFFECT": {
+        "CHANGES": {
+            "TYPES": {
+                "addModifier": "Add Creature Modifier"
+            }
+        }
+    },
     "TYPES": {
         "Actor": {
             "adversary": "Adversary",
@@ -113,6 +120,11 @@
                 "log-document": "Log Document",
                 "log-instance": "Log Instance"
             }
+        },
+        "effect": {
+            "label": "Label",
+            "type": "Type",
+            "value": "Value"
         },
         "item": {
             "allowedSubItems": {

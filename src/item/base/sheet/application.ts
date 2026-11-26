@@ -1,4 +1,5 @@
 import { ApplicationTabsConfiguration } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
+import FormDataExtended from "@7h3laughingman/foundry-types/client/applications/ux/form-data-extended.mjs";
 import {
     DatabaseCreateOperation,
     DatabaseUpdateOperation,
@@ -6,8 +7,10 @@ import {
 import { ActorAFMBE } from "actor";
 import { documentSheetMixinAFMBE, DocumentSheetPartAFME } from "document-sheet";
 import { ItemAFMBE } from "item";
-import { enrichHTML, localize } from "utils";
+import * as R from "remeda";
+import { enrichHTML, localize, render } from "utils";
 import { ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions } from ".";
+import { ActiveEffectChangeData } from "@7h3laughingman/foundry-types/client/documents/_types.mjs";
 
 abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends documentSheetMixinAFMBE(
     foundry.applications.sheets.ItemSheetV2<ItemAFMBE>,
@@ -28,6 +31,7 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
         },
         effects: {
             template: "systems/afmbe-idle/templates/item/sheet-effects.hbs",
+            prepareContext: this.prepareEffectsContext,
         },
         tabs: {
             template: "templates/generic/tab-navigation.hbs",
@@ -45,11 +49,40 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
         },
     };
 
+    static ACTIVE_EFFECTS: Record<string, { template: string }> = {
+        "system.modifiers": {
+            template: "systems/afmbe-idle/templates/effect/add-modifier.hbs",
+        },
+    };
+
     static async prepareDescriptionContext(this: ItemSheetAFMBE, context: ItemSheetRenderContext) {
         context.description = {
             enriched: await enrichHTML(this.item.system.description),
             value: this.item.system.description,
         };
+    }
+
+    static async prepareEffectsContext(this: ItemSheetAFMBE, context: ItemSheetRenderContext) {
+        const effectsPromise = R.map(this.item.effects.contents, async (effect) => {
+            if (!("changes" in effect.system) || !R.isArray(effect.system.changes)) return [];
+
+            const changes = R.map(effect.system.changes, async (data, index) => {
+                if (!R.isObjectType(data) || !("key" in data) || !R.isString(data.key)) return;
+
+                const template = ItemSheetAFMBE.ACTIVE_EFFECTS[data.key]?.template;
+                if (!template) return;
+
+                console.log(template, { ...data, rootId: `${effect.id}-${index}` });
+                const content = await render(template, { ...data, rootId: `${effect.id}-${index}` });
+                return render("systems/afmbe-idle/templates/effect/form.hbs", { content, id: effect.id, index });
+            });
+
+            return R.filter(await Promise.all(changes), R.isTruthy);
+        });
+
+        const effects = (await Promise.all(effectsPromise)).flat();
+
+        console.log(effects);
     }
 
     async _onDropDocument<TDocument extends foundry.abstract.Document>(
@@ -93,6 +126,15 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
         context.isOwned = !!this.item.actor;
         context.item = this.item;
         return context;
+    }
+
+    protected _processFormData(
+        event: SubmitEvent | null,
+        form: HTMLFormElement,
+        formData: FormDataExtended,
+    ): Record<string, unknown> {
+        console.log(arguments);
+        return super._processFormData(event, form, formData);
     }
 
     async _processSubmitData(

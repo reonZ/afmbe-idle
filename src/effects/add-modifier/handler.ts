@@ -5,7 +5,7 @@ import * as R from "remeda";
 async function addModifierActiveEffectHandler(actor: unknown, change: ActiveEffectChangeData) {
     if (!isModifierActor(actor) || !isModifierData(change.value)) return;
 
-    change.value.label ??= change.effect?.item.name;
+    change.value.label ||= change.effect?.item.name;
     if (!R.isString(change.value.label)) return;
 
     if (R.isString(change.value.value)) {
@@ -18,7 +18,9 @@ async function addModifierActiveEffectHandler(actor: unknown, change: ActiveEffe
         } catch {}
     }
 
-    change.value.origin ??= change.effect?.item.uuid;
+    if (!change.value.value) return;
+
+    change.value.origin ||= change.effect?.item.uuid;
     change.value.type = R.isIncludedIn(change.value.type, CREATURE_MODIFIER_TYPES) ? change.value.type : "all";
 
     actor.system.modifiers.push(change.value);

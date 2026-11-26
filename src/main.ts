@@ -66,7 +66,7 @@ Hooks.on("dropCanvasData", (canvas, data, _event) => {
 });
 
 CONFIG.ActiveEffect.changeTypes.addModifier = {
-    label: "Add Creature Modifier",
+    label: "EFFECT.CHANGES.TYPES.addModifier",
     defaultPriority: 20,
     handler: addModifierActiveEffectHandler,
 };

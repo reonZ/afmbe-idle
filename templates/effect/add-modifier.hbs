@@ -1,0 +1,14 @@
+<label for="{{rootId}}-label">
+    {{localize 'afmbe.effect.label'}}
+</label>
+<input type="text" id="{{rootId}}-label" name="label" value="{{value.label}}" placeholder="{{placeholder}}" />
+<label for="{{rootId}}-value">
+    {{localize 'afmbe.effect.value'}}
+</label>
+<input type="text" id="{{rootId}}-value" name="value" value="{{value.value}}" placeholder="1" />
+<label for="{{rootId}}-type">
+    {{localize 'afmbe.effect.type'}}
+</label>
+<select id="{{rootId}}-type" name="type">
+    {{selectOptions type.options selected=type.selected}}
+</select>
