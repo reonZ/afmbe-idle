@@ -114,6 +114,11 @@
             }
         }
     }
+
+    .sheet-tabs {
+        line-height: 1.7;
+        border-color: var(--color-border);
+    }
 }
 
 body.theme-light .application.sheet.afmbe,

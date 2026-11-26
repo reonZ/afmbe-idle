@@ -49,8 +49,6 @@
     .sheet-tabs {
         grid-column: 1;
         grid-row: 3;
-        line-height: 1.7;
-        border-color: var(--color-border);
 
         > .active {
             display: none;
