@@ -1,25 +1,3 @@
-.application.sheet.afmbe.item {
-    &.show-active-effects {
-        .window-header button.header-control.item-effects {
-            display: none;
-        }
-
-        .window-content .sheet-description {
-            display: none;
-        }
-    }
-
-    &:not(.show-active-effects) {
-        .window-header button.header-control.item-description {
-            display: none;
-        }
-
-        .window-content .sheet-effects {
-            display: none;
-        }
-    }
-}
-
 .application.sheet.afmbe.item .window-content {
     --description-border-color-dark: #020202;
     --description-border-color-ligth: #292929;
@@ -28,29 +6,31 @@
     --description-border-two: 1px solid var(--description-border-color-ligth);
 
     grid-template-columns: var(--sidebar-width) 1fr;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto 1fr auto;
 
     .sheet-header {
         grid-template-columns: auto 1fr;
 
         img {
-            width: 3em;
+            width: 4rem;
             cursor: pointer;
         }
     }
 
     .sidebar {
         grid-column: 1;
-        grid-row: 2;
+        grid-row: 2 / -2;
+        overflow: hidden;
     }
 
-    .sheet-description,
     .sheet-effects {
         grid-column: 2 / -1;
         grid-row: 2 / -1;
     }
 
     .sheet-description {
+        grid-column: 2 / -1;
+        grid-row: 2 / -1;
         height: 100%;
         padding-inline: 0.5rem;
         border-left: var(--description-border-one);
@@ -63,6 +43,17 @@
             button.toggle {
                 top: 0.3rem;
             }
+        }
+    }
+
+    .sheet-tabs {
+        grid-column: 1;
+        grid-row: 3;
+        line-height: 1.7;
+        border-color: var(--color-border);
+
+        > .active {
+            display: none;
         }
     }
 }

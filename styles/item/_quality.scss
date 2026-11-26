@@ -1,7 +1,7 @@
 .application.sheet.afmbe.item.quality .window-content {
     .sheet-header {
         &:has(input + label) {
-            grid-template-columns: auto 1fr auto 4ch;
+            grid-template-columns: auto 1fr auto 6ch;
 
             input[type="number"] {
                 text-align: end;
@@ -10,6 +10,8 @@
     }
 
     .sidebar {
+        overflow-y: auto;
+
         fieldset {
             display: flex;
             flex-direction: column;

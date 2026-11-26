@@ -6,7 +6,7 @@ import type {
 import type { ActorAFMBE } from "actor";
 import type { ItemAFMBE } from "..";
 
-type ItemSheetPart = "description" | "effects" | "header";
+type ItemSheetPart = "description" | "effects" | "header" | "tabs";
 
 type ItemSheetRenderOptions = DocumentSheetRenderOptions;
 

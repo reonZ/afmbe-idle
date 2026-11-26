@@ -150,6 +150,10 @@
                     "quality": "Quality"
                 }
             },
+            "navigation": {
+                "description": "Show Description Panel",
+                "effects": "Show Effects Panel"
+            },
             "skill": {
                 "level": "Level",
                 "parent": "Parent Skill",
@@ -165,14 +169,6 @@
                 "untrained": {
                     "label": "Untrained"
                 }
-            },
-            "toggleDescription": {
-                "label": "Description",
-                "tooltip": "Show Item Description"
-            },
-            "toggleEffects": {
-                "label": "Effects",
-                "tooltip": "Show Item Active Effects"
             }
         },
         "message": {
