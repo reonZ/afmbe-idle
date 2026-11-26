@@ -1,5 +1,6 @@
 import { ACTOR_CONFIG, ActorAFMBE } from "actor";
 import { ChatMessageAFMBE, TaskMessageDataModel } from "chat-message";
+import { addModifierActiveEffectHandler } from "effects";
 import handlebarsHelpers from "handlebars-helpers";
 import { ITEM_CONFIG, ItemAFMBE } from "item";
 import * as R from "remeda";
@@ -63,3 +64,9 @@ Hooks.on("dropCanvasData", (canvas, data, _event) => {
 
     return false;
 });
+
+CONFIG.ActiveEffect.changeTypes.addModifier = {
+    label: "Add Creature Modifier",
+    defaultPriority: 20,
+    handler: addModifierActiveEffectHandler,
+};
