@@ -1,7 +1,5 @@
 .application.sheet.afmbe.actor.creature .window-content {
-    --sidebar-attributes-width: 160px;
-
-    grid-template-columns: var(--sidebar-attributes-width) 1fr;
+    grid-template-columns: var(--afmbe-sheet-creature-sidebar-attributes-width) 1fr;
     grid-template-rows: auto 1fr;
 
     .sheet-header {
@@ -14,8 +12,8 @@
 
         .avatar {
             width: 100%;
-            min-height: var(--sidebar-attributes-width);
-            max-height: calc(var(--sidebar-attributes-width) * 1.4);
+            min-height: var(--afmbe-sheet-creature-sidebar-attributes-width);
+            max-height: calc(var(--afmbe-sheet-creature-sidebar-attributes-width) * 1.4);
             object-fit: cover;
             object-position: top;
 
@@ -68,9 +66,9 @@
 
     .qualities {
         display: grid;
-        grid-template-columns: repeat(2, var(--sidebar-width));
+        grid-template-columns: repeat(2, var(--afmbe-sheet-sidebar-width));
         grid-column: 2;
         grid-row: 2;
-        gap: 0.5rem;
+        gap: var(--afmbe-application-gap-column);
     }
 }

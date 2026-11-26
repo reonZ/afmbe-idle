@@ -4,9 +4,33 @@
 @use "item/index" as item;
 @use "message/index" as message;
 
+:root {
+    --afmbe-application-inner-gap: 0.3rem;
+    --afmbe-application-gap-column: 0.5rem;
+    --afmbe-application-gap-row: 0.5rem;
+
+    --afmbe-sheet-item-description-border-color-one: #020202;
+    --afmbe-sheet-item-description-border-color-one-ligth: #6b6b6b;
+    --afmbe-sheet-item-description-border-color-two: #292929;
+    --afmbe-sheet-item-description-border-color-two-light: #c1c1c1;
+    --afmbe-sheet-item-description-border-one: 1px solid var(--afmbe-sheet-item-description-border-color-one);
+    --afmbe-sheet-item-description-border-two: 1px solid var(--afmbe-sheet-item-description-border-color-two);
+
+    --afmbe-sheet-creature-sidebar-attributes-width: 160px;
+
+    --afmbe-sheet-sidebar-fieldset-bg-color: #ffffff0a;
+    --afmbe-sheet-sidebar-fieldset-bg-color-light: #00000014;
+    --afmbe-sheet-sidebar-padding-inline: 0.3rem;
+    --afmbe-sheet-sidebar-width: 200px;
+
+    --afmbe-tooltip-border: 1px solid var(--color-cool-5);
+    --afmbe-tooltip-box-shadow: 0 0 8px #000000;
+    --afmbe-tooltip-outline: 1px solid var(--color-cool-4);
+}
+
 aside#tooltip.afmbe {
-    border: 1px solid var(--color-cool-5);
-    outline: 1px solid var(--color-cool-4);
-    box-shadow: 0 0 8px #000000;
+    border: var(--afmbe-tooltip-border);
+    outline: var(--afmbe-tooltip-outline);
+    box-shadow: var(--afmbe-tooltip-box-shadow);
     padding: 0.4rem 0.6rem;
 }

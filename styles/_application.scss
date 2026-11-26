@@ -1,3 +1,3 @@
 .application.afmbe .window-content {
-    padding: 0.5rem 0.5rem;
+    padding: var(--afmbe-application-gap-column) var(--afmbe-application-gap-row);
 }

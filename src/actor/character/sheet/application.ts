@@ -6,7 +6,7 @@ import { CharacterSheetConfiguration, CharacterSheetPart, CharacterSheetRenderCo
 abstract class CharacterSheet<TParent extends Character = Character> extends CreatureSheet<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<CharacterSheetConfiguration> = {
         classes: ["character"],
-        position: { height: 750 },
+        position: { height: 700 },
     };
 
     static PARTS: DocumentSheetPartAFME<CharacterSheetPart, CharacterSheetRenderContext> = {

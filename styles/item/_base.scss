@@ -1,11 +1,5 @@
 .application.sheet.afmbe.item .window-content {
-    --description-border-color-dark: #020202;
-    --description-border-color-ligth: #292929;
-
-    --description-border-one: 1px solid var(--description-border-color-dark);
-    --description-border-two: 1px solid var(--description-border-color-ligth);
-
-    grid-template-columns: var(--sidebar-width) 1fr;
+    grid-template-columns: var(--afmbe-sheet-sidebar-width) 1fr;
     grid-template-rows: auto 1fr auto;
 
     .sheet-header {
@@ -33,15 +27,15 @@
         grid-row: 2 / -1;
         height: 100%;
         padding-inline: 0.5rem;
-        border-left: var(--description-border-one);
-        border-top: var(--description-border-one);
-        border-bottom: var(--description-border-two);
-        border-right: var(--description-border-two);
+        border-left: var(--afmbe-sheet-item-description-border-one);
+        border-top: var(--afmbe-sheet-item-description-border-one);
+        border-bottom: var(--afmbe-sheet-item-description-border-two);
+        border-right: var(--afmbe-sheet-item-description-border-two);
         box-shadow: inset 0 0 4px black;
 
         prose-mirror {
             button.toggle {
-                top: 0.3rem;
+                top: var(--afmbe-application-inner-gap);
             }
         }
     }
@@ -59,7 +53,7 @@
 body.theme-light .application.sheet.afmbe.item,
 .application.sheet.afmbe.item.theme-light {
     .window-content {
-        --description-border-color-dark: #6b6b6b;
-        --description-border-color-ligth: #c1c1c1;
+        --afmbe-sheet-item-description-border-color-one: var(--afmbe-sheet-item-description-border-color-one-ligth);
+        --afmbe-sheet-item-description-border-color-two: var(--afmbe-sheet-item-description-border-color-two-light);
     }
 }

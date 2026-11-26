@@ -1,5 +1,5 @@
 .application.sheet.afmbe.actor.creature.character .window-content {
-    grid-template-columns: var(--sidebar-attributes-width) 1fr var(--sidebar-width);
+    grid-template-columns: var(--afmbe-sheet-creature-sidebar-attributes-width) 1fr var(--afmbe-sheet-sidebar-width);
 
     .sheet-header {
         grid-column-end: -2;

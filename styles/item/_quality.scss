@@ -15,13 +15,13 @@
         fieldset {
             display: flex;
             flex-direction: column;
-            gap: 0.3rem;
+            gap: var(--afmbe-application-inner-gap);
 
             &.level {
                 > * {
                     display: flex;
                     align-items: center;
-                    gap: 0.3rem;
+                    gap: var(--afmbe-application-inner-gap);
 
                     .label {
                         flex: 1;

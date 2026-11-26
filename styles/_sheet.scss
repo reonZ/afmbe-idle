@@ -1,9 +1,6 @@
 .application.sheet.afmbe .window-content {
-    --sidebar-width: 200px;
-    --sidebar-fieldset-bg-color: #ffffff0a;
-
     display: grid;
-    gap: 0.5rem 0.5rem;
+    gap: var(--afmbe-application-gap-row) var(--afmbe-application-gap-column);
 
     prose-mirror {
         height: 100%;
@@ -30,7 +27,7 @@
     .sidebar {
         display: flex;
         flex-direction: column;
-        gap: 0.3rem;
+        gap: var(--afmbe-application-inner-gap);
 
         input[type="number"],
         input[type="text"].modifier {
@@ -38,7 +35,7 @@
             line-height: 1;
             height: fit-content;
             text-align: end;
-            padding-inline: 0.3rem;
+            padding-inline: var(--afmbe-sheet-sidebar-padding-inline);
         }
 
         input[type="number"] {
@@ -52,11 +49,11 @@
         fieldset {
             padding: 0.4rem 0.5rem;
             border-radius: 5px;
-            background: var(--sidebar-fieldset-bg-color);
+            background: var(--afmbe-sheet-sidebar-fieldset-bg-color);
             border: none;
 
             legend {
-                padding-left: 0.3rem;
+                padding-left: var(--afmbe-application-inner-gap);
                 font-weight: bold;
             }
         }
@@ -85,7 +82,7 @@
             display: grid;
             align-items: center;
             gap: 0.3rem 0.5rem;
-            padding-inline: 0.3rem;
+            padding-inline: var(--afmbe-sheet-sidebar-padding-inline);
 
             > * {
                 min-height: 1.438rem;
@@ -104,7 +101,7 @@
             align-items: center;
             justify-content: space-between;
             min-height: 1.438rem;
-            padding-inline: 0.3rem;
+            padding-inline: var(--afmbe-sheet-sidebar-padding-inline);
         }
 
         a:hover {
@@ -124,6 +121,6 @@
 body.theme-light .application.sheet.afmbe,
 .application.sheet.afmbe.theme-light {
     .window-content {
-        --sidebar-fieldset-bg-color: #00000014;
+        --afmbe-sheet-sidebar-fieldset-bg-color: var(--afmbe-sheet-sidebar-fieldset-bg-color-light);
     }
 }
