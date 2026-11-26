@@ -165,6 +165,14 @@
                 "untrained": {
                     "label": "Untrained"
                 }
+            },
+            "toggleDescription": {
+                "label": "Description",
+                "tooltip": "Show Item Description"
+            },
+            "toggleEffects": {
+                "label": "Effects",
+                "tooltip": "Show Item Active Effects"
             }
         },
         "message": {

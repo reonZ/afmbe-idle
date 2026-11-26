@@ -33,6 +33,15 @@ abstract class ApplicationAFMBE<
 
     abstract get template(): string;
 
+    async _renderFrame(options: ApplicationRenderOptions): Promise<HTMLElement> {
+        const frame = await super._renderFrame(options);
+
+        frame.dataset.tooltipClass = "afmbe";
+        frame.dataset.tooltipDirection = "UP";
+
+        return frame;
+    }
+
     _renderHTML(context: ApplicationRenderContext, _options: ApplicationRenderOptions): Promise<string> {
         return render(this.template, context);
     }
@@ -47,8 +56,6 @@ abstract class ApplicationAFMBE<
         }
 
         content.innerHTML = result;
-        content.dataset.tooltipClass = "afmbe";
-        content.dataset.tooltipDirection = "UP";
 
         for (const [selector, scrollTop, scrollLeft] of scrollPositions) {
             const el = selector === "" ? content : content.querySelector(selector);

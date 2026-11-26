@@ -8,6 +8,7 @@ import { ActorAFMBE } from "actor";
 import { ItemAFMBE } from "item";
 import { logObject } from "utils";
 import { DocumentSheetStaticAFMBE } from ".";
+import { ApplicationRenderOptions } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
 
 function documentSheetMixinAFMBE<TBase extends AbstractConstructorOf<DocumentSheetV2<any>>>(
     BaseApplication: TBase,
@@ -79,10 +80,17 @@ function documentSheetMixinAFMBE<TBase extends AbstractConstructorOf<DocumentShe
             part?.activateListeners?.call(this, html, options);
         }
 
+        async _renderFrame(options: ApplicationRenderOptions): Promise<HTMLElement> {
+            const frame = await super._renderFrame(options);
+
+            frame.dataset.tooltipClass = "afmbe";
+            frame.dataset.tooltipDirection = "UP";
+
+            return frame;
+        }
+
         _replaceHTML(result: Record<string, HTMLElement>, content: HTMLElement, options: HandlebarsRenderOptions) {
             super._replaceHTML(result, content, options);
-            content.dataset.tooltipClass = "afmbe";
-            content.dataset.tooltipDirection = "UP";
             this._attachListeners(content);
         }
 

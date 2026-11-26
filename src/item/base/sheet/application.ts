@@ -5,16 +5,21 @@ import {
 import { ActorAFMBE } from "actor";
 import { documentSheetMixinAFMBE, DocumentSheetPartAFME } from "document-sheet";
 import { ItemAFMBE } from "item";
-import { enrichHTML, localize } from "utils";
+import { enrichHTML, localize, render } from "utils";
 import { ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions } from ".";
 
 abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends documentSheetMixinAFMBE(
     foundry.applications.sheets.ItemSheetV2<ItemAFMBE>,
 ) {
+    #showEffects: boolean = false;
+
     static DEFAULT_OPTIONS: DeepPartial<ItemSheetConfiguration> = {
         canCreate: false,
         classes: ["item"],
         position: { height: 460, width: 700 },
+        actions: {
+            toggleEffects: this.#toggleEffects,
+        },
     };
 
     static PARTS: DocumentSheetPartAFME<ItemSheetPart, ItemSheetRenderContext> = {
@@ -25,6 +30,9 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
             template: "systems/afmbe-idle/templates/item/sheet-description.hbs",
             prepareContext: this.prepareDescriptionContext,
         },
+        effects: {
+            template: "systems/afmbe-idle/templates/item/sheet-effects.hbs",
+        },
     };
 
     static async prepareDescriptionContext(this: ItemSheetAFMBE, context: ItemSheetRenderContext) {
@@ -32,6 +40,10 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
             enriched: await enrichHTML(this.item.system.description),
             value: this.item.system.description,
         };
+    }
+
+    static async #toggleEffects(this: ItemSheetAFMBE<ItemAFMBE>) {
+        this.element.classList.toggle("show-active-effects", (this.#showEffects = !this.#showEffects));
     }
 
     async _onDropDocument<TDocument extends foundry.abstract.Document>(
@@ -67,6 +79,21 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
 
         const [result] = await this.item.createEmbeddedDocuments("Item", [data], { keepId });
         return result as T | undefined;
+    }
+
+    async _renderFrame(options: ItemSheetRenderOptions): Promise<HTMLElement> {
+        const frame = await super._renderFrame(options);
+        const button = await render("systems/afmbe-idle/templates/item/header-buttons.hbs");
+        const controls = frame.querySelector(`button[data-action="toggleControls"]`);
+
+        controls?.insertAdjacentHTML("beforebegin", button);
+
+        return frame;
+    }
+
+    async _onRender(context: ItemSheetRenderContext, options: ItemSheetRenderOptions): Promise<void> {
+        await super._onRender(context, options);
+        this.element.classList.toggle("show-active-effects", this.#showEffects);
     }
 
     async _prepareContext(options: ItemSheetRenderOptions): Promise<ItemSheetRenderContext> {

@@ -1,3 +1,25 @@
+.application.sheet.afmbe.item {
+    &.show-active-effects {
+        .window-header button.header-control.item-effects {
+            display: none;
+        }
+
+        .window-content .sheet-description {
+            display: none;
+        }
+    }
+
+    &:not(.show-active-effects) {
+        .window-header button.header-control.item-description {
+            display: none;
+        }
+
+        .window-content .sheet-effects {
+            display: none;
+        }
+    }
+}
+
 .application.sheet.afmbe.item .window-content {
     --description-border-color-dark: #020202;
     --description-border-color-ligth: #292929;
@@ -22,10 +44,14 @@
         grid-row: 2;
     }
 
-    .item-description {
-        height: 100%;
+    .sheet-description,
+    .sheet-effects {
         grid-column: 2 / -1;
         grid-row: 2 / -1;
+    }
+
+    .sheet-description {
+        height: 100%;
         padding-inline: 0.5rem;
         border-left: var(--description-border-one);
         border-top: var(--description-border-one);
