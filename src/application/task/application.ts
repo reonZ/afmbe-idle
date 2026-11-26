@@ -2,14 +2,7 @@ import {
     ApplicationClosingOptions,
     ApplicationRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
-import {
-    Creature,
-    CREATURE_ATTRIBUTES,
-    CREATURE_MODIFIER_TYPES,
-    CreatureAttributes,
-    CreatureModifier,
-    CreatureModifierTargets,
-} from "actor";
+import { Creature, CREATURE_ATTRIBUTES, CreatureAttributes, CreatureModifier, CreatureModifierTargets } from "actor";
 import { PreCreateTaskMessageSource } from "chat-message";
 import * as R from "remeda";
 import { TaskRollType, TaskTarget } from "roll";
@@ -62,10 +55,7 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
 
         this.#actor = actor;
         this.#disable = R.isArray(disable) ? disable.slice() : [];
-        this.#modifiers = R.map(actor.system.modifiers, (modifier) => {
-            const type = R.isIncludedIn(modifier.type, CREATURE_MODIFIER_TYPES) ? modifier.type : "all";
-            return { ...modifier, type };
-        });
+        this.#modifiers = actor.system.validModifiers;
         this.#private = mode === "private";
         this.#selected = foundry.utils.mergeObject(
             { attribute: CREATURE_ATTRIBUTES[0], difficulty: TEST_DIFFICULTIES[0], skill: "" } as const,
