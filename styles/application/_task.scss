@@ -6,32 +6,32 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr auto;
-        gap: 0.3rem 1rem;
+        gap: var(--afmbe-application-inner-gap) var(--afmbe-application-gap-column);
         overflow: hidden;
     }
 
     .panel {
         display: flex;
         flex-direction: column;
-        gap: 0.3rem;
+        gap: var(--afmbe-application-inner-gap);
 
         .title {
             font-size: 1.2em;
-            margin-left: 0.3rem;
+            margin-left: var(--afmbe-application-inner-gap);
         }
 
         &.left {
-            padding-left: 1rem;
+            padding-left: var(--afmbe-application-gap-column);
         }
 
         &.right {
-            padding-right: 1rem;
+            padding-right: var(--afmbe-application-gap-column);
             overflow-y: auto;
         }
     }
 
     select + div {
-        margin-top: 0.5rem;
+        margin-top: var(--afmbe-application-gap-row);
     }
 
     input[type="number"],
@@ -50,7 +50,7 @@
         display: grid;
         grid-template-columns: 1fr auto auto;
         align-items: center;
-        gap: 0.3rem 0.5rem;
+        gap: var(--afmbe-application-inner-gap) 0.5rem;
 
         a {
             font-size: 1.5em;
@@ -69,15 +69,15 @@
         display: flex;
         align-items: center;
         gap: 0.1rem;
-        margin-left: 0.3rem;
+        margin-left: var(--afmbe-application-inner-gap);
     }
 
     .buttons {
         grid-column: 1 / -1;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 0.5rem;
-        padding-inline: 1rem;
+        gap: var(--afmbe-application-gap-column);
+        padding-inline: var(--afmbe-application-gap-column);
 
         button {
             --button-size: 2.4em;
