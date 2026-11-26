@@ -14,6 +14,7 @@ abstract class CharacterSheet<TParent extends Character = Character> extends Cre
         skills: {
             template: "systems/afmbe-idle/templates/actor/character/skills.hbs",
             prepareContext: this.prepareSkillsContext,
+            scrollable: [".list"],
         },
     };
 

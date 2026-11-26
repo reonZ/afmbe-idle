@@ -29,6 +29,7 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         sidebar: {
             template: "systems/afmbe-idle/templates/item/skill/sheet-sidebar.hbs",
             prepareContext: this.prepareSidebarContext,
+            scrollable: [".list.specialties"],
         },
     };
 
