@@ -1,6 +1,5 @@
 import { CREATURE_ATTRIBUTES, CREATURE_MODIFIER_TYPES, CreatureModifierSchema, CreatureModifierTargetsSchema } from ".";
 import fields = foundry.data.fields;
-import { ActiveEffectChangeData } from "@7h3laughingman/foundry-types/client/documents/_module.mjs";
 
 class CreatureModifiersField extends fields.ArrayField<fields.SchemaField<CreatureModifierSchema>> {
     static defineBaseSchema(): Pick<CreatureModifierSchema, "label" | "origin" | "value"> {
@@ -56,16 +55,6 @@ class CreatureModifiersField extends fields.ArrayField<fields.SchemaField<Creatu
                 }),
             }),
         );
-    }
-
-    applyChange<T>(
-        value: T,
-        model: foundry.abstract.DataModel,
-        change: ActiveEffectChangeData,
-        options?: { replacementData?: Record<string, any> },
-    ): T {
-        console.log(value, model, change, options);
-        return super.applyChange(value, model, change, options);
     }
 }
 

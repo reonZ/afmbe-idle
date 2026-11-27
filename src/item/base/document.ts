@@ -5,6 +5,7 @@ import {
     DataSchema,
 } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
 import { ImageFilePath } from "@7h3laughingman/foundry-types/common/constants.mjs";
+import { ActiveEffectSource } from "@7h3laughingman/foundry-types/common/documents/active-effect.mjs";
 import { ActorAFMBE } from "actor";
 import { ITEM_PHYSICAL_TYPES } from "item";
 import * as R from "remeda";
@@ -197,7 +198,12 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
     }
 
     createEmbeddedDocuments(
-        embeddedName: string,
+        embeddedName: "ActiveEffect",
+        data: PreCreate<ActiveEffectSource>[],
+        operation?: Partial<DatabaseCreateOperation<this>>,
+    ): Promise<ItemAFMBE[]>;
+    createEmbeddedDocuments(
+        embeddedName: "Item",
         data: PreCreate<ItemSourceAFMBE>[],
         operation?: Partial<DatabaseCreateOperation<this>>,
     ): Promise<ItemAFMBE[]>;

@@ -2,7 +2,7 @@
     "EFFECT": {
         "CHANGES": {
             "TYPES": {
-                "addModifier": "Roll Modifier"
+                "rollModifier": "Roll Modifier"
             }
         }
     },
