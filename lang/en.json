@@ -72,6 +72,14 @@
                 "qualities": {
                     "title": "Qualities"
                 },
+                "modifier": {
+                    "affects": {
+                        "all": "All",
+                        "label": "Affects",
+                        "task": "Task",
+                        "test": "Test"
+                    }
+                },
                 "speed": {
                     "label": "Speed",
                     "kph": "km/h",
@@ -124,7 +132,6 @@
         },
         "effect": {
             "label": "Label",
-            "type": "Type",
             "value": "Value"
         },
         "item": {

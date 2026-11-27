@@ -1,5 +1,5 @@
 import type { ActiveEffectChangeData } from "@7h3laughingman/foundry-types/client/documents/_types.mjs";
-import { ActorAFMBE, CreatureAFMBE, CREATURE_MODIFIER_TYPES, CreatureModifier } from "actor";
+import { ActorAFMBE, CreatureAFMBE, CREATURE_MODIFIER_AFFECTS, CreatureModifier } from "actor";
 import * as R from "remeda";
 
 async function addModifierActiveEffectHandler(actor: unknown, change: ActiveEffectChangeData) {
@@ -21,7 +21,9 @@ async function addModifierActiveEffectHandler(actor: unknown, change: ActiveEffe
     if (!change.value.value) return;
 
     change.value.origin ||= change.effect?.item.uuid;
-    change.value.type = R.isIncludedIn(change.value.type, CREATURE_MODIFIER_TYPES) ? change.value.type : "all";
+    change.value.affects = R.isIncludedIn(change.value.affects, CREATURE_MODIFIER_AFFECTS)
+        ? change.value.affects
+        : "all";
 
     actor.system.modifiers.push(change.value);
 }

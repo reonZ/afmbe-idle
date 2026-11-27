@@ -4,7 +4,8 @@ import { ActorAFMBE, CreatureModifier } from "actor";
 import { ItemAFMBE } from "item";
 import { TokenDocumentAFMBE } from "misc";
 
-class ActiveEffectAFMBE extends foundry.documents.ActiveEffect<ActorAFMBE | ItemAFMBE | null> {
+class ActiveEffectAFMBE<TParent extends ActorAFMBE | ItemAFMBE | null = ActorAFMBE | ItemAFMBE | null> extends foundry
+    .documents.ActiveEffect<TParent> {
     static applyChange(
         targetDoc: ActorAFMBE | ItemAFMBE | TokenDocumentAFMBE,
         change: ActiveEffectChangeData,
@@ -23,7 +24,7 @@ class ActiveEffectAFMBE extends foundry.documents.ActiveEffect<ActorAFMBE | Item
 
     static async createRollModifier(parent: ItemAFMBE, data: DeepPartial<CreatureModifier>) {
         data.label ||= parent.name;
-        data.type ??= "all";
+        data.affects ??= "all";
         data.value ??= 1;
 
         const source: PreCreate<ActiveEffectSource> = {

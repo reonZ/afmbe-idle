@@ -8,8 +8,14 @@ import { ActorAFMBE } from "actor";
 import { documentSheetMixinAFMBE, DocumentSheetPartAFME } from "document-sheet";
 import { ItemAFMBE } from "item";
 import * as R from "remeda";
-import { enrichHTML, localize, render } from "utils";
-import { ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions } from ".";
+import { configToSelectOptions, enrichHTML, localize } from "utils";
+import {
+    ItemSheetConfiguration,
+    ItemSheetEffect,
+    ItemSheetPart,
+    ItemSheetRenderContext,
+    ItemSheetRenderOptions,
+} from ".";
 
 abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends documentSheetMixinAFMBE(
     foundry.applications.sheets.ItemSheetV2<ItemAFMBE>,
@@ -48,11 +54,21 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
         },
     };
 
-    static ACTIVE_EFFECTS: Record<string, { template: string }> = {
+    static ACTIVE_EFFECTS: Record<string, { data?: () => Record<string, any>; template: string }> = {
         "system.modifiers": {
+            data: () => {
+                return { options: configToSelectOptions(CONFIG.AFMBE.ACTOR.CREATURE.MODIFIER.AFFECTS) };
+            },
             template: "systems/afmbe-idle/templates/effect/add-modifier.hbs",
         },
     };
+
+    static ACTIVE_EFFECTS_TEMPLATES = R.pipe(
+        this.ACTIVE_EFFECTS,
+        R.values(),
+        R.map((effect) => effect.template),
+        R.unique(),
+    );
 
     static async prepareDescriptionContext(this: ItemSheetAFMBE, context: ItemSheetRenderContext) {
         context.description = {
@@ -62,26 +78,25 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
     }
 
     static async prepareEffectsContext(this: ItemSheetAFMBE, context: ItemSheetRenderContext) {
-        const effectsPromise = R.map(this.item.effects.contents, async (effect) => {
-            if (!("changes" in effect.system) || !R.isArray(effect.system.changes)) return [];
+        context.effects = R.flatMap(this.item.effects.contents, (effect) => {
+            return R.pipe(
+                effect.changes,
+                R.map((change, index): ItemSheetEffect | undefined => {
+                    if (!R.isString(change.key)) return;
 
-            const changes = R.map(effect.system.changes, async (data, index) => {
-                if (!R.isObjectType(data) || !("key" in data) || !R.isString(data.key)) return;
+                    const options = ItemSheetAFMBE.ACTIVE_EFFECTS[change.key];
+                    if (!options) return;
 
-                const template = ItemSheetAFMBE.ACTIVE_EFFECTS[data.key]?.template;
-                if (!template) return;
+                    const id = effect.id;
+                    const data = options.data?.() ?? {};
+                    const rootId = `${id}-${index}`;
+                    const rootName = `ActiveEffect.${id}.${index}`;
 
-                console.log(template, { ...data, rootId: `${effect.id}-${index}` });
-                const content = await render(template, { ...data, rootId: `${effect.id}-${index}` });
-                return render("systems/afmbe-idle/templates/effect/form.hbs", { content, id: effect.id, index });
-            });
-
-            return R.filter(await Promise.all(changes), R.isTruthy);
+                    return { data, id, index, rootId, rootName, template: options.template, value: change.value };
+                }),
+                R.filter(R.isTruthy),
+            );
         });
-
-        const effects = (await Promise.all(effectsPromise)).flat();
-
-        console.log(effects);
     }
 
     async _onDropDocument<TDocument extends foundry.abstract.Document>(
@@ -125,6 +140,11 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
         context.isOwned = !!this.item.actor;
         context.item = this.item;
         return context;
+    }
+
+    async _preFirstRender(context: Record<string, unknown>, options: ItemSheetRenderOptions): Promise<void> {
+        await super._preFirstRender(context, options);
+        await foundry.applications.handlebars.loadTemplates(ItemSheetAFMBE.ACTIVE_EFFECTS_TEMPLATES);
     }
 
     protected _processFormData(

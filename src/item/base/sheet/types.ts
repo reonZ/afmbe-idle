@@ -10,9 +10,20 @@ type ItemSheetPart = "description" | "effects" | "header" | "tabs";
 
 type ItemSheetRenderOptions = DocumentSheetRenderOptions;
 
+type ItemSheetEffect = {
+    data: Record<string, any>;
+    id: string;
+    index: number;
+    rootId: string;
+    rootName: string;
+    template: string;
+    value: JSONValue;
+};
+
 type ItemSheetRenderContext = DocumentSheetRenderContext & {
     actor?: ActorAFMBE | null;
     description?: { enriched: string; value: string };
+    effects?: ItemSheetEffect[];
     isOwned?: boolean;
     item?: ItemAFMBE;
 };
@@ -27,4 +38,11 @@ type ItemSheetLevel = {
 
 type ItemSheetConfiguration = DocumentSheetConfiguration;
 
-export type { ItemSheetConfiguration, ItemSheetLevel, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions };
+export type {
+    ItemSheetConfiguration,
+    ItemSheetEffect,
+    ItemSheetLevel,
+    ItemSheetPart,
+    ItemSheetRenderContext,
+    ItemSheetRenderOptions,
+};

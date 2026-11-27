@@ -1,3 +1,7 @@
 <div class="sheet-effects tab {{tabs.effects.cssClass}}" data-group="sheet" data-tab="effects">
-    EFFECTS
+    {{#each effects as |effect|}}
+    <div class="effect-form" data-effect-id="{{effect.id}}" data-change-index="{{effect.index}}">
+        {{> (lookup effect 'template') effect}}
+    </div>
+    {{/each}}
 </div>

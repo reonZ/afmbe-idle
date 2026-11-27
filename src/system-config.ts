@@ -1,18 +1,61 @@
 import { MemberCategory } from "actor";
 
 const config = {
-    ATTRIBUTES: {
-        CATEGORY: {
-            inspired: 20,
-            norm: 14,
-            survivor: 20,
-        } satisfies Record<MemberCategory, number>,
-        DRAWBACK_COST: 1,
-        IMPROVEMENT: {
-            low: 5,
-            high: 10,
+    ACTOR: {
+        CREATURE: {
+            ATTRIBUTES: {
+                CATEGORY: {
+                    inspired: 20,
+                    norm: 14,
+                    survivor: 20,
+                } satisfies Record<MemberCategory, number>,
+                DRAWBACK_COST: 1,
+                IMPROVEMENT: {
+                    low: 5,
+                    high: 10,
+                },
+                MAX_HUMAN_LEVEL: 6,
+            },
+            MODIFIER: {
+                AFFECTS: {
+                    all: {
+                        label: "afmbe.actor.creature.modifier.affects.all",
+                    },
+                    task: {
+                        label: "afmbe.actor.creature.modifier.affects.task",
+                    },
+                    test: {
+                        label: "afmbe.actor.creature.modifier.affects.test",
+                    },
+                },
+            },
         },
-        MAX_HUMAN_LEVEL: 6,
+    },
+    ITEM: {
+        QUALITY: {
+            CATEGORY: {
+                mental: {
+                    label: "afmbe.item.quality.category.mental",
+                },
+                physical: {
+                    label: "afmbe.item.quality.category.physical",
+                },
+                social: {
+                    label: "afmbe.item.quality.category.social",
+                },
+                supernatural: {
+                    label: "afmbe.item.quality.category.supernatural",
+                },
+            },
+            TYPE: {
+                drawback: {
+                    label: "afmbe.item.quality.type.drawback",
+                },
+                quality: {
+                    label: "afmbe.item.quality.type.quality",
+                },
+            },
+        },
     },
 };
 

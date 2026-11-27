@@ -1,8 +1,7 @@
 import { CreatureAFMBE } from "actor";
 import { DocumentSheetPartAFME } from "document-sheet";
-import { ItemSheetAFMBE, QualityAFMBE, QUALITY_CATEGORIES, QUALITY_TYPES, QualityCategory, QualityType } from "item";
-import * as R from "remeda";
-import { localize } from "utils";
+import { ItemSheetAFMBE, QualityAFMBE } from "item";
+import { configToSelectOptions, localize } from "utils";
 import { QualitySheetConfiguration, QualitySheetPart, QualitySheetRenderContext } from ".";
 
 class QualitySheetAFMBE<
@@ -24,9 +23,7 @@ class QualitySheetAFMBE<
         context.category = {
             label: localize("afmbe.item.quality.category.label"),
             name: "system.category",
-            options: R.map(QUALITY_CATEGORIES, (value): SelectOption<QualityCategory> => {
-                return { value, label: localize("afmbe.item.quality.category", value) };
-            }),
+            options: configToSelectOptions(CONFIG.AFMBE.ITEM.QUALITY.CATEGORY),
             selected: this.item.system.category,
         };
 
@@ -35,9 +32,7 @@ class QualitySheetAFMBE<
         context.type = {
             label: localize("afmbe.item.quality.type.label"),
             name: "system.type",
-            options: R.map(QUALITY_TYPES, (value): SelectOption<QualityType> => {
-                return { value, label: localize("afmbe.item.quality.type", value) };
-            }),
+            options: configToSelectOptions(CONFIG.AFMBE.ITEM.QUALITY.TYPE),
             selected: this.item.system.type,
         };
     }

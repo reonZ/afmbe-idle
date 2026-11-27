@@ -3,6 +3,7 @@ import {
     DatabaseDeleteOperation,
     DatabaseUpdateOperation,
     DataSchema,
+    EmbeddedCollection,
 } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
 import { ImageFilePath } from "@7h3laughingman/foundry-types/common/constants.mjs";
 import { ActiveEffectSource } from "@7h3laughingman/foundry-types/common/documents/active-effect.mjs";
@@ -23,6 +24,7 @@ import {
 } from ".";
 import { id } from "../../../system.json";
 import Document = foundry.abstract.Document;
+import { ActiveEffectAFMBE } from "active-effect";
 
 class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends Item<TParent> {
     declare parentItem: ItemAFMBE<TParent> | null;
@@ -325,6 +327,7 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
 
 interface ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> {
     readonly _source: ItemSourceAFMBE;
+    readonly effects: EmbeddedCollection<ActiveEffectAFMBE<this>>;
     system: ItemDataModel<ItemAFMBE, ItemDataSchema>;
     readonly type: ItemType;
 }

@@ -13,14 +13,14 @@ import type { TokenDocumentAFMBE } from "misc";
 import { TaskTargetSchema } from "roll";
 import type {
     CREATURE_ATTRIBUTES,
-    CREATURE_MODIFIER_TYPES,
+    CREATURE_MODIFIER_AFFECTS,
     CREATURE_SECONDARIES,
     CREATURE_TASK_CATEGORIES,
     CreatureDataModel,
 } from ".";
 
 type CreatureTaskCategory = (typeof CREATURE_TASK_CATEGORIES)[number];
-type CreatureModifierType = (typeof CREATURE_MODIFIER_TYPES)[number];
+type CreatureModifierAffects = (typeof CREATURE_MODIFIER_AFFECTS)[number];
 
 type CreatureModifierTargetsSchema = Omit<TaskTargetSchema, "value">;
 
@@ -28,6 +28,7 @@ type CreatureModifierTargets = ModelPropsFromSchema<CreatureModifierTargetsSchem
 
 type CreatureModifierSchema = {
     active: BooleanField;
+    affects: StringField<CreatureModifierAffects, CreatureModifierAffects, true, false, true>;
     label: StringField<string, string, true, false, false>;
     origin: DocumentUUIDField<ItemUUID>;
     targets: SchemaField<
@@ -38,7 +39,6 @@ type CreatureModifierSchema = {
         true,
         true
     >;
-    type: StringField<CreatureModifierType, CreatureModifierType, true, false, true>;
     value: NumberField<number, number, true, false, true>;
 };
 
@@ -74,7 +74,7 @@ export type {
     CreatureModifierSchema,
     CreatureModifierTargets,
     CreatureModifierTargetsSchema,
-    CreatureModifierType,
+    CreatureModifierAffects,
     CreatureSecondaryAttributes,
     CreatureSecondaryType,
     CreatureSource,

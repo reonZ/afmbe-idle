@@ -1,16 +1,24 @@
+import type { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
 import type Config from "@7h3laughingman/foundry-types/client/config.mjs";
+import type { ActiveEffectAFMBE } from "active-effect";
 import type { ActorAFMBE } from "actor";
 import type { ChatMessageAFMBE } from "chat-message";
 import type { ItemAFMBE } from "item";
 import type { SceneAFMBE, TokenAFMBE, TokenDocumentAFMBE, UserAFMBE } from "misc";
-import type config from "./system-config";
 import type { TaskRoll } from "roll";
-import type { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
-import { ActiveEffectAFMBE } from "active-effect";
+import type config from "./system-config";
+
+type Canvas = foundry.canvas.Canvas<
+    SceneAFMBE,
+    foundry.canvas.placeables.AmbientLight<foundry.documents.AmbientLightDocument<SceneAFMBE>>,
+    TokenAFMBE,
+    foundry.canvas.groups.EffectsCanvasGroup,
+    foundry.canvas.placeables.Region<RegionDocument<SceneAFMBE>>
+>;
 
 type ConfiguredConfig = Config<
     AmbientLightDocument<SceneAFMBE | null>,
-    ActiveEffect<ActorAFMBE | ItemAFMBE | null>,
+    ActiveEffectAFMBE<ActorAFMBE | ItemAFMBE | null>,
     ActorAFMBE,
     ActorDelta<TokenDocumentAFMBE>,
     foundry.applications.sidebar.tabs.ChatLog,
@@ -32,7 +40,48 @@ type ConfiguredConfig = Config<
     foundry.canvas.groups.EffectsCanvasGroup
 >;
 
-type GameAFMBE = foundry.Game<
+interface ConfigAFMBE extends ConfiguredConfig {
+    AFMBE: typeof config;
+}
+
+type DocumentTypeMap = {
+    ActiveEffect: typeof ActiveEffectAFMBE;
+    Actor: typeof ActorAFMBE;
+    ActorDelta: typeof foundry.documents.ActorDelta;
+    Adventure: typeof foundry.documents.Adventure;
+    AmbientLight: typeof foundry.documents.AmbientLightDocument;
+    AmbientSound: typeof foundry.documents.AmbientSoundDocument;
+    Card: typeof foundry.documents.Card;
+    Cards: typeof foundry.documents.Cards;
+    ChatMessage: typeof ChatMessageAFMBE;
+    Combat: typeof foundry.documents.Combat;
+    Combatant: typeof foundry.documents.Combatant;
+    CombatantGroup: typeof foundry.documents.CombatantGroup;
+    Drawing: typeof foundry.documents.DrawingDocument;
+    FogExploration: typeof foundry.documents.FogExploration;
+    Folder: typeof foundry.documents.Folder;
+    Item: typeof ItemAFMBE;
+    JournalEntry: typeof foundry.documents.JournalEntry;
+    JournalEntryCategory: typeof foundry.documents.JournalEntryCategory;
+    JournalEntryPage: typeof foundry.documents.JournalEntryPage;
+    Level: typeof foundry.documents.Level;
+    Macro: typeof foundry.documents.Macro;
+    Note: typeof foundry.documents.NoteDocument;
+    Playlist: typeof foundry.documents.Playlist;
+    PlaylistSound: typeof foundry.documents.PlaylistSound;
+    Region: typeof foundry.documents.RegionDocument;
+    RegionBehavior: typeof foundry.documents.RegionBehavior;
+    RollTable: typeof foundry.documents.RollTable;
+    Scene: typeof SceneAFMBE;
+    Setting: typeof foundry.documents.Setting;
+    TableResult: typeof foundry.documents.TableResult;
+    Tile: typeof foundry.documents.TileDocument;
+    Token: typeof TokenDocumentAFMBE;
+    User: typeof UserAFMBE;
+    Wall: typeof foundry.documents.WallDocument;
+};
+
+type Game = foundry.Game<
     ActorAFMBE<null>,
     foundry.documents.collections.Actors<ActorAFMBE<null>>,
     ChatMessageAFMBE,
@@ -41,7 +90,9 @@ type GameAFMBE = foundry.Game<
     Macro,
     SceneAFMBE,
     UserAFMBE
-> & {
+>;
+
+type GameAFMBE = {
     afmbe: {
         settings: {
             metric: boolean;
@@ -50,62 +101,15 @@ type GameAFMBE = foundry.Game<
     };
 };
 
-type CanvasAFMBE = foundry.canvas.Canvas<
-    SceneAFMBE,
-    foundry.canvas.placeables.AmbientLight<foundry.documents.AmbientLightDocument<SceneAFMBE>>,
-    TokenAFMBE,
-    foundry.canvas.groups.EffectsCanvasGroup,
-    foundry.canvas.placeables.Region<RegionDocument<SceneAFMBE>>
->;
-
 declare global {
-    interface ConfigAFMBE extends ConfiguredConfig {
-        AFMBE: typeof config;
-    }
-
     // @ts-ignore
     const CONFIG: ConfigAFMBE;
     // @ts-ignore
-    type DocumentTypeMap = {
-        ActiveEffect: typeof ActiveEffectAFMBE;
-        Actor: typeof ActorAFMBE;
-        ActorDelta: typeof foundry.documents.ActorDelta;
-        Adventure: typeof foundry.documents.Adventure;
-        AmbientLight: typeof foundry.documents.AmbientLightDocument;
-        AmbientSound: typeof foundry.documents.AmbientSoundDocument;
-        Card: typeof foundry.documents.Card;
-        Cards: typeof foundry.documents.Cards;
-        ChatMessage: typeof ChatMessageAFMBE;
-        Combat: typeof foundry.documents.Combat;
-        Combatant: typeof foundry.documents.Combatant;
-        CombatantGroup: typeof foundry.documents.CombatantGroup;
-        Drawing: typeof foundry.documents.DrawingDocument;
-        FogExploration: typeof foundry.documents.FogExploration;
-        Folder: typeof foundry.documents.Folder;
-        Item: typeof ItemAFMBE;
-        JournalEntry: typeof foundry.documents.JournalEntry;
-        JournalEntryCategory: typeof foundry.documents.JournalEntryCategory;
-        JournalEntryPage: typeof foundry.documents.JournalEntryPage;
-        Level: typeof foundry.documents.Level;
-        Macro: typeof foundry.documents.Macro;
-        Note: typeof foundry.documents.NoteDocument;
-        Playlist: typeof foundry.documents.Playlist;
-        PlaylistSound: typeof foundry.documents.PlaylistSound;
-        Region: typeof foundry.documents.RegionDocument;
-        RegionBehavior: typeof foundry.documents.RegionBehavior;
-        RollTable: typeof foundry.documents.RollTable;
-        Scene: typeof SceneAFMBE;
-        Setting: typeof foundry.documents.Setting;
-        TableResult: typeof foundry.documents.TableResult;
-        Tile: typeof foundry.documents.TileDocument;
-        Token: typeof TokenDocumentAFMBE;
-        User: typeof UserAFMBE;
-        Wall: typeof foundry.documents.WallDocument;
-    };
+    type DocumentTypeMap = DocumentTypeMap;
     // @ts-ignore
-    const canvas: CanvasAFMBE;
+    const canvas: Canvas;
     // @ts-ignore
-    const game: GameAFMBE;
+    const game: Game & GameAFMBE;
 
     type Prettify<T> = { [K in keyof T]: T[K] } & {};
 

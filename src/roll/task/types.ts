@@ -5,7 +5,7 @@ import {
     StringField,
 } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
 import type { Rolled } from "@7h3laughingman/foundry-types/client/dice/roll.mjs";
-import type { CreatureAttributeType, CreatureModifierType } from "actor";
+import type { CreatureAttributeType, CreatureModifierAffects } from "actor";
 import type { TaskRoll } from "./roll";
 
 type TaskTargetSchema = {
@@ -16,7 +16,7 @@ type TaskTargetSchema = {
 
 type TaskTarget = ModelPropsFromSchema<TaskTargetSchema>;
 
-type TaskRollType = Exclude<CreatureModifierType, "all">;
+type TaskRollType = Exclude<CreatureModifierAffects, "all">;
 
 type TaskDieResult = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 

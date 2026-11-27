@@ -1,4 +1,9 @@
-import { CREATURE_ATTRIBUTES, CREATURE_MODIFIER_TYPES, CreatureModifierSchema, CreatureModifierTargetsSchema } from ".";
+import {
+    CREATURE_ATTRIBUTES,
+    CREATURE_MODIFIER_AFFECTS,
+    CreatureModifierSchema,
+    CreatureModifierTargetsSchema,
+} from ".";
 import fields = foundry.data.fields;
 
 class CreatureModifiersField extends fields.ArrayField<fields.SchemaField<CreatureModifierSchema>> {
@@ -46,13 +51,13 @@ class CreatureModifiersField extends fields.ArrayField<fields.SchemaField<Creatu
             new fields.SchemaField({
                 ...CreatureModifiersField.defineBaseSchema(),
                 active: new fields.BooleanField(),
-                targets: new fields.SchemaField(CreatureModifiersField.defineTargetSchema()),
-                type: new fields.StringField({
+                affects: new fields.StringField({
                     required: true,
                     nullable: false,
                     initial: "all",
-                    choices: CREATURE_MODIFIER_TYPES,
+                    choices: CREATURE_MODIFIER_AFFECTS,
                 }),
+                targets: new fields.SchemaField(CreatureModifiersField.defineTargetSchema()),
             }),
         );
     }

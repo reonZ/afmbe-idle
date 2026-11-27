@@ -79,7 +79,7 @@ class TaskApplicationAFMBE extends ApplicationAFMBE<TaskApplicationConfiguration
             label: label.value.trim() || localize("afmbe.actor.creature.task.modifier.name"),
             origin: null,
             targets: null,
-            type: "all",
+            affects: "all",
             value: value.valueAsNumber || 1,
         });
 
@@ -214,7 +214,7 @@ class TaskApplicationAFMBE extends ApplicationAFMBE<TaskApplicationConfiguration
                 label: CreatureAttributes.getLabel(attribute),
                 origin: null,
                 targets: null,
-                type: "all",
+                affects: "all",
                 value: this.actor.system.attributes[attribute] * (this.isTask ? 1 : difficulty === "simple" ? 2 : 1),
             },
         ];
@@ -225,7 +225,7 @@ class TaskApplicationAFMBE extends ApplicationAFMBE<TaskApplicationConfiguration
                 label: localize("afmbe.item.skill.untrained.label"),
                 origin: null,
                 targets: null,
-                type: "task",
+                affects: "task",
                 value: this.#untrained,
             });
         } else if (skill !== "") {
@@ -237,7 +237,7 @@ class TaskApplicationAFMBE extends ApplicationAFMBE<TaskApplicationConfiguration
                     label: actorSkill.system.label,
                     origin: actorSkill.uuid,
                     targets: null,
-                    type: "task",
+                    affects: "task",
                     value: actorSkill.system.bonus,
                 });
             }
@@ -254,7 +254,7 @@ class TaskApplicationAFMBE extends ApplicationAFMBE<TaskApplicationConfiguration
 
         return this.#modifiers.filter((modifier) => {
             const targets: Partial<CreatureModifierTargets> = modifier.targets ?? {};
-            if (modifier.type !== "all" && modifier.type !== rollType) return false;
+            if (modifier.affects !== "all" && modifier.affects !== rollType) return false;
             if (targets.attribute && targets.attribute !== this.#selected.attribute) return false;
             if (!traits.length || !targets.traits?.length) return true;
             return targets.traits.some((trait) => R.isIncludedIn(trait, traits));
