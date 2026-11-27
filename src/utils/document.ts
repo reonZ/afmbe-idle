@@ -1,5 +1,3 @@
-import { fromUuidSync } from "@7h3laughingman/foundry-types/client/utils/_module.mjs";
-
 function getDocumentFromUUIDSync<T extends keyof DocumentTypeMap, D = InstanceType<DocumentTypeMap[T]>>(
     type: T,
     uuid: Maybe<string>,
