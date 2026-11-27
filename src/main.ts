@@ -1,6 +1,6 @@
+import { ActiveEffectAFMBE } from "active-effect";
 import { ACTOR_CONFIG, ActorAFMBE } from "actor";
 import { ChatMessageAFMBE, TaskMessageDataModel } from "chat-message";
-import { addModifierActiveEffectHandler } from "effects";
 import handlebarsHelpers from "handlebars-helpers";
 import { ITEM_CONFIG, ItemAFMBE } from "item";
 import * as R from "remeda";
@@ -10,6 +10,8 @@ import config from "system-config";
 
 Hooks.once("init", () => {
     CONFIG.AFMBE = config;
+
+    CONFIG.ActiveEffect.documentClass = ActiveEffectAFMBE;
 
     CONFIG.Actor.documentClass = ActorAFMBE;
     for (const { data, sheet, type } of ACTOR_CONFIG) {
@@ -64,9 +66,3 @@ Hooks.on("dropCanvasData", (canvas, data, _event) => {
 
     return false;
 });
-
-CONFIG.ActiveEffect.changeTypes.addModifier = {
-    label: "EFFECT.CHANGES.TYPES.addModifier",
-    defaultPriority: 20,
-    handler: addModifierActiveEffectHandler,
-};
