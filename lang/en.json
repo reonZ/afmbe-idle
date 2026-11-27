@@ -135,6 +135,7 @@
                 "content": "Are you sure you want to delete this item?",
                 "title": "Delete {type} - {name}"
             },
+            "level": "Level",
             "quality": {
                 "category": {
                     "label": "Category",
@@ -168,7 +169,6 @@
                 "effects": "Show Effects Panel"
             },
             "skill": {
-                "level": "Level",
                 "parent": "Parent Skill",
                 "specialty": {
                     "delete": "Delete Specialty",

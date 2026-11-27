@@ -1,4 +1,17 @@
 <div class="sheet-header">
     <img src="{{item.img}}" data-action="editImage" data-edit="img" />
     <input type="text" name="name" value="{{item.name}}" placeholder="{{item.name}}" />
+    {{#if (or (not item.system.level) (not item.system.level.max) (gt item.system.level.max 1))}}
+    <label for="{{rootId}}-sheet-header-level">{{localize 'afmbe.item.level'}}</label>
+    <input
+        type="number"
+        id="{{rootId}}-sheet-header-level"
+        class="item-level"
+        name="system.level.value"
+        value="{{item.system.level.value}}"
+        placeholder="{{item.system.level.value}}"
+        min="1"
+        max="{{item.system.level.max}}"
+    />
+    {{/if}}
 </div>

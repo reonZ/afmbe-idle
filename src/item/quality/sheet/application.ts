@@ -14,19 +14,11 @@ class QualitySheetAFMBE<
 
     static PARTS: DocumentSheetPartAFME<QualitySheetPart, QualitySheetRenderContext> = {
         ...super.PARTS,
-        header: {
-            template: "systems/afmbe-idle/templates/item/quality/sheet-header.hbs",
-            prepareContext: this.prepareHeaderContext,
-        },
         sidebar: {
             template: "systems/afmbe-idle/templates/item/quality/sheet-sidebar.hbs",
             prepareContext: this.prepareSidebarContext,
         },
     };
-
-    static async prepareHeaderContext(this: QualitySheetAFMBE, context: QualitySheetRenderContext) {
-        context.level = this.item.system.level;
-    }
 
     static async prepareSidebarContext(this: QualitySheetAFMBE, context: QualitySheetRenderContext) {
         context.category = {

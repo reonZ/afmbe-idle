@@ -1,12 +1,4 @@
 .application.sheet.afmbe.item.skill .window-content {
-    .sheet-header {
-        grid-template-columns: auto 1fr auto 6ch;
-
-        input[type="number"] {
-            text-align: end;
-        }
-    }
-
     .sidebar {
         .list {
             grid-template-columns: 1fr auto;

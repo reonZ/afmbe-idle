@@ -24,20 +24,12 @@ class SkillSheetAFMBE<
 
     static PARTS: DocumentSheetPartAFME<SkillSheetPart, SkillSheetRenderContext> = {
         ...super.PARTS,
-        header: {
-            template: "systems/afmbe-idle/templates/item/skill/sheet-header.hbs",
-            prepareContext: this.prepareHeaderContext,
-        },
         sidebar: {
             template: "systems/afmbe-idle/templates/item/skill/sheet-sidebar.hbs",
             prepareContext: this.prepareSidebarContext,
             scrollable: [".list.specialties"],
         },
     };
-
-    static async prepareHeaderContext(this: SkillSheetAFMBE, context: SkillSheetRenderContext) {
-        context.level = this.item.system.level.value;
-    }
 
     static async prepareSidebarContext(this: SkillSheetAFMBE, context: SkillSheetRenderContext) {
         const parent = this.item.rootParentItem;

@@ -9,6 +9,14 @@
             width: 4rem;
             cursor: pointer;
         }
+
+        &:has(.item-level) {
+            grid-template-columns: auto 1fr auto 6ch;
+
+            .item-level {
+                text-align: end;
+            }
+        }
     }
 
     .sidebar {
