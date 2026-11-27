@@ -16,6 +16,7 @@ import {
     ItemSheetRenderContext,
     ItemSheetRenderOptions,
 } from ".";
+import { ActiveEffectSource } from "@7h3laughingman/foundry-types/common/documents/active-effect.mjs";
 
 abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends documentSheetMixinAFMBE(
     foundry.applications.sheets.ItemSheetV2<ItemAFMBE>,
@@ -54,12 +55,16 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
         },
     };
 
-    static ACTIVE_EFFECTS: Record<string, { data?: () => Record<string, any>; template: string }> = {
+    static ACTIVE_EFFECTS: Record<string, { options?: () => Record<string, any>; template: string; title: string }> = {
         "system.modifiers": {
-            data: () => {
-                return { options: configToSelectOptions(CONFIG.AFMBE.ACTOR.CREATURE.MODIFIER.AFFECTS) };
+            options: () => {
+                return {
+                    affects: configToSelectOptions(CONFIG.AFMBE.ACTOR.CREATURE.MODIFIER.AFFECTS),
+                    attributes: configToSelectOptions(CONFIG.AFMBE.ACTOR.CREATURE.ATTRIBUTE),
+                };
             },
             template: "systems/afmbe-idle/templates/effect/add-modifier.hbs",
+            title: "EFFECT.CHANGES.TYPES.rollModifier",
         },
     };
 
@@ -84,15 +89,24 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
                 R.map((change, index): ItemSheetEffect | undefined => {
                     if (!R.isString(change.key)) return;
 
-                    const options = ItemSheetAFMBE.ACTIVE_EFFECTS[change.key];
-                    if (!options) return;
+                    const data = ItemSheetAFMBE.ACTIVE_EFFECTS[change.key];
+                    if (!data) return;
 
                     const id = effect.id;
-                    const data = options.data?.() ?? {};
+                    const options = data.options?.() ?? {};
                     const rootId = `${id}-${index}`;
                     const rootName = `ActiveEffect.${id}.${index}`;
 
-                    return { data, id, index, rootId, rootName, template: options.template, value: change.value };
+                    return {
+                        id,
+                        index,
+                        options,
+                        rootId,
+                        rootName,
+                        template: data.template,
+                        title: data.title,
+                        value: change.value,
+                    };
                 }),
                 R.filter(R.isTruthy),
             );
@@ -147,13 +161,41 @@ abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends doc
         await foundry.applications.handlebars.loadTemplates(ItemSheetAFMBE.ACTIVE_EFFECTS_TEMPLATES);
     }
 
-    protected _processFormData(
+    _processFormData(
         event: SubmitEvent | null,
         form: HTMLFormElement,
         formData: FormDataExtended,
     ): Record<string, unknown> {
-        console.log(arguments);
-        return super._processFormData(event, form, formData);
+        const data = super._processFormData(event, form, formData);
+        const effectsData = (data.ActiveEffect ?? {}) as Record<string, Record<`${number}`, any>>;
+        const effectsEntries = R.entries(effectsData);
+
+        delete data.ActiveEffect;
+
+        if (effectsEntries.length) {
+            const effects: ActiveEffectSource[] = foundry.utils.deepClone(this.item._source.effects ?? []);
+
+            let updatedEffects = false;
+
+            for (const [id, indexes] of effectsEntries) {
+                const changes = effects.find((effect) => effect._id === id)?.system.changes ?? [];
+                if (!changes) continue;
+
+                for (const [index, value] of R.entries(indexes)) {
+                    const change = changes.at(Number(index));
+                    if (!change) continue;
+
+                    change.value = value;
+                    updatedEffects = true;
+                }
+            }
+
+            if (updatedEffects) {
+                data.effects = effects;
+            }
+        }
+
+        return data;
     }
 
     async _processSubmitData(

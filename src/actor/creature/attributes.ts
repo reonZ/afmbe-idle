@@ -5,7 +5,7 @@ import * as R from "remeda";
 
 class CreatureAttributes<TParent extends CreatureAFMBE = CreatureAFMBE> extends ActorModule<TParent> {
     static getLabel(key: CreatureAttributeType): string {
-        return localize("afmbe.actor.creature.attributes", key, "label");
+        return localize("afmbe.actor.creature.attribute", key, "label");
     }
 
     static isAttributeType(key: Maybe<string>): key is CreatureAttributeType {

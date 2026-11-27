@@ -1,20 +1,25 @@
-import { MemberCategory } from "actor";
-
 const config = {
     ACTOR: {
         CREATURE: {
-            ATTRIBUTES: {
-                CATEGORY: {
-                    inspired: 20,
-                    norm: 14,
-                    survivor: 20,
-                } satisfies Record<MemberCategory, number>,
-                DRAWBACK_COST: 1,
-                IMPROVEMENT: {
-                    low: 5,
-                    high: 10,
+            ATTRIBUTE: {
+                strength: {
+                    label: "afmbe.actor.creature.attribute.strength.label",
                 },
-                MAX_HUMAN_LEVEL: 6,
+                dexterity: {
+                    label: "afmbe.actor.creature.attribute.dexterity.label",
+                },
+                constitution: {
+                    label: "afmbe.actor.creature.attribute.constitution.label",
+                },
+                intelligence: {
+                    label: "afmbe.actor.creature.attribute.intelligence.label",
+                },
+                perception: {
+                    label: "afmbe.actor.creature.attribute.perception.label",
+                },
+                willpower: {
+                    label: "afmbe.actor.creature.attribute.willpower.label",
+                },
             },
             MODIFIER: {
                 AFFECTS: {

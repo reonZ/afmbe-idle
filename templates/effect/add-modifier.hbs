@@ -10,5 +10,15 @@
     {{localize 'afmbe.actor.creature.modifier.affects.label'}}
 </label>
 <select id="{{rootId}}-affects" name="{{rootName}}.affects">
-    {{selectOptions data.options selected=value.affects localize=true}}
+    {{selectOptions options.affects selected=value.affects localize=true}}
 </select>
+<label for="{{rootId}}-targets-attribute">
+    {{localize 'afmbe.actor.creature.modifier.targets.attribute'}}
+</label>
+<select id="{{rootId}}-targets-attribute" name="{{rootName}}.targets.attribute">
+    {{selectOptions options.attributes blank="" selected=value.targets.attribute localize=true}}
+</select>
+<label for="{{rootId}}-active">
+    {{localize 'afmbe.actor.creature.modifier.active'}}
+</label>
+<input type="checkbox" id="{{rootId}}-active" name="{{rootName}}.active" {{checked value.active}} />

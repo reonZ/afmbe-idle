@@ -1,7 +1,13 @@
 <div class="sheet-effects tab {{tabs.effects.cssClass}}" data-group="sheet" data-tab="effects">
     {{#each effects as |effect|}}
-    <div class="effect-form" data-effect-id="{{effect.id}}" data-change-index="{{effect.index}}">
+    <fieldset data-effect-id="{{effect.id}}" data-change-index="{{effect.index}}">
+        <legend>
+            {{localize effect.title}}
+            <a data-action="delete-effect" data-tooltip="afmbe.effect.delete">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+        </legend>
         {{> (lookup effect 'template') effect}}
-    </div>
+    </fieldset>
     {{/each}}
 </div>

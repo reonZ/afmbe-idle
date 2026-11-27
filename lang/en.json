@@ -35,7 +35,7 @@
                 }
             },
             "creature": {
-                "attributes": {
+                "attribute": {
                     "constitution": {
                         "label": "Constitution"
                     },
@@ -73,11 +73,15 @@
                     "title": "Qualities"
                 },
                 "modifier": {
+                    "active": "Active By Default",
                     "affects": {
                         "all": "All",
                         "label": "Affects",
                         "task": "Task",
                         "test": "Test"
+                    },
+                    "targets": {
+                        "attribute": "Targets Attribute"
                     }
                 },
                 "speed": {
@@ -131,6 +135,7 @@
             }
         },
         "effect": {
+            "delete": "Delete Effect",
             "label": "Label",
             "value": "Value"
         },

@@ -11,12 +11,13 @@ type ItemSheetPart = "description" | "effects" | "header" | "tabs";
 type ItemSheetRenderOptions = DocumentSheetRenderOptions;
 
 type ItemSheetEffect = {
-    data: Record<string, any>;
     id: string;
     index: number;
+    options: Record<string, any>;
     rootId: string;
     rootName: string;
     template: string;
+    title: string;
     value: JSONValue;
 };
 
