@@ -9,7 +9,7 @@ import type { CreatureAttributeType, CreatureModifierType } from "actor";
 import type { TaskRoll } from "./roll";
 
 type TaskTargetSchema = {
-    attribute: StringField<CreatureAttributeType, CreatureAttributeType, false, true, false>;
+    attribute: StringField<CreatureAttributeType, CreatureAttributeType, false, true, true>;
     traits: ArrayField<StringField<string, string, true, false, false>, string[], string[], false, true, false>;
     value: NumberField<number, number, false, true, false>;
 };

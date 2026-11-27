@@ -1,3 +1,4 @@
+import { DataField } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
 import { ActorDataModel, ActorDataSource } from "actor";
 import { TaskApplicationAFMBE, TaskApplicationData } from "application";
 import { PositiveIntergerValueField } from "fields";
@@ -10,6 +11,7 @@ import {
     CreatureEssence,
     CreatureLife,
     CreatureModifier,
+    CreatureModifiersField,
     CreatureSpeed,
 } from ".";
 
@@ -17,6 +19,7 @@ class CreatureDataModel<
     TParent extends CreatureAFMBE = CreatureAFMBE,
     TSchema extends CreatureDataSchema = CreatureDataSchema,
 > extends ActorDataModel<TParent, TSchema> {
+    #modifiersField = new CreatureModifiersField();
     modifiers: CreatureModifier[] = [];
 
     static defineSchema(): CreatureDataSchema {
@@ -26,6 +29,13 @@ class CreatureDataModel<
             essence: new PositiveIntergerValueField(),
             life: new PositiveIntergerValueField(),
         };
+    }
+
+    getFieldForProperty(key: string[] | string): DataField | undefined {
+        if (key === "modifiers") {
+            return this.#modifiersField;
+        }
+        return super.getFieldForProperty(key);
     }
 
     // we prepare secondary attributes after primary attributes have been prepared AND modified by active effects

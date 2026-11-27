@@ -30,7 +30,6 @@ type CreatureModifierSchema = {
     active: BooleanField;
     label: StringField<string, string, true, false, false>;
     origin: DocumentUUIDField<ItemUUID>;
-    value: NumberField<number, number, true, false, false>;
     targets: SchemaField<
         CreatureModifierTargetsSchema,
         SourceFromSchema<CreatureModifierTargetsSchema>,
@@ -40,6 +39,7 @@ type CreatureModifierSchema = {
         true
     >;
     type: StringField<CreatureModifierType, CreatureModifierType, true, false, true>;
+    value: NumberField<number, number, true, false, true>;
 };
 
 type CreatureModifier = SourceFromSchema<CreatureModifierSchema>;

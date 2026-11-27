@@ -1,5 +1,5 @@
 import { DatabaseCreateCallbackOptions } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
-import { ActorAFMBE, CREATURE_ATTRIBUTES } from "actor";
+import { ActorAFMBE, CreatureModifiersField } from "actor";
 import { TEST_DIFFICULTIES } from "application";
 import { PhysicalItemAFMBE } from "item";
 import { UserAFMBE } from "misc";
@@ -31,39 +31,9 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
                 embedded: true,
                 type: "Item",
             }),
-            modifiers: new fields.ArrayField(
-                new fields.SchemaField({
-                    label: new fields.StringField({
-                        required: true,
-                        nullable: false,
-                        blank: false,
-                    }),
-                    origin: new fields.DocumentUUIDField({
-                        embedded: true,
-                        type: "Item",
-                    }),
-                    value: new fields.NumberField({
-                        required: true,
-                        nullable: false,
-                        integer: true,
-                    }),
-                }),
-            ),
+            modifiers: new fields.ArrayField(new fields.SchemaField(CreatureModifiersField.defineBaseSchema())),
             target: new fields.SchemaField({
-                attribute: new fields.StringField({
-                    required: false,
-                    nullable: true,
-                    blank: false,
-                    initial: undefined,
-                    choices: CREATURE_ATTRIBUTES,
-                }),
-                traits: new fields.ArrayField(
-                    new fields.StringField({
-                        required: true,
-                        nullable: false,
-                        blank: false,
-                    }),
-                ),
+                ...CreatureModifiersField.defineTargetSchema(),
                 value: new fields.NumberField({
                     required: false,
                     nullable: true,
