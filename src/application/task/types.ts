@@ -1,5 +1,5 @@
 import type { ApplicationRenderContext } from "@7h3laughingman/foundry-types/client/applications/_module.mjs";
-import type { Creature, CreatureAttributeType, CreatureModifier } from "actor";
+import type { CreatureAFMBE, CreatureAttributeType, CreatureModifier } from "actor";
 import type { TaskRollType, TaskTarget } from "roll";
 import type { ApplicationConfigurationAFMBE, TEST_DIFFICULTIES } from "..";
 
@@ -42,7 +42,7 @@ type TaskApplicationData = {
 };
 
 type TaskApplicationConfiguration = ApplicationConfigurationAFMBE & {
-    actor: Creature;
+    actor: CreatureAFMBE;
     data: TaskApplicationData;
 };
 

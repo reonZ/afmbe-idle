@@ -10,11 +10,11 @@ type EffectDataSchema = ItemDataSchema & {
 
 type EffectDataSource = ModelPropsFromSchema<EffectDataSchema>;
 
-declare class Effect<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
+declare class EffectAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends ItemAFMBE<TParent> {
     readonly _source: EffectSource;
     system: EffectDataModel;
 }
 
 type EffectSource = ItemSource<"effect", EffectDataSource>;
 
-export type { Effect, EffectDataSchema, EffectDataSource, EffectSource };
+export type { EffectAFMBE, EffectDataSchema, EffectDataSource, EffectSource };

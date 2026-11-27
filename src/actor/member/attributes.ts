@@ -1,5 +1,5 @@
 import {
-    Member,
+    MemberAFMBE,
     MemberAttributeSource,
     MemberAttributesSource,
     CREATURE_ATTRIBUTES,
@@ -7,7 +7,7 @@ import {
     CreatureAttributeType,
 } from "actor";
 
-class MemberAttributes<TParent extends Member = Member> extends CreatureAttributes<TParent> {
+class MemberAttributes<TParent extends MemberAFMBE = MemberAFMBE> extends CreatureAttributes<TParent> {
     _initialize(): void {
         const attributes = this.parent.system.attributes as unknown as MemberAttributesSource;
 

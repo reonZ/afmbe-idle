@@ -2,10 +2,17 @@ import { PositiveIntegerField } from "fields";
 import { ItemAFMBE, ItemDataModel, ItemDataSource } from "item";
 import * as R from "remeda";
 import { localize } from "utils";
-import { Quality, QUALITY_CATEGORIES, QUALITY_TYPES, QualityDataSchema, QualityDataSource, QualitySource } from ".";
+import {
+    QualityAFMBE,
+    QUALITY_CATEGORIES,
+    QUALITY_TYPES,
+    QualityDataSchema,
+    QualityDataSource,
+    QualitySource,
+} from ".";
 import fields = foundry.data.fields;
 
-class QualityDataModel<TParent extends Quality = Quality> extends ItemDataModel<TParent, QualityDataSchema> {
+class QualityDataModel<TParent extends QualityAFMBE = QualityAFMBE> extends ItemDataModel<TParent, QualityDataSchema> {
     static defineSchema(): QualityDataSchema {
         return {
             ...super.defineSchema(),
@@ -84,6 +91,9 @@ class QualityDataModel<TParent extends Quality = Quality> extends ItemDataModel<
     }
 }
 
-interface QualityDataModel<TParent extends Quality = Quality> extends Omit<QualityDataSource, keyof ItemDataSource> {}
+interface QualityDataModel<TParent extends QualityAFMBE = QualityAFMBE> extends Omit<
+    QualityDataSource,
+    keyof ItemDataSource
+> {}
 
 export { QualityDataModel };

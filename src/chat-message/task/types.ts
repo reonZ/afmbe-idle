@@ -41,14 +41,14 @@ type PreCreateTaskMessageSource = DeepPartial<Omit<TaskMessageSource, "rolls" | 
     type: "task";
 };
 
-declare class TaskChatMessage extends ChatMessageAFMBE {
+declare class TaskChatMessageAFMBE extends ChatMessageAFMBE {
     system: TaskMessageDataModel;
     rolls: EvaluatedTaskRolls;
 }
 
 export type {
     PreCreateTaskMessageSource,
-    TaskChatMessage,
+    TaskChatMessageAFMBE,
     TaskMessageContext,
     TaskMessageDataSchema,
     TaskMessageDataSource,

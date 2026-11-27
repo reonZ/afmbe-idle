@@ -1,6 +1,6 @@
 import type { ItemSource } from "@7h3laughingman/foundry-types/client/documents/_module.mjs";
 import type { ModelPropsFromSchema } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
-import type { Creature } from "actor";
+import type { CreatureAFMBE } from "actor";
 import type { PositiveIntergerValueField } from "fields";
 import type { ItemAFMBE, ItemDataSchema, SubItems } from "item";
 import type { SkillDataModel } from ".";
@@ -11,14 +11,14 @@ type SkillDataSchema = ItemDataSchema & {
 
 type SkillDataSource = ModelPropsFromSchema<SkillDataSchema>;
 
-declare class Skill<TParent extends Creature | null = Creature | null> extends ItemAFMBE<TParent> {
+declare class SkillAFMBE<TParent extends CreatureAFMBE | null = CreatureAFMBE | null> extends ItemAFMBE<TParent> {
     readonly _source: SkillSource;
-    readonly parentItem: Skill<TParent> | null;
-    get rootParentItem(): Skill<TParent> | null;
-    readonly subItems: SubItems<Skill<TParent>, Skill<TParent>>;
+    readonly parentItem: SkillAFMBE<TParent> | null;
+    get rootParentItem(): SkillAFMBE<TParent> | null;
+    readonly subItems: SubItems<SkillAFMBE<TParent>, SkillAFMBE<TParent>>;
     system: SkillDataModel;
 }
 
 type SkillSource = ItemSource<"skill", SkillDataSource>;
 
-export type { Skill, SkillDataSchema, SkillDataSource, SkillSource };
+export type { SkillAFMBE, SkillDataSchema, SkillDataSource, SkillSource };

@@ -10,28 +10,28 @@ import type { ItemSchema } from "@7h3laughingman/foundry-types/common/documents/
 import type { ActorAFMBE } from "actor";
 import type { RequiredHTMLField } from "fields";
 import type {
-    Armor,
-    Effect,
+    ArmorAFMBE,
+    EffectAFMBE,
     EffectSource,
-    PhysicalItem,
+    PhysicalItemAFMBE,
     PhysicalSource,
-    Quality,
+    QualityAFMBE,
     QualitySource,
-    Skill,
+    SkillAFMBE,
     SkillSource,
-    Weapon,
+    WeaponAFMBE,
 } from "item";
 import type { ITEM_TYPES, ItemAFMBE } from ".";
 
 type ItemType = (typeof ITEM_TYPES)[number];
 
 type ItemInstances<TParent extends ActorAFMBE | null = ActorAFMBE | null> = {
-    armor: Armor<TParent>;
-    effect: Effect<TParent>;
-    weapon: Weapon<TParent>;
-    physical: PhysicalItem<TParent>;
-    quality: Quality<TParent>;
-    skill: Skill<TParent>;
+    armor: ArmorAFMBE<TParent>;
+    effect: EffectAFMBE<TParent>;
+    weapon: WeaponAFMBE<TParent>;
+    physical: PhysicalItemAFMBE<TParent>;
+    quality: QualityAFMBE<TParent>;
+    skill: SkillAFMBE<TParent>;
 };
 
 type SubItemDataSchema = Omit<ItemSchema<ItemType>, "effects" | "folder">;

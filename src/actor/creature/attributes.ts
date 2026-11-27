@@ -1,9 +1,9 @@
 import { ActorModule } from "actor";
 import { localize } from "utils";
-import { Creature, CREATURE_ATTRIBUTES, CreatureAttributeType } from ".";
+import { CreatureAFMBE, CREATURE_ATTRIBUTES, CreatureAttributeType } from ".";
 import * as R from "remeda";
 
-class CreatureAttributes<TParent extends Creature = Creature> extends ActorModule<TParent> {
+class CreatureAttributes<TParent extends CreatureAFMBE = CreatureAFMBE> extends ActorModule<TParent> {
     static getLabel(key: CreatureAttributeType): string {
         return localize("afmbe.actor.creature.attributes", key, "label");
     }

@@ -1,10 +1,10 @@
-import { CharacterSheet, CharacterSheetConfiguration } from "actor";
-import { Adversary } from "..";
+import { CharacterSheetAFMBE, CharacterSheetConfiguration } from "actor";
+import { AdversaryAFMBE } from "..";
 
-class AdversarySheet extends CharacterSheet<Adversary> {
+class AdversarySheetAFMBE extends CharacterSheetAFMBE<AdversaryAFMBE> {
     static DEFAULT_OPTIONS: DeepPartial<CharacterSheetConfiguration> = {
         classes: ["adversary"],
     };
 }
 
-export { AdversarySheet };
+export { AdversarySheetAFMBE };

@@ -1,7 +1,7 @@
 import { CreatureAttributes, CreatureDataModel, CreatureDataSource } from "actor";
-import { Zombie, ZombieDataSchema, ZombieDataSource } from ".";
+import { ZombieAFMBE, ZombieDataSchema, ZombieDataSource } from ".";
 
-class ZombieDataModel<TParent extends Zombie = Zombie> extends CreatureDataModel<TParent, ZombieDataSchema> {
+class ZombieDataModel<TParent extends ZombieAFMBE = ZombieAFMBE> extends CreatureDataModel<TParent, ZombieDataSchema> {
     static defineSchema(): ZombieDataSchema {
         return {
             ...super.defineSchema(),
@@ -18,6 +18,9 @@ class ZombieDataModel<TParent extends Zombie = Zombie> extends CreatureDataModel
     }
 }
 
-interface ZombieDataModel<TParent extends Zombie = Zombie> extends Omit<ZombieDataSource, keyof CreatureDataSource> {}
+interface ZombieDataModel<TParent extends ZombieAFMBE = ZombieAFMBE> extends Omit<
+    ZombieDataSource,
+    keyof CreatureDataSource
+> {}
 
 export { ZombieDataModel };

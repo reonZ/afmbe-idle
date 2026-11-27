@@ -1,10 +1,10 @@
-import { CreatureSheet, CreatureSheetConfiguration } from "actor";
-import { Zombie } from "..";
+import { CreatureSheetAFMBE, CreatureSheetConfiguration } from "actor";
+import { ZombieAFMBE } from "..";
 
-class ZombieSheet extends CreatureSheet<Zombie> {
+class ZombieSheetAFMBE extends CreatureSheetAFMBE<ZombieAFMBE> {
     static DEFAULT_OPTIONS: DeepPartial<CreatureSheetConfiguration> = {
         classes: ["zombie"],
     };
 }
 
-export { ZombieSheet };
+export { ZombieSheetAFMBE };

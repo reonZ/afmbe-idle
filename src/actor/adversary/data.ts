@@ -1,10 +1,10 @@
 import { CharacterDataModel, CharacterDataSource, CREATURE_ATTRIBUTES } from "actor";
 import { ValueField } from "fields";
 import * as R from "remeda";
-import { Adversary, AdversaryAttributes, AdversaryDataSchema, AdversaryDataSource } from ".";
+import { AdversaryAFMBE, AdversaryAttributes, AdversaryDataSchema, AdversaryDataSource } from ".";
 import fields = foundry.data.fields;
 
-class AdversaryDataModel<TParent extends Adversary = Adversary> extends CharacterDataModel<
+class AdversaryDataModel<TParent extends AdversaryAFMBE = AdversaryAFMBE> extends CharacterDataModel<
     TParent,
     AdversaryDataSchema
 > {
@@ -32,7 +32,7 @@ class AdversaryDataModel<TParent extends Adversary = Adversary> extends Characte
     }
 }
 
-interface AdversaryDataModel<TParent extends Adversary = Adversary> extends Omit<
+interface AdversaryDataModel<TParent extends AdversaryAFMBE = AdversaryAFMBE> extends Omit<
     AdversaryDataSource,
     keyof CharacterDataSource | "attributes"
 > {}

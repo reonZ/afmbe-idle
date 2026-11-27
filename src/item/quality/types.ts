@@ -4,7 +4,7 @@ import type {
     SchemaField,
     StringField,
 } from "@7h3laughingman/foundry-types/common/data/fields.mjs";
-import type { Character } from "actor";
+import type { CharacterAFMBE } from "actor";
 import { PositiveIntegerField } from "fields";
 import type { ItemAFMBE, ItemDataSchema } from "item";
 import type { QUALITY_CATEGORIES, QUALITY_TYPES, QualityDataModel } from ".";
@@ -29,7 +29,7 @@ type QualityDataSchema = ItemDataSchema & {
 
 type QualityDataSource = ModelPropsFromSchema<QualityDataSchema>;
 
-declare class Quality<TParent extends Character | null = Character | null> extends ItemAFMBE<TParent> {
+declare class QualityAFMBE<TParent extends CharacterAFMBE | null = CharacterAFMBE | null> extends ItemAFMBE<TParent> {
     _source: QualitySource;
     system: QualityDataModel;
 }
@@ -37,7 +37,7 @@ declare class Quality<TParent extends Character | null = Character | null> exten
 type QualitySource = ItemSource<"quality", QualityDataSource>;
 
 export type {
-    Quality,
+    QualityAFMBE,
     QualityCategory,
     QualityDataSchema,
     QualityDataSource,

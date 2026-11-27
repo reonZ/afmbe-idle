@@ -1,9 +1,9 @@
 import { CreatureDataModel, CreatureDataSource } from "actor";
 import { ItemType } from "item";
-import { Character, CharacterDataSchema, CharacterDataSource } from ".";
+import { CharacterAFMBE, CharacterDataSchema, CharacterDataSource } from ".";
 
 class CharacterDataModel<
-    TParent extends Character = Character,
+    TParent extends CharacterAFMBE = CharacterAFMBE,
     TSchema extends CharacterDataSchema = CharacterDataSchema,
 > extends CreatureDataModel<TParent, TSchema> {
     get allowedItems(): ItemType[] {
@@ -11,7 +11,7 @@ class CharacterDataModel<
     }
 }
 
-interface CharacterDataModel<TParent extends Character = Character> extends Omit<
+interface CharacterDataModel<TParent extends CharacterAFMBE = CharacterAFMBE> extends Omit<
     CharacterDataSource,
     keyof CreatureDataSource
 > {}

@@ -1,9 +1,11 @@
-import { Character, CreatureSheet } from "actor";
+import { CharacterAFMBE, CreatureSheetAFMBE } from "actor";
 import { DocumentSheetPartAFME } from "document-sheet";
 import * as R from "remeda";
 import { CharacterSheetConfiguration, CharacterSheetPart, CharacterSheetRenderContext, CharacterSheetSkill } from ".";
 
-abstract class CharacterSheet<TParent extends Character = Character> extends CreatureSheet<TParent> {
+abstract class CharacterSheetAFMBE<
+    TParent extends CharacterAFMBE = CharacterAFMBE,
+> extends CreatureSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<CharacterSheetConfiguration> = {
         classes: ["character"],
         position: { height: 700 },
@@ -18,7 +20,7 @@ abstract class CharacterSheet<TParent extends Character = Character> extends Cre
         },
     };
 
-    static prepareSkillsContext(this: CharacterSheet, context: CharacterSheetRenderContext) {
+    static prepareSkillsContext(this: CharacterSheetAFMBE, context: CharacterSheetRenderContext) {
         context.skills = R.flatMap(this.actor.itemTypes.skill, (skill) =>
             R.map([skill, ...skill.system.deepSpecialties], (skill): CharacterSheetSkill => {
                 return {
@@ -32,4 +34,4 @@ abstract class CharacterSheet<TParent extends Character = Character> extends Cre
     }
 }
 
-export { CharacterSheet };
+export { CharacterSheetAFMBE };

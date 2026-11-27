@@ -1,10 +1,10 @@
-import { CharacterSheet, CharacterSheetConfiguration } from "actor";
-import { Member } from "..";
+import { CharacterSheetAFMBE, CharacterSheetConfiguration } from "actor";
+import { MemberAFMBE } from "..";
 
-class MemberSheet extends CharacterSheet<Member> {
+class MemberSheetAFMBE extends CharacterSheetAFMBE<MemberAFMBE> {
     static DEFAULT_OPTIONS: DeepPartial<CharacterSheetConfiguration> = {
         classes: ["member"],
     };
 }
 
-export { MemberSheet };
+export { MemberSheetAFMBE };

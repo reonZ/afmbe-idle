@@ -1,12 +1,12 @@
-import { Creature } from "actor";
+import { CreatureAFMBE } from "actor";
 import { DocumentSheetPartAFME } from "document-sheet";
-import { ItemSheetAFMBE, Quality, QUALITY_CATEGORIES, QUALITY_TYPES, QualityCategory, QualityType } from "item";
+import { ItemSheetAFMBE, QualityAFMBE, QUALITY_CATEGORIES, QUALITY_TYPES, QualityCategory, QualityType } from "item";
 import * as R from "remeda";
 import { localize } from "utils";
 import { QualitySheetConfiguration, QualitySheetPart, QualitySheetRenderContext } from ".";
 
-class QualitySheet<
-    TParent extends Quality<Creature | null> = Quality<Creature | null>,
+class QualitySheetAFMBE<
+    TParent extends QualityAFMBE<CreatureAFMBE | null> = QualityAFMBE<CreatureAFMBE | null>,
 > extends ItemSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<QualitySheetConfiguration> = {
         classes: ["quality"],
@@ -24,11 +24,11 @@ class QualitySheet<
         },
     };
 
-    static async prepareHeaderContext(this: QualitySheet, context: QualitySheetRenderContext) {
+    static async prepareHeaderContext(this: QualitySheetAFMBE, context: QualitySheetRenderContext) {
         context.level = this.item.system.level;
     }
 
-    static async prepareSidebarContext(this: QualitySheet, context: QualitySheetRenderContext) {
+    static async prepareSidebarContext(this: QualitySheetAFMBE, context: QualitySheetRenderContext) {
         context.category = {
             label: localize("afmbe.item.quality.category.label"),
             name: "system.category",
@@ -51,4 +51,4 @@ class QualitySheet<
     }
 }
 
-export { QualitySheet };
+export { QualitySheetAFMBE };

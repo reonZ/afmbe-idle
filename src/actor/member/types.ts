@@ -5,7 +5,7 @@ import type {
     StringField,
 } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
 import type { ActorSource } from "@7h3laughingman/foundry-types/common/documents/actor.mjs";
-import type { Character, CharacterDataSchema, CreatureAttributeType } from "actor";
+import type { CharacterAFMBE, CharacterDataSchema, CreatureAttributeType } from "actor";
 import type { BooleanField, PositiveIntegerField, RequiredHTMLField } from "fields";
 import type { TokenDocumentAFMBE } from "misc";
 import type { MEMBER_CATEGORY, MemberDataModel } from ".";
@@ -43,14 +43,16 @@ type MemberAttributesSource = SourceFromSchema<MemberAttributesSchema>;
 
 type MemberDataSource = ModelPropsFromSchema<MemberDataSchema>;
 
-declare class Member<TParent extends TokenDocumentAFMBE | null = TokenDocumentAFMBE | null> extends Character<TParent> {
+declare class MemberAFMBE<
+    TParent extends TokenDocumentAFMBE | null = TokenDocumentAFMBE | null,
+> extends CharacterAFMBE<TParent> {
     system: MemberDataModel;
 }
 
 type MemberSource = ActorSource<"member", MemberDataSource>;
 
 export type {
-    Member,
+    MemberAFMBE,
     MemberAttributeSource,
     MemberAttributesSource,
     MemberCategory,

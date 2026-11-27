@@ -1,5 +1,5 @@
 import type { ActiveEffectChangeData } from "@7h3laughingman/foundry-types/client/documents/_types.mjs";
-import { ActorAFMBE, Creature, CREATURE_MODIFIER_TYPES, CreatureModifier } from "actor";
+import { ActorAFMBE, CreatureAFMBE, CREATURE_MODIFIER_TYPES, CreatureModifier } from "actor";
 import * as R from "remeda";
 
 async function addModifierActiveEffectHandler(actor: unknown, change: ActiveEffectChangeData) {
@@ -26,7 +26,7 @@ async function addModifierActiveEffectHandler(actor: unknown, change: ActiveEffe
     actor.system.modifiers.push(change.value);
 }
 
-function isModifierActor(actor: unknown): actor is Creature {
+function isModifierActor(actor: unknown): actor is CreatureAFMBE {
     return actor instanceof ActorAFMBE && actor.isOfType("creature");
 }
 

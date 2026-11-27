@@ -1,7 +1,7 @@
 import { ApplicationClosingOptions } from "@7h3laughingman/foundry-types/client/applications/_module.mjs";
-import { Creature } from "actor";
+import { CreatureAFMBE } from "actor";
 import { DocumentSheetPartAFME } from "document-sheet";
-import { ItemSheetAFMBE, Skill } from "item";
+import { ItemSheetAFMBE, SkillAFMBE } from "item";
 import * as R from "remeda";
 import { localize } from "utils";
 import {
@@ -12,7 +12,9 @@ import {
     SkillSheetSkillEntry,
 } from ".";
 
-class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>> extends ItemSheetAFMBE<TParent> {
+class SkillSheetAFMBE<
+    TParent extends SkillAFMBE<CreatureAFMBE | null> = SkillAFMBE<CreatureAFMBE | null>,
+> extends ItemSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<SkillSheetConfiguration> = {
         classes: ["skill"],
         actions: {
@@ -33,11 +35,11 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         },
     };
 
-    static async prepareHeaderContext(this: SkillSheet, context: SkillSheetRenderContext) {
+    static async prepareHeaderContext(this: SkillSheetAFMBE, context: SkillSheetRenderContext) {
         context.level = this.item.system.level.value;
     }
 
-    static async prepareSidebarContext(this: SkillSheet, context: SkillSheetRenderContext) {
+    static async prepareSidebarContext(this: SkillSheetAFMBE, context: SkillSheetRenderContext) {
         const parent = this.item.rootParentItem;
 
         if (parent) {
@@ -53,7 +55,7 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
         });
     }
 
-    static async #addSpecialty(this: SkillSheet) {
+    static async #addSpecialty(this: SkillSheetAFMBE) {
         const specialty = await this.item.system.addSpecialty();
         if (!specialty) return;
 
@@ -82,4 +84,4 @@ class SkillSheet<TParent extends Skill<Creature | null> = Skill<Creature | null>
     }
 }
 
-export { SkillSheet };
+export { SkillSheetAFMBE };

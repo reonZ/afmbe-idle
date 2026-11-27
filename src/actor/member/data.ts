@@ -1,10 +1,17 @@
 import { CharacterDataModel, CharacterDataSource, CREATURE_ATTRIBUTES } from "actor";
 import { BooleanField, PositiveIntegerField, RequiredHTMLField } from "fields";
 import * as R from "remeda";
-import { Member, MEMBER_CATEGORY, MemberAttributes, MemberDataSchema, MemberDataSource, MemberExperience } from ".";
+import {
+    MemberAFMBE,
+    MEMBER_CATEGORY,
+    MemberAttributes,
+    MemberDataSchema,
+    MemberDataSource,
+    MemberExperience,
+} from ".";
 import fields = foundry.data.fields;
 
-class MemberDataModel<TParent extends Member = Member> extends CharacterDataModel<TParent, MemberDataSchema> {
+class MemberDataModel<TParent extends MemberAFMBE = MemberAFMBE> extends CharacterDataModel<TParent, MemberDataSchema> {
     static defineSchema(): MemberDataSchema {
         return {
             ...super.defineSchema(),
@@ -43,7 +50,7 @@ class MemberDataModel<TParent extends Member = Member> extends CharacterDataMode
     }
 }
 
-interface MemberDataModel<TParent extends Member = Member> extends Omit<
+interface MemberDataModel<TParent extends MemberAFMBE = MemberAFMBE> extends Omit<
     MemberDataSource,
     keyof CharacterDataSource | "attributes" | "experience"
 > {

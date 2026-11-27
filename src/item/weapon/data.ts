@@ -1,7 +1,7 @@
-import { Weapon, WeaponDataSchema, WeaponDataSource } from ".";
+import { WeaponAFMBE, WeaponDataSchema, WeaponDataSource } from ".";
 import { PhysicalDataModel, PhysicalDataSource } from "..";
 
-class WeaponDataModel<TParent extends Weapon = Weapon> extends PhysicalDataModel<TParent, WeaponDataSchema> {
+class WeaponDataModel<TParent extends WeaponAFMBE = WeaponAFMBE> extends PhysicalDataModel<TParent, WeaponDataSchema> {
     static defineSchema(): WeaponDataSchema {
         return {
             ...super.defineSchema(),
@@ -13,6 +13,9 @@ class WeaponDataModel<TParent extends Weapon = Weapon> extends PhysicalDataModel
     }
 }
 
-interface WeaponDataModel<TParent extends Weapon = Weapon> extends Omit<WeaponDataSource, keyof PhysicalDataSource> {}
+interface WeaponDataModel<TParent extends WeaponAFMBE = WeaponAFMBE> extends Omit<
+    WeaponDataSource,
+    keyof PhysicalDataSource
+> {}
 
 export { WeaponDataModel };

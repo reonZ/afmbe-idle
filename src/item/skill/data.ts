@@ -2,9 +2,9 @@ import { PositiveIntergerValueField } from "fields";
 import { ItemDataModel, ItemDataSource, ItemType, SubItems } from "item";
 import * as R from "remeda";
 import { localize, signedNumber } from "utils";
-import { Skill, SkillDataSchema, SkillDataSource, SkillSource } from ".";
+import { SkillAFMBE, SkillDataSchema, SkillDataSource, SkillSource } from ".";
 
-class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParent, SkillDataSchema> {
+class SkillDataModel<TParent extends SkillAFMBE = SkillAFMBE> extends ItemDataModel<TParent, SkillDataSchema> {
     static defineSchema(): SkillDataSchema {
         return {
             ...super.defineSchema(),
@@ -37,22 +37,22 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
         return signedNumber(this.bonus);
     }
 
-    get parentSkill(): Skill<TParent["actor"]> | null {
+    get parentSkill(): SkillAFMBE<TParent["actor"]> | null {
         return this.item.parentItem;
     }
 
-    get specialties(): SubItems<Skill<TParent["actor"]>, Skill<TParent["actor"]>> {
+    get specialties(): SubItems<SkillAFMBE<TParent["actor"]>, SkillAFMBE<TParent["actor"]>> {
         return this.item.subItems;
     }
 
-    get deepSpecialties(): Skill<TParent["actor"]>[] {
+    get deepSpecialties(): SkillAFMBE<TParent["actor"]>[] {
         return R.flatMap(this.specialties.contents, (specialty) => {
             return [specialty, ...specialty.system.deepSpecialties];
         });
     }
 
     async addSpecialty({ level, name }: { name?: string; level?: number } = {}): Promise<
-        Skill<TParent["parent"]> | undefined
+        SkillAFMBE<TParent["parent"]> | undefined
     > {
         const source: PreCreate<SkillSource> = {
             type: "skill",
@@ -63,10 +63,10 @@ class SkillDataModel<TParent extends Skill = Skill> extends ItemDataModel<TParen
         };
 
         const [item] = await this.item.createEmbeddedDocuments("Item", [source]);
-        return item as Skill<TParent["parent"]> | undefined;
+        return item as SkillAFMBE<TParent["parent"]> | undefined;
     }
 }
 
-interface SkillDataModel<TParent extends Skill = Skill> extends Omit<SkillDataSource, keyof ItemDataSource> {}
+interface SkillDataModel<TParent extends SkillAFMBE = SkillAFMBE> extends Omit<SkillDataSource, keyof ItemDataSource> {}
 
 export { SkillDataModel };

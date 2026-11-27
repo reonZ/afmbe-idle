@@ -57,7 +57,7 @@ type CreatureDataSource = ModelPropsFromSchema<CreatureDataSchema>;
 
 type CreatureSecondaryAttributes = Record<CreatureSecondaryType, { value: number; max?: number }>;
 
-declare abstract class Creature<
+declare abstract class CreatureAFMBE<
     TParent extends TokenDocumentAFMBE | null = TokenDocumentAFMBE | null,
 > extends ActorAFMBE<TParent> {
     system: CreatureDataModel;
@@ -66,7 +66,7 @@ declare abstract class Creature<
 type CreatureSource = CharacterSource | ZombieSource;
 
 export type {
-    Creature,
+    CreatureAFMBE,
     CreatureAttributeType,
     CreatureDataSchema,
     CreatureDataSource,

@@ -9,10 +9,10 @@ import {
     CreatureSheetRenderContext,
     RollTaskTargetData,
 } from ".";
-import { Creature, CREATURE_ATTRIBUTES, CREATURE_SECONDARIES, CreatureAttributes } from "..";
+import { CreatureAFMBE, CREATURE_ATTRIBUTES, CREATURE_SECONDARIES, CreatureAttributes } from "..";
 import { QualityType } from "item";
 
-abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorSheetAFMBE<TParent> {
+abstract class CreatureSheetAFMBE<TParent extends CreatureAFMBE = CreatureAFMBE> extends ActorSheetAFMBE<TParent> {
     static DEFAULT_OPTIONS: DeepPartial<CreatureSheetConfiguration> = {
         classes: ["creature"],
         actions: {
@@ -34,7 +34,7 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
         },
     };
 
-    static prepareAttributesContext(this: CreatureSheet, context: CreatureSheetRenderContext) {
+    static prepareAttributesContext(this: CreatureSheetAFMBE, context: CreatureSheetRenderContext) {
         context.img = this.actor.img;
 
         context.primary = R.map(CREATURE_ATTRIBUTES, (key) => {
@@ -51,7 +51,7 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
         context.speed = this.actor.system.speed;
     }
 
-    static prepareQualitiesContext(this: CreatureSheet, context: CreatureSheetRenderContext) {
+    static prepareQualitiesContext(this: CreatureSheetAFMBE, context: CreatureSheetRenderContext) {
         const [drawbacks, qualities] = R.pipe(
             this.actor.itemTypes.quality,
             R.map((item): CreatureSheetQuality & { type: QualityType } => {
@@ -64,7 +64,7 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
         context.qualities = qualities;
     }
 
-    static #rollTask(this: CreatureSheet, event: PointerEvent, target: HTMLElement) {
+    static #rollTask(this: CreatureSheetAFMBE, event: PointerEvent, target: HTMLElement) {
         const data = target.dataset as RollTaskTargetData;
 
         this.actor.system.rollTask({
@@ -75,4 +75,4 @@ abstract class CreatureSheet<TParent extends Creature = Creature> extends ActorS
     }
 }
 
-export { CreatureSheet };
+export { CreatureSheetAFMBE };

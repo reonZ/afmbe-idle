@@ -1,8 +1,8 @@
 import { PositiveIntergerValueField } from "fields";
 import { ItemDataModel, ItemDataSource } from "item";
-import { Effect, EffectDataSchema, EffectDataSource } from ".";
+import { EffectAFMBE, EffectDataSchema, EffectDataSource } from ".";
 
-class EffectDataModel<TParent extends Effect = Effect> extends ItemDataModel<TParent, EffectDataSchema> {
+class EffectDataModel<TParent extends EffectAFMBE = EffectAFMBE> extends ItemDataModel<TParent, EffectDataSchema> {
     static defineSchema(): EffectDataSchema {
         return {
             ...super.defineSchema(),
@@ -11,6 +11,9 @@ class EffectDataModel<TParent extends Effect = Effect> extends ItemDataModel<TPa
     }
 }
 
-interface EffectDataModel<TParent extends Effect = Effect> extends Omit<EffectDataSource, keyof ItemDataSource> {}
+interface EffectDataModel<TParent extends EffectAFMBE = EffectAFMBE> extends Omit<
+    EffectDataSource,
+    keyof ItemDataSource
+> {}
 
 export { EffectDataModel };

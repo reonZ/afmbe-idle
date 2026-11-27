@@ -1,8 +1,8 @@
 import { ActorModule } from "actor";
-import { Creature } from "..";
+import { CreatureAFMBE } from "..";
 import { localize } from "utils";
 
-class CreatureSpeed<TParent extends Creature = Creature> extends ActorModule<TParent> {
+class CreatureSpeed<TParent extends CreatureAFMBE = CreatureAFMBE> extends ActorModule<TParent> {
     get label(): string {
         return localize("afmbe.actor.creature.speed.label");
     }

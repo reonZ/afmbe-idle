@@ -1,7 +1,7 @@
-import { Armor, ArmorDataSchema, ArmorDataSource } from ".";
+import { ArmorAFMBE, ArmorDataSchema, ArmorDataSource } from ".";
 import { PhysicalDataModel, PhysicalDataSource } from "..";
 
-class ArmorDataModel<TParent extends Armor = Armor> extends PhysicalDataModel<TParent, ArmorDataSchema> {
+class ArmorDataModel<TParent extends ArmorAFMBE = ArmorAFMBE> extends PhysicalDataModel<TParent, ArmorDataSchema> {
     static defineSchema(): ArmorDataSchema {
         return {
             ...super.defineSchema(),
@@ -13,6 +13,9 @@ class ArmorDataModel<TParent extends Armor = Armor> extends PhysicalDataModel<TP
     }
 }
 
-interface ArmorDataModel<TParent extends Armor = Armor> extends Omit<ArmorDataSource, keyof PhysicalDataSource> {}
+interface ArmorDataModel<TParent extends ArmorAFMBE = ArmorAFMBE> extends Omit<
+    ArmorDataSource,
+    keyof PhysicalDataSource
+> {}
 
 export { ArmorDataModel };

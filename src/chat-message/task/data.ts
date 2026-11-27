@@ -1,13 +1,13 @@
 import { DatabaseCreateCallbackOptions } from "@7h3laughingman/foundry-types/common/abstract/_module.mjs";
 import { ActorAFMBE, CREATURE_ATTRIBUTES } from "actor";
 import { TEST_DIFFICULTIES } from "application";
-import { PhysicalItem } from "item";
+import { PhysicalItemAFMBE } from "item";
 import { UserAFMBE } from "misc";
 import * as R from "remeda";
 import { ResolvedTaskRolls, TaskRoll } from "roll";
 import { localize, render } from "utils";
 import {
-    TaskChatMessage,
+    TaskChatMessageAFMBE,
     TaskMessageContext,
     TaskMessageDataSchema,
     TaskMessageDataSource,
@@ -87,8 +87,8 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
         return R.isIncludedIn(this.category, TEST_DIFFICULTIES);
     }
 
-    get item(): PhysicalItem<ActorAFMBE> | null {
-        const item = this.origin && fromUuidSync<PhysicalItem<ActorAFMBE>>(this.origin);
+    get item(): PhysicalItemAFMBE<ActorAFMBE> | null {
+        const item = this.origin && fromUuidSync<PhysicalItemAFMBE<ActorAFMBE>>(this.origin);
         return item?.isOfType("physical") ? item : null;
     }
 
@@ -128,7 +128,7 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
 }
 
 interface TaskMessageDataModel extends TaskMessageDataSource {
-    parent: TaskChatMessage;
+    parent: TaskChatMessageAFMBE;
 }
 
 export { TaskMessageDataModel };

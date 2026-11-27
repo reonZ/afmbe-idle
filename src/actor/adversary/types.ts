@@ -5,7 +5,7 @@ import type {
     SourceFromSchema,
 } from "@7h3laughingman/foundry-types/client/data/fields.mjs";
 import type { ActorSource } from "@7h3laughingman/foundry-types/common/documents/_module.mjs";
-import type { Character, CharacterDataSchema, CreatureAttributeType } from "actor";
+import type { CharacterAFMBE, CharacterDataSchema, CreatureAttributeType } from "actor";
 import type { ValueField } from "fields";
 import type { AdversaryDataModel } from ".";
 import type { TokenDocumentAFMBE } from "misc";
@@ -23,12 +23,12 @@ type AdversaryDataSchema = CharacterDataSchema & {
 
 type AdversaryDataSource = ModelPropsFromSchema<AdversaryDataSchema>;
 
-declare class Adversary<
+declare class AdversaryAFMBE<
     TParent extends TokenDocumentAFMBE | null = TokenDocumentAFMBE | null,
-> extends Character<TParent> {
+> extends CharacterAFMBE<TParent> {
     system: AdversaryDataModel;
 }
 
 type AdversarySource = ActorSource<"adversary", AdversaryDataSource>;
 
-export type { AdversaryAttributesSource, Adversary, AdversaryDataSchema, AdversaryDataSource, AdversarySource };
+export type { AdversaryAttributesSource, AdversaryAFMBE, AdversaryDataSchema, AdversaryDataSource, AdversarySource };

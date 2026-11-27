@@ -2,7 +2,13 @@ import {
     ApplicationClosingOptions,
     ApplicationRenderOptions,
 } from "@7h3laughingman/foundry-types/client/applications/_types.mjs";
-import { Creature, CREATURE_ATTRIBUTES, CreatureAttributes, CreatureModifier, CreatureModifierTargets } from "actor";
+import {
+    CreatureAFMBE,
+    CREATURE_ATTRIBUTES,
+    CreatureAttributes,
+    CreatureModifier,
+    CreatureModifierTargets,
+} from "actor";
 import { PreCreateTaskMessageSource } from "chat-message";
 import * as R from "remeda";
 import { TaskRollType, TaskTarget } from "roll";
@@ -23,8 +29,8 @@ import {
 } from ".";
 import { ApplicationAFMBE, ApplicationConfigurationAFMBE } from "..";
 
-class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
-    #actor: Creature;
+class TaskApplicationAFMBE extends ApplicationAFMBE<TaskApplicationConfiguration> {
+    #actor: CreatureAFMBE;
     #disable: TaskApplicationSelectKey[];
     #modifiers: CreatureModifier[];
     #private: boolean;
@@ -64,7 +70,7 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
         this.#target = target;
     }
 
-    static #addModifier(this: TaskApplication, _event: PointerEvent, target: HTMLElement) {
+    static #addModifier(this: TaskApplicationAFMBE, _event: PointerEvent, target: HTMLElement) {
         const value = target.previousElementSibling as HTMLInputElement;
         const label = value.previousElementSibling as HTMLInputElement;
 
@@ -80,17 +86,17 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
         this.render();
     }
 
-    static #cancelRoll(this: TaskApplication) {
+    static #cancelRoll(this: TaskApplicationAFMBE) {
         this.close();
     }
 
-    static create(actor: Creature, data: TaskApplicationData = {}): TaskApplication {
+    static create(actor: CreatureAFMBE, data: TaskApplicationData = {}): TaskApplicationAFMBE {
         const app = new this({ actor, data });
         app.render(true);
         return app;
     }
 
-    static async #rollTask(this: TaskApplication) {
+    static async #rollTask(this: TaskApplicationAFMBE) {
         const data: PreCreateTaskMessageSource = {
             speaker: ChatMessage.implementation.getSpeaker({ actor: this.actor }),
             system: {
@@ -106,7 +112,7 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
         this.close();
     }
 
-    static #toggleModifier(this: TaskApplication, _event: PointerEvent, target: HTMLElement) {
+    static #toggleModifier(this: TaskApplicationAFMBE, _event: PointerEvent, target: HTMLElement) {
         const index = Number(target.dataset.index);
         if (isNaN(index)) return;
 
@@ -118,7 +124,7 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
         }
     }
 
-    get actor(): Creature {
+    get actor(): CreatureAFMBE {
         return this.#actor;
     }
 
@@ -316,4 +322,4 @@ class TaskApplication extends ApplicationAFMBE<TaskApplicationConfiguration> {
     }
 }
 
-export { TaskApplication };
+export { TaskApplicationAFMBE };

@@ -6,10 +6,10 @@ export * from "./quality";
 export * from "./skill";
 export * from "./weapon";
 
-import { QualityDataModel, QualitySheet } from "./quality";
-import { SkillDataModel, SkillSheet } from "./skill";
+import { QualityDataModel, QualitySheetAFMBE } from "./quality";
+import { SkillDataModel, SkillSheetAFMBE } from "./skill";
 
 export const ITEM_CONFIG = [
-    { type: "quality", data: QualityDataModel, sheet: QualitySheet },
-    { type: "skill", data: SkillDataModel, sheet: SkillSheet },
+    { type: "quality", data: QualityDataModel, sheet: QualitySheetAFMBE },
+    { type: "skill", data: SkillDataModel, sheet: SkillSheetAFMBE },
 ];

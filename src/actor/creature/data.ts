@@ -1,8 +1,8 @@
 import { ActorDataModel, ActorDataSource } from "actor";
-import { TaskApplication, TaskApplicationData } from "application";
+import { TaskApplicationAFMBE, TaskApplicationData } from "application";
 import { PositiveIntergerValueField } from "fields";
 import {
-    Creature,
+    CreatureAFMBE,
     CreatureAttributes,
     CreatureDataSchema,
     CreatureDataSource,
@@ -14,7 +14,7 @@ import {
 } from ".";
 
 class CreatureDataModel<
-    TParent extends Creature = Creature,
+    TParent extends CreatureAFMBE = CreatureAFMBE,
     TSchema extends CreatureDataSchema = CreatureDataSchema,
 > extends ActorDataModel<TParent, TSchema> {
     modifiers: CreatureModifier[] = [];
@@ -38,13 +38,13 @@ class CreatureDataModel<
         this.speed = new CreatureSpeed(this.parent);
     }
 
-    rollTask(options?: TaskApplicationData): TaskApplication {
-        return TaskApplication.create(this.parent, options);
+    rollTask(options?: TaskApplicationData): TaskApplicationAFMBE {
+        return TaskApplicationAFMBE.create(this.parent, options);
     }
 }
 
 interface CreatureDataModel<
-    TParent extends Creature = Creature,
+    TParent extends CreatureAFMBE = CreatureAFMBE,
     TSchema extends CreatureDataSchema = CreatureDataSchema,
 > extends Omit<CreatureDataSource, keyof ActorDataSource> {
     attributes: CreatureAttributes;
