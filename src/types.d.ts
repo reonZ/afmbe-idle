@@ -6,6 +6,7 @@ import type { SceneAFMBE, TokenAFMBE, TokenDocumentAFMBE, UserAFMBE } from "misc
 import type config from "./system-config";
 import type { TaskRoll } from "roll";
 import type { FormSelectOption } from "@7h3laughingman/foundry-types/client/applications/forms/fields.mjs";
+import { ActiveEffectAFMBE } from "active-effect";
 
 type ConfiguredConfig = Config<
     AmbientLightDocument<SceneAFMBE | null>,
@@ -64,6 +65,43 @@ declare global {
 
     // @ts-ignore
     const CONFIG: ConfigAFMBE;
+    // @ts-ignore
+    type DocumentTypeMap = {
+        ActiveEffect: typeof ActiveEffectAFMBE;
+        Actor: typeof ActorAFMBE;
+        ActorDelta: typeof foundry.documents.ActorDelta;
+        Adventure: typeof foundry.documents.Adventure;
+        AmbientLight: typeof foundry.documents.AmbientLightDocument;
+        AmbientSound: typeof foundry.documents.AmbientSoundDocument;
+        Card: typeof foundry.documents.Card;
+        Cards: typeof foundry.documents.Cards;
+        ChatMessage: typeof ChatMessageAFMBE;
+        Combat: typeof foundry.documents.Combat;
+        Combatant: typeof foundry.documents.Combatant;
+        CombatantGroup: typeof foundry.documents.CombatantGroup;
+        Drawing: typeof foundry.documents.DrawingDocument;
+        FogExploration: typeof foundry.documents.FogExploration;
+        Folder: typeof foundry.documents.Folder;
+        Item: typeof ItemAFMBE;
+        JournalEntry: typeof foundry.documents.JournalEntry;
+        JournalEntryCategory: typeof foundry.documents.JournalEntryCategory;
+        JournalEntryPage: typeof foundry.documents.JournalEntryPage;
+        Level: typeof foundry.documents.Level;
+        Macro: typeof foundry.documents.Macro;
+        Note: typeof foundry.documents.NoteDocument;
+        Playlist: typeof foundry.documents.Playlist;
+        PlaylistSound: typeof foundry.documents.PlaylistSound;
+        Region: typeof foundry.documents.RegionDocument;
+        RegionBehavior: typeof foundry.documents.RegionBehavior;
+        RollTable: typeof foundry.documents.RollTable;
+        Scene: typeof SceneAFMBE;
+        Setting: typeof foundry.documents.Setting;
+        TableResult: typeof foundry.documents.TableResult;
+        Tile: typeof foundry.documents.TileDocument;
+        Token: typeof TokenDocumentAFMBE;
+        User: typeof UserAFMBE;
+        Wall: typeof foundry.documents.WallDocument;
+    };
     // @ts-ignore
     const canvas: CanvasAFMBE;
     // @ts-ignore

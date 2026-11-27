@@ -5,7 +5,7 @@ import { PhysicalItemAFMBE } from "item";
 import { UserAFMBE } from "misc";
 import * as R from "remeda";
 import { ResolvedTaskRolls, TaskRoll } from "roll";
-import { localize, render } from "utils";
+import { getDocumentFromUUIDSync, localize, render } from "utils";
 import {
     TaskChatMessageAFMBE,
     TaskMessageContext,
@@ -88,8 +88,8 @@ class TaskMessageDataModel extends ChatMessageDataModel<TaskMessageDataSchema> {
     }
 
     get item(): PhysicalItemAFMBE<ActorAFMBE> | null {
-        const item = this.origin && fromUuidSync<PhysicalItemAFMBE<ActorAFMBE>>(this.origin);
-        return item?.isOfType("physical") ? item : null;
+        const item = getDocumentFromUUIDSync("Item", this.origin);
+        return item?.isOfType("physical") ? (item as PhysicalItemAFMBE<ActorAFMBE>) : null;
     }
 
     prepareContext(): TaskMessageContext {
