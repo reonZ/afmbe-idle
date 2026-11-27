@@ -11,6 +11,7 @@ You can see the changelog [HERE](./CHANGELOG.md)
 The following icons are provided by [Lorc](https://lorcblog.blogspot.com/) under the [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) license
 
 - https://game-icons.net/1x1/lorc/armor-vest.html
+- https://game-icons.net/1x1/lorc/aura.html
 
 The following icons are provided by [Delapouite](https://delapouite.com/) under the [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) license
 

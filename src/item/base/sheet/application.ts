@@ -10,7 +10,6 @@ import { ItemAFMBE } from "item";
 import * as R from "remeda";
 import { enrichHTML, localize, render } from "utils";
 import { ItemSheetConfiguration, ItemSheetPart, ItemSheetRenderContext, ItemSheetRenderOptions } from ".";
-import { ActiveEffectChangeData } from "@7h3laughingman/foundry-types/client/documents/_types.mjs";
 
 abstract class ItemSheetAFMBE<TParent extends ItemAFMBE = ItemAFMBE> extends documentSheetMixinAFMBE(
     foundry.applications.sheets.ItemSheetV2<ItemAFMBE>,

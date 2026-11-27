@@ -9,13 +9,25 @@ import type {
 import type { ItemSchema } from "@7h3laughingman/foundry-types/common/documents/item.mjs";
 import type { ActorAFMBE } from "actor";
 import type { RequiredHTMLField } from "fields";
-import type { Armor, PhysicalItem, PhysicalSource, Quality, QualitySource, Skill, SkillSource, Weapon } from "item";
+import type {
+    Armor,
+    Effect,
+    EffectSource,
+    PhysicalItem,
+    PhysicalSource,
+    Quality,
+    QualitySource,
+    Skill,
+    SkillSource,
+    Weapon,
+} from "item";
 import type { ITEM_TYPES, ItemAFMBE } from ".";
 
 type ItemType = (typeof ITEM_TYPES)[number];
 
 type ItemInstances<TParent extends ActorAFMBE | null = ActorAFMBE | null> = {
     armor: Armor<TParent>;
+    effect: Effect<TParent>;
     weapon: Weapon<TParent>;
     physical: PhysicalItem<TParent>;
     quality: Quality<TParent>;
@@ -39,7 +51,7 @@ type SubItem<TParent extends ItemAFMBE, TSubItem extends ItemType> = ItemInstanc
 
 type ItemDataSource = SourceFromSchema<ItemDataSchema>;
 
-type ItemSourceAFMBE = PhysicalSource | QualitySource | SkillSource;
+type ItemSourceAFMBE = EffectSource | PhysicalSource | QualitySource | SkillSource;
 
 interface ItemConstructionContext<TParent extends ActorAFMBE | null> extends DocumentConstructionContext<TParent> {
     parentItem?: ItemAFMBE<TParent>;

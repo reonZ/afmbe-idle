@@ -28,7 +28,7 @@ class ItemAFMBE<TParent extends ActorAFMBE | null = ActorAFMBE | null> extends I
     declare subItems: SubItems<ItemAFMBE<TParent>>;
 
     static DEFAULT_ICONS: Record<ItemType | "drawback", ImageFilePath> = R.fromKeys(
-        ["armor", "drawback", "quality", "skill", "weapon"] as const,
+        [...ITEM_TYPES, "drawback"] as const,
         (name): ImageFilePath => {
             return `systems/${id}/images/item/${name}.svg`;
         },

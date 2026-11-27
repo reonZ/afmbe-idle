@@ -51,6 +51,9 @@
             "task": {}
         },
         "Item": {
+            "effect": {
+                "htmlFields": ["description"]
+            },
             "quality": {
                 "htmlFields": ["description"]
             },
